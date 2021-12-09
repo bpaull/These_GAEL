@@ -1,0 +1,23 @@
+# Conclusion
+
+This thesis has been for me the opportunity to shape my understanding of 
+economic research; 
+in particular the impact of different approaches to experiments in economics. 
+When I started my thesis, I was focused on developing experimental protocols 
+that would allow me to measure subjects' preferences as accurately as possible. 
+To design these protocols I relied heavily on theoretical work concerning the 
+models I wanted to test. 
+My goal was to place my subjects in a situation as close as possible to the 
+theoretical model while exploring as much as possible the impact of the 
+different parameters of the model on individual preferences. 
+The experiment presented in chapter 2 is an example of this approach and it 
+suffers from this approach which limits the robustness of the analysis of the 
+data in this chapter. 
+My collaboration with Rustam Romaniuc, Dimitri Dubois and Paolo Crosetto 
+encouraged me to develop an experimental protocol for the temptation model of 
+@gul2001temptation but which aimed at highlighting the demand for commitment and
+the capacity of individuals to exercise self-control. 
+This approach that tests the behavioral predictions of the models is the common 
+approach in the literature. 
+This approach allows us to document the specificities of individual behaviors 
+and thus guide the development of theories. 

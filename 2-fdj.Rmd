@@ -1,0 +1,912 @@
+# Intra-personal conflict and self-commitment: Evidence from a sample of French gamblers
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(dplyr.summarise.inform = FALSE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+theme_set(theme_light())
+```
+
+```{r mcmc_function}
+reticulate::source_python("help/MCMC_function.py")
+
+
+mcmc_stuff <- function(X1, X2, x1label = "x1", x2label = "x2") {
+  
+  mcmc_sim <- as_tibble(poisson_2_param_MCMC(X1, X2))
+  
+  n_x1 <- length(X1[[1]])
+  mf_x1 <- mean(X1[[1]])
+  sdf_x1 <- sd(X1[[1]]/sqrt(n_x1))
+  seq_x1 <- seq(mf_x1 - 4 * sdf_x1, mf_x1 + 4 * sdf_x1, 
+                length.out = nrow(mcmc_sim))
+  n_x2 <- length(X2[[1]])
+  mf_x2 <- mean(X2[[1]])
+  sdf_x2 <- sd(X2[[1]]/sqrt(n_x2))
+  seq_x2 <- seq(mf_x2 - 4 * sdf_x2, mf_x2 + 4 * sdf_x2, 
+                length.out = nrow(mcmc_sim))
+  
+  mf_d <- (mf_x2 - mf_x1)
+  sdf_d <- sd(c(X1[[1]], X2[[1]])) / sqrt(n_x1 + n_x2)
+  seq_d <- seq(mf_d - 4 * sdf_d, mf_d + 4 * sdf_d, 
+                length.out = nrow(mcmc_sim))
+  
+  param_plot <- ggplot(mcmc_sim) +
+  geom_histogram(aes(lambda_1, ..density.., fill = x1label), alpha = 0.8, binwidth = 0.01) +
+  geom_histogram(aes(lambda_2, ..density.., fill = x2label), alpha = 0.8, binwidth = 0.01) +
+  geom_line(aes(seq_x1,
+                dnorm(seq_x1, mf_x1, sdf_x1),
+                color = x1label)) +
+    geom_line(aes(seq_x2,
+                dnorm(seq_x2, mf_x2, sdf_x2),
+                color = x2label)) +
+  geom_vline(aes(xintercept = mf_x1, color = x1label)) + 
+  geom_vline(aes(xintercept = mf_x2, color = x2label)) +
+  labs(fill = "treatment",
+       x = "mean pumps estimation") +
+  guides(colour = "none")
+  
+  delta_plot <- ggplot(mcmc_sim, aes(delta, ..density.., fill = "MCMC")) +
+    geom_histogram(binwidth = 0.01, alpha = 0.7) +
+    geom_line(aes(seq_d,
+                dnorm(seq_d, mf_d, sdf_d),
+                color = "frequentiste")) +
+    geom_vline(aes(xintercept = mf_d, color = "frequentiste")) +
+    scale_color_viridis_d() +
+    labs(x = "delta pumps estimation") +
+    guides(colour = "none",
+           fill = "none")
+  
+  # ecdf_l1 <- ecdf(mcmc_sim$lambda_1)
+  # ecdf_l2 <- ecdf(mcmc_sim$lambda_2)
+  # ecdf_d <- ecdf(mcmc_sim$delta)
+  
+  return(list("param_plot" = param_plot, 
+              "delta_plot" = delta_plot, 
+              "ecdf" = list("lambda_1" = ecdf(mcmc_sim$lambda_1), 
+                            "lambda_2" = ecdf(mcmc_sim$lambda_2), 
+                            "delta"    = ecdf(mcmc_sim$delta))))
+}
+```
+
+## Introduction {#introduction}
+
+Self control is an important non-cognitive skill that is associated with 
+favorable economic and social outcomes 
+[@laibson1998self; @heckman2006effects; @alan2015patience]. 
+However, abundant evidence suggests that people have a hard time controlling 
+their instantaneous passions and often succumb to temptation [@milkman2021film]. 
+Consider the two-pack a day cigarette smoker who went through many attempts to 
+quit but was never successful in kicking the habit. 
+In New Year's resolutions, one intends to eat more healthy foods in the future, 
+exercise more regularly, and watch television less often, but many of these 
+intentions fail because of self-control problems. 
+One popular solution to self-control problems is to use a commitment device. 
+For example, in “How to get ready for retirement: Save, save, save", 
+@rankin1993get suggests to “Use whatever means possible to remove a set amount 
+of money from your bank account each month before you have a chance to spend 
+it."[^201]
+
+[^201]: See Deborah M. Rankin, “How to get ready for retirement: Save, save, save", New York Times, March 13, 1993, p. 33.
+
+There is ample empirical evidence showing that hard commitments work well to 
+reduce one's tendency to err -- as judged by the person's own standards -- in 
+the direction of instantaneous gratification. 
+For instance, it has been shown that some people use specific ordering 
+strategies that enforce watching “high brow" movies [@read1999mixing] 
+or that some individuals accept to put their money in temporarily locked savings accounts in order to keep it away from themselves (for more examples, see @milkman2021film). 
+Hard commitments allow individuals to "bind" themselves as Ulysses did before 
+setting out to the Syrens [@elster2000ulysses]. <!-- remplace (Elster, 1998) mais attention ce papier et cité sous diverse forme dans la littérature, j'ai choisit de citer le livre d'Elster qui reprend sont travail y compris 
+Ulysses and the Sirens: Studies in Rationality and Irrationality qui pourrait être la référence voulut ?--> 
+However, people often avoid using hard commitments because of their lack of 
+flexibility. 
+This is why in the @ashraf2006tying study that offered customers to commit to 
+restrict access to their savings, only 28\% accepted the offer and opened a 
+locked bank account. 
+
+An alternative to hard commitments that can work to avoid succumbing to 
+temptation while providing more flexibility are soft commitment devices, i.e., 
+commitments that can be easily broken (See @bryan2010commitment, for an 
+extensive review of the literature on commitment devices). 
+Deviating from soft commitments involves psychological costs such as shame (if 
+the commitment was made public) or guilt (if it was made privately) or some 
+degree of both shame and guilt. 
+Examples of soft commitments backed by non-pecuniary costs include taking a 
+fixed amount of money when going out with friends (one can always borrow on the 
+spot, so the commitment is soft), brushing one's teeth earlier in the evening to 
+avoid late night snacking (the cost of redoing it is low), renting a place in an 
+open space to avoid taking a nap when working from home (couches may also be 
+available in open spaces). 
+Given the ubiquity of soft commitment devices, it is important to understand to 
+what extent making a commitment soft as compared to hard/binding changes 
+people's behavior. 
+However, to our knowledge, there is no empirical evidence on the effects of 
+soft commitments relative to a condition where the commitment is hard as well as 
+compared to an environment without any form of commitment device. 
+Our aim in this paper is to fill this gap.
+
+To study the comparative effects of soft relative to hard and no commitments, we 
+designed a controlled experiment that we implemented online. 
+Our sample of 1527 participants who, in the last 12 months prior to their 
+participation in our experiment, engaged in some sort of legal gambling with 
+*la Française des Jeux*, the operator of France's national lottery games, with 
+whom we partnered for this study. 
+Specifically, our sample is representative of *la Française des Jeux*'s gamblers. 
+In that sense, this is the first study on self-control that uses such a large 
+sample of participants and that are representative of the population of gamblers 
+of a major national operator of lottery games.[^202] 
+
+[^202]: While there are field studies on self control that employ a non-student 
+population [@ashraf2006tying; @milkman2014holding] <!-- remplace Milkman et al., 2013 -->, 
+we are not aware of any online study on the topic of temptation and self-control 
+using a sample of participants with similar characteristics to our participants.
+
+The experiment consists of two conditions, a *Baseline* that implements a 
+modified balloon analogue risk task (BART, @lejuez2002evaluation) and a 
+*Commitment* condition. 
+The BART is a risk-elicitation game in which subjects pump air in a fictional 
+balloon, and collect money proportional to the number of pumps, unless the 
+balloon bursts, in which case they get no reward. 
+In the *Commitment* condition, subjects were given the opportunity to select an 
+upper limit on the number of pumps for future rounds of the BART. 
+Furthermore, in the *Commitment* condition, subjects are informed that the limit 
+would be binding with a 25\% chance. 
+After subjects made their choice regarding the self-imposed limit, they are 
+informed whether the limit is binding or not. 
+The fact that the limit is binding with a 25\% chance allows us to capture the 
+demand for a commitment device as well as to compare decisions under two 
+different environments: 
+(1) when commitment is hard given that the limit is binding and 
+(2) when the commitment is soft given that the subject is free to choose any 
+number of pumps but knowing that she had committed to limit her behavior to a 
+certain extent. 
+Given that the limit has a positive probability of being applied, revealing 
+one's true preference is a dominant strategy. 
+
+<!--WHAT WE FIND: SUMMARIZE HERE THE KEY RESULTS-->
+We found that 35\% of our subjects ask for a limit to the maximum risk they can 
+take when offered one. 
+Asking for this limit has the effect of decreasing the level of risk taken by a 
+subject, even if this limit is not applied. 
+The decrease in risk-taking is greater for subjects for whom the limit is 
+applied, but by studying saturation of the limit as well as the impact of 
+ex-post application of the limit we show that the effect of accepting the limit 
+on risk-taking is complementary to the mechanical effect of the limit and not a 
+substitute. 
+We can thus see the effects of a hard or soft commitment on risk-taking 
+behavior.
+
+Our paper relates to the literature that sought to test whether and how 
+commitment devices can make people succumb less to temptation. 
+The literature on hard commitment devices has hitherto been considered quite 
+independently from research that investigates the effects of soft commitments. 
+For instance, @trope2000counteractive, @ariely2002procrastination, and 
+@houser2018temptation compare hard commitments to a control without any 
+commitment. 
+Despite the importance of such comparisons, a better understanding of hard 
+commitments requires a comparison between hard and soft devices. 
+Indeed, hard commitments impose both a pecuniary and a non-pecuniary cost in 
+case of breach of commitment. 
+The pecuniary cost can go to infinity if the individual decides to remove 
+altogether the tempting option from the choice set. 
+At the same time, hard commitments come also with non-pecuniary costs in case of 
+a breach such as shame or guilt [@kast2014saving]. 
+The decision to deviate from one's commitment may also signal to the individual 
+a lack of willpower, which may represent another source of psychological 
+discomfort [@benabou2004willpower]. 
+On the other hand, soft commitments are backed solely by non-pecuniary costs. 
+When present, pecuniary costs are mostly symbolic. 
+Our experimental study allows us to compare the impact of hard commitments 
+relative to soft and no commitments, thus disentangling the effect of pecuniary 
+from non-pecuniary costs. 
+
+Our work is also related to the theoretical investigation of commitment by 
+@gul2001temptation. 
+In their model, there is a cost of avoiding the most tempting item in a choice 
+set. 
+Individuals, therefore, benefit from removing these items. 
+Our experiment allows subjects to eliminate tempting options from their choice 
+set by choosing an upper limit on the number of pumps that they will be able to 
+select. 
+However, whereas @gul2001temptation are interested in modelling the demand for 
+such commitments, we empirically analyze their behavioral effects after some 
+participants to our study decide to eliminate tempting options from their choice 
+set. 
+
+
+## Experimental Design and Procedure {#design}
+
+### Experimental conditions
+
+Our experiment consists of two experimental conditions: a *Baseline* that 
+implements a modified balloon analogue risk task (BART, @lejuez2002evaluation) 
+and a *Commitment* condition where subjects were given the opportunity to select 
+an upper limit on the number of pumps.  
+
+<!-- Common features to all conditions -->
+In each condition, subjects played 10 rounds of a modified version of the BART. 
+The screen showed a small simulated balloon. 
+Each subject had to choose a number of pumps between 1 and 64, knowing that each 
+pump would inflate the balloon and would yield a gain of €0.15. 
+However, each pump could result in the explosion of the balloon. 
+The probability that a balloon would explode was arranged by constructing an 
+array of numbers containing the integers 1--64, as in @lejuez2002evaluation. 
+The number 1 was designated as indicating a balloon explosion. 
+On each pump of the balloon, a number was selected without replacement from the 
+array. 
+The balloon exploded if the number 1 was selected. 
+Thus, the probability that the balloon would explode if the subject chose one 
+pump out of the 64 possible was 1/64.
+If the subject chose 20 pumps out of the 64 possible, then the probability that 
+the balloon would explode was 20/64. 
+As in @lejuez2002evaluation, choosing a higher number of pumps 
+(i) increased the amount to be lost because of an explosion and 
+(ii) decreased the relative gain of any additional pump. 
+In our experiment, the average break point was 32 pumps. 
+That is, a risk-neutral subject would maximize her gains by choosing 32 pumps.
+
+Note that in the original study by @lejuez2002evaluation subjects had to click 
+on a pump button to inflate the balloon and they had to click on it as many 
+times as they wanted knowing that the balloon could explode at any moment. 
+We modified the original BART study along two dimensions. 
+First, because we are interested in behaviors under risk rather than ambiguity, 
+we decided to inform subjects about the range of outcomes and that a priori each 
+pump is equally likely to result in an explosion. 
+Second, we asked subjects to choose the desired number of pumps before the 
+balloon started to inflate. 
+That is, a subject had to indicate a specific number of pumps and only then the 
+balloon started to inflate until it reached the chosen number of pumps or 
+exploded -- whichever happened first.
+This way, we did not constrain the number of chosen pumps on balloons that 
+exploded, which allowed us to capture the subjects' risk preferences in an 
+unrestricted manner and avoid the truncation of the data that is usual for BART 
+studies. 
+
+In all conditions, at the end of each round, subjects were informed about the 
+outcome of the balloon task (whether it exploded or not before it reached the 
+indicated number of pumps) and about their earnings in that particular round. 
+At the end of the experiment, one round out of the ten was randomly chosen for 
+payment and this was common knowledge from the outset of the experiment. 
+The "pay one" approach can help to avoid wealth effects and hedging 
+[@charness2016]. 
+
+<!-- Specific about the baseline -->
+In the *Baseline* condition, subjects played 5 rounds of the BART followed by a 10 seconds
+pause where they saw a message informing them that the game would resume after a few seconds. 
+After the pause, they had to play for 5 more rounds that were identical to the first 5 rounds. 
+Subjects were informed at the beginning of the experiment that there was a total of 10 rounds. 
+The 10 seconds pause was implemented to mimic the break that we implemented in the *Commitment* treatment, with the exception of the commitment mechanism introduced in the latter but absent in the *Baseline*.    
+
+<!-- Specific about the Commitment treatment -->
+In the *Commitment* condition, the first 5 rounds were identical to the *Baseline*. 
+However, at the end of round 5, instead of the pause, subjects were offered the possibility to select an upper limit on the number of pumps that they could choose in all of the rounds that would follow -- i.e., from round 6 to round 10. 
+All subjects were informed that the limit would be binding with a 25\% chance.    
+For those who opted for no limit, they went on to round 6 of the BART as in the *Baseline*. 
+For those who opted for a limit, after subjects made their choice, they were informed whether the chosen limit was binding or not. 
+Then, subjects proceeded to round 6 of the BART. 
+In case the limit was binding, subjects could choose a number of pumps between 1 and the chosen limit. 
+If the limit was not binding, subjects could choose any number of pumps between 1 and 64, as in the *Baseline* condition. 
+
+Two design choices are worth discussing. 
+First, the choice of having the first 5 rounds identical across the two conditions. 
+This sequence was implemented for two reasons: 
+(i) to allow subjects to get accustomed with the game and 
+(ii) to capture subjects' "natural" risk preferences in the absence of any commitment device. 
+This way, we can ensure that our subjects have overall similar risk profiles across the two conditions by looking at behaviors in rounds 1-5. 
+Additionally, we make sure that those who are offered the possibility to choose a limit after round 5 have been exposed to the game and that they had gotten a feeling of their temptation level. 
+
+The second design choice that requires a detailed discussion concerns the stochastic aspect of the limit. 
+The fact that the limit was binding with a 25\% chance allows us to capture the demand for a commitment device as well as subjects' self-control when the limit is effectively implemented (thus, making it a hard commitment) compared to when it is non binding (making it a soft commitment). 
+Since the limit has a positive probability of being applied, revealing one's true preference is a dominant strategy. 
+Since it is applied to a minority of subjects only, we can study self-control under a soft and a hard commitment device.   <!-- expand here --> 
+
+
+### Participants
+
+<!-- Recruitment procedure -->
+The recruitment process started in October and ended in December 2019. 
+803 subjects participated in the *Baseline* and 724 in the *Temptation* condition. 
+Subjects were recruited by a private company, named *Bilendi*, within the framework of a partnership that some of the authors of this study concluded with *la Française des Jeux* (FDJ), which is the operator of France's national lottery games.[^211]
+
+[^211]: For more information about the two companies, see their respective websites: [FDJ](https://www.fdj.fr/) and [Bilendi](https://www.bilendi.fr/) 
+
+Bilendi  recruited subjects for this study from a pool of more than 1 million individuals who had a personal account with FDJ. 
+The study includes individuals who had declared that they played at least once one of FDJ's games during the 12 months prior to the study (in one of FDJ's physical sale points or online). 
+Therefore, all our subjects have some appetite for gambling, which makes this 
+study original compared to using a population that may be less prone to 
+temptation than the general population.[^212]
+
+[^212]: For example, Milkman et al. (2013) study temptation and commitment in a sample of gym users. 
+It is quite possible that people who have a gym subscription differ in terms of willpower from people who have no gym subscription. 
+
+
+<!-- Socio-demo info -->
+The other novelty of our study is that our subjects are more representative of the general population of the country where the study was conducted than the standard subjects included in many experiments that have dealt so far with the topic of temptation and commitment (for example, @ariely2002procrastination, @casari2009pre, and @houser2018temptation, rely on a population of students).
+
+The sample in our experiment was 40.52\% female and 59.48\% male, and relatively more evenly distributed than traditional student samples: 
+7.50\% of participants were between 18 and 24 years old, 20.67\% between 25 and 34 years old, 37.43\% between 35 and 49 years old, 24.89\% between 50 and 64 years old and 9.51\% were 65 years old or older. 
+Considering the socio-professional categories, the sample was composed of 46.25\% of CSP- (employee and worker), 26.78\% of CSP+ (farmer, craftsman, merchant, company manager, liberal professions and intermediate professions), 14.05\% of retired or pre-retired, 9.45\% of inactive (not working or looking for a job) and 3.47\% of students.
+
+<!-- On a aussi les infos sur la CSP des sujets -->
+
+
+
+
+### Control questions
+
+<!-- Before the BART -->
+All subjects were recruited by the data collection company *Bilendi*. 
+Before reading the instructions of the BART, each subject was asked to answer a series of questions about their gambling habits during the last twelve months. 
+The questionnaire was used to collect information for a different project than the present one. 
+<!-- Depending on the analyses performed, we may want to add that all subjects had to complete the questionnaire before proceeding to the experimental part -- therefore, we expect that the questionnaire does not influence our results    -->
+
+Additionally, subjects had to answer a series of questions meant to collect socio-demographic information and to check whether they had played one of FDJ's games in the last 12 months (lottery, online poker, and sport betting). Specifically, subjects had to report their gender, age, professional activity, and whether they had bought a lotto ticket, played poker online or made any sport bets within the last twelve months.  
+
+<!-- After the BART -->
+At the very end of the BART, subjects were asked to answer 10 questions that correspond to the self-efficacy questionnaire. 
+This information was collected for a different project than the present one. 
+The questionnaire was implemented at the end of the experiment and therefore did not influence subjects' risk-taking and commitment decisions. 
+
+
+
+
+### Procedure
+
+The online application was developed using the oTree platform @chen2016. 
+We created a virtual “Room” to generate the URLs and to ensure that each subject would participate only once. 
+More precisely, the Laboratory for Experimental Economics of Montpellier (LEEM), created a dedicated "Room" on its oTree server with identifiers composed of letters and numbers, ranging from A1A1 to Z9Z9. 
+Consequently, the individual URLs generated by the platform were of the form <https://expe.leem.umontpellier/room/leem/?participant_label=A1A1>. 
+Bilendi, which was in charge of sending the invitations by email, assigned one identifier to each subject, and therefore sent the corresponding URL in the invitation email. 
+On the LEEM server we only had the identifiers and decisions, while Bilendi had the identifiers and identifying information of the subjects, but did not have access to the decisions of the subjects in the experiment. 
+This procedure made it possible to guarantee the anonymity of the data collected. 
+At the end of the experiment, the LEEM sent a file with the identifiers and associated payments to Bilendi, which then paid the subjects via the PayPal platform according to their earnings in the experiment.
+
+The experiment lasted on average 20 minutes and was divided into two parts : 
+first, the modified BART, with 10 rounds, and then a self-efficacy questionnaire. 
+Subjects were not informed on the paid round of the BART game until they completed the self-efficacy questionnaire.
+The average payoff was €1.60 (std 1.84). 
+In addition to their earnings related to their decisions, each subject was paid a €5 participation fee. 
+
+
+## Results {#result}
+
+```{r 2_loading_data}
+readRDS("data/chapter_1/working_data.Rds") %>% 
+  filter(treatment == 0 | treatment == 4) %>% # keeps only baseline and temptation treatment
+  mutate("in_baseline" = treatment == 0, # Change variable type and label for 
+         "round_number" = as.integer(round_number), # clarity and easiest selection
+         "limit_request" = tentation == "1.0", 
+         "limit_apply" = tentation_appliquee == "1",
+         "limit_apply" = if_else(in_baseline, NA, limit_apply),
+         "tentation_limite" = as.integer(tentation_limite),
+         "CAN_questScore" = as.integer(CAN_questScore),
+         "type_joueur" = if_else(type_joueur == "1.0", "low",
+                                 if_else(type_joueur == "2.0", 
+                                         "middle", "hight")),
+         "pumps" = as.integer(pumps),
+         "explosion" = as.integer(explosion)) %>% 
+  select(sub_id, in_baseline, round_number, limit_request, limit_apply, # variable selection dropping other treatment variable 
+         tentation_limite, CAN_questScore, type_joueur, pumps, explosion, # and modified variable
+         "round_payoff" = payoff, "total_payoff" = participant.payoff) %>% 
+  group_by(sub_id) %>% 
+  mutate(limit_request = last(limit_request),
+         tentation_limite = last(tentation_limite),
+         limit_apply = last(limit_apply),
+         type_joueur = first(type_joueur),
+         CAN_questScore = first(CAN_questScore)) %>% 
+  ungroup() -> prep_data
+```
+
+
+```{r 2_round_distribution}
+rt_pumps <- split(prep_data$pumps, 
+                  list(prep_data$round_number, prep_data$in_baseline))
+comp_rounds <- tibble(rounds = 1:10,
+                      baseline_ks = NA,
+                      treatment_ks = NA,
+                      baseline_diffMean = NA,
+                      treatment_diffMean = NA)
+for(i in 1:10) {
+  comp_rounds[i, "baseline_ks"] <- ks.test(rt_pumps[[10 + i]], 
+                                           unlist(rt_pumps[-c(10 + i, 1:10)]))$p.value < 0.05
+  comp_rounds[i, "treatment_ks"] <- ks.test(rt_pumps[[i]], 
+                                            unlist(rt_pumps[-c(i, 11:20)]))$p.value < 0.05
+  comp_rounds[i, "baseline_diffMean"] <- t.test(rt_pumps[[10 + i]], 
+                                                unlist(rt_pumps[-c(10 + i, 1:10)]))$p.value < 0.05
+  comp_rounds[i, "treatment_diffMean"] <- t.test(rt_pumps[[i]], 
+                                                 unlist(rt_pumps[-c(i, 11:20)]))$p.value < 0.05
+}
+```
+
+
+We proceed to the analysis using 2 sets of data. 
+The first one corresponds to the baseline treatment and contains the 
+observations for the `r sum(prep_data$in_baseline)/10` subjects who were not subjected to any treatment. 
+As these subjects simply repeated the elicitation task 10 times, this data 
+serves as a counterfactual. 
+The second data set concerns the `r sum(!prep_data$in_baseline)/10` subjects who were subjected to the temptation treatment. 
+It is on this data set that our analysis focuses.
+
+For these two data sets we have 10 observations per subject. 
+But we have chosen not to consider the observations for the first round. 
+These observations are different from those of the other rounds both in terms of 
+distribution (evaluated with a Kolmogorov-Smirnov test at a 95% alpha threshold) 
+and mean (test of equality of means at a 95% alpha threshold) for both the 
+baseline and temptation treatment data. 
+It is assumed that this is different data because it captures a learning effect. 
+We therefore apply our analysis to rounds 2 to 10.
+
+For both datasets, we calculated the average before and after treatment for 
+each type of player. 
+The results are reported in the table below.
+
+```{r}
+prep_data <- prep_data %>% filter(round_number > 1,  !is.na(type_joueur))
+
+tib_mean <- prep_data %>% 
+  group_by(in_baseline, round_number < 6, type_joueur) %>% 
+  summarise(mean_pumps = mean(pumps)) %>% 
+  ungroup() %>% 
+  mutate(in_baseline = if_else(in_baseline, "baseline", "temptation"),
+         `round_number < 6` = if_else(`round_number < 6`, "before treatment",
+                                      "after treatment")) %>% 
+  pivot_wider(names_from = c(in_baseline, type_joueur), values_from = mean_pumps)
+
+total <- prep_data %>% 
+  group_by(in_baseline, type_joueur) %>% 
+  summarise(mean_pumps = mean(pumps)) %>% 
+  ungroup() %>% 
+  mutate(in_baseline = if_else(in_baseline, "baseline", "temptation")) %>% 
+  pivot_wider(names_from = c(in_baseline, type_joueur), values_from = mean_pumps)
+
+tib_mean <- bind_rows(tib_mean, total)
+tib_mean[3, 1] <- "total"
+tib_mean <- tib_mean[c(2, 1, 3), ]
+
+tib_mean %>% select(1, 6, 7, 5, 3, 4, 2) %>% 
+  kable(col.names = c("", "baseline low type", "baseline middle type", 
+                      "baseline hight type", "temptation low type", 
+                      "temptation middle type", "temptation hight type"),
+        booktabs = TRUE, 
+        digits = 2, 
+        caption = "mean numbers of pumps") %>% 
+  kable_styling(c("striped"), full_width = T, latex_options = "HOLD_position")
+
+# tp_pumps <- split(prep_data$pumps, prep_data$type_joueur)
+# 
+# t.test(tp_pumps$low, tp_pumps$middle, alternative = "less")
+# t.test(tp_pumps$middle, tp_pumps$hight, alternative = "less")
+# t.test(tp_pumps$low, tp_pumps$hight, alternative = "less")
+ 
+bft_pumps <- split(prep_data$pumps, prep_data$round_number < 6)
+pv_bft <- round(t.test(bft_pumps$`FALSE`, bft_pumps$`TRUE`)$p.val, 2)
+
+at_p <- split(prep_data$pumps[prep_data$round_number > 5], 
+              prep_data$in_baseline[prep_data$round_number > 5])
+pv_atg <- round(t.test(at_p$`TRUE`, at_p$`FALSE`)$p.val, 2)
+```
+
+We can make the following observations:
+
+1. The subjects are globally risk averse with an average number of pumps of 
+`r round(mean(prep_data$pumps), 2)`.
+2. The high type players are more risk prone than the others but the middle 
+and low type players do not differ.
+3. There is no global difference between the before and after treatment. 
+The p-value of the t-test is `r pv_bft` between the pre- and post-treatment 
+choices and the p-value for the post-treatment choices between the baseline 
+group and the temptation group is `r pv_atg`.
+
+Since we cannot reject the hypothesis that the temptation treatment as an effect 
+on the amount of risk chosen by subjects, we will now look at the choice of 
+constraint for subjects in the temptation treatment.
+
+To begin with, it is important to remember that the constraint that is proposed 
+to the subjects in this treatment cannot theoretically serve them to improve 
+their situation. 
+Indeed, if the constraint is applied, it only makes the choice of a higher risk 
+amount impossible. 
+But even without the constraint, the subjects have no incentive to choose a 
+higher amount of risk than they want. 
+Theoretically, we expect subjects not to ask for a constraint.
+
+```{r}
+prep_data %>% 
+  filter(round_number == 10, !in_baseline) %>% 
+  mutate(tot_suj = n_distinct(sub_id)) %>% 
+  group_by(limit_request, limit_apply) %>% 
+  summarise(n = round(n()/max(tot_suj), 2)) %>% 
+  pivot_wider(values_from = n, names_from = limit_apply,
+              names_prefix = "ta_") %>% 
+  mutate("total" = sum(ta_FALSE , ta_TRUE, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  mutate("limit_request" = c("No", "Yes")) %>% 
+  rbind(c("Total", sapply(.[, -1], sum, na.rm = TRUE))) -> ask_limit
+```
+
+
+But we observe that `r as.numeric(ask_limit$total[2]) * 100`% of the subjects 
+have asked for a limit. 
+This quantity is consistent with that observed by @houser2018temptation (28.6% 
+when the limit has no cost) and @toussaert2018eliciting (35.8%). 
+This subject confirms that there is a demand for a constraint in our subjects. 
+Moreover the limit chosen by the subjects is binding for at least a part of them. 
+In the table below we report the number of subjects who requested a limit and 
+exceeded or reached it before and after it was proposed to them.
+
+```{r}
+prep_data <- prep_data %>%
+  group_by(sub_id) %>% 
+  mutate(binding_limit = max(pumps) > tentation_limite) %>% 
+  ungroup()
+
+saturation_tib <- prep_data %>% 
+  filter(!in_baseline, limit_request) %>% 
+  group_by(sub_id) %>% 
+  summarise(n_over_a = sum((pumps * (round_number < 6)) > tentation_limite),
+            n_sat_a = sum((pumps * (round_number < 6)) == tentation_limite),
+            n_over_p = sum((pumps * (round_number > 5)) > tentation_limite),
+            n_sat_p = sum((pumps * (round_number > 5)) == tentation_limite),
+            limit_apply = last(limit_apply))
+
+saturation_tib %>% 
+  group_by(limit_apply) %>% 
+  summarise(n_over_a = mean(n_over_a >= 1),
+            n_sat_a  = mean(n_sat_a >= 1),
+            n_over_p = mean(n_over_p >= 1),
+            n_sat_p  = mean(n_sat_p >= 1)) %>% 
+  mutate(limit_apply = if_else(limit_apply, "limit apply", "limit not apply")) %>% 
+  kable(digits = 2,
+        booktabs = TRUE,
+        caption = "share of subject who ask for a limit",
+        col.names = c("", 
+                      "limit exceed before treatment", 
+                      "limit reach before treatment", 
+                      "limit exceed after treatment", 
+                      "limit reach after treatment")) %>%
+  kable_styling(c("striped", "bordered"), full_width = T, latex_options = "HOLD_position")
+```
+
+We see that for 41% of the subjects the limit that is requested is restrictive 
+because it is lower than the maximum that was chosen in the first period. 
+The share of the subjects who reached and exceeded this limit is the same 
+whether the limit is applied or not before treatment. 
+On the other hand, the number of subjects who reached their limit without 
+exceeding it increased after treatment even when the limit was not applied. 
+This seems to indicate an ability of the subjects to self-constrain. 
+However, it is interesting to note that the number of subjects who reached or 
+exceeded their limit remained constant for subjects for whom the limit was not 
+applied but that this number decreased for subjects for whom it was applied. 
+This indicates that the application of the limit does not only have the effect 
+of preventing subjects from taking more than a certain amount of risk.
+
+But our data allow us to go further in the study of the behavior in front of a 
+constraint. 
+We can observe not only if the subjects have reached or exceeded the limit but 
+also to what extent they have moved away from it. 
+To do this we use a saturation indicator:
+$$
+r_{saturation} = \frac{pumps}{limit}
+$$
+And we refer to this inverse as the degree of constraint of the limit.
+We will also refer to the truncated saturation ratio which corresponds to the 
+same ratio but for which the values for which the number of pumps is higher than 
+the limit are reduced to 1. 
+This saturated version has the advantage of not being influenced by the 
+application of the limit and will thus allow us to compare the behaviors of the 
+subjects for whom the limit has not been applied with those to whom it has been 
+applied.
+The table below shows the mean value of the saturation ratio and in parenthesis 
+the truncated ration value before and after treatment for the subjects who 
+requested a limit.
+
+```{r}
+sat_rate_tib <- prep_data %>% 
+  filter(!in_baseline, limit_request) %>% 
+  group_by(sub_id) %>% 
+  summarise(limit_apply = last(limit_apply),
+            player_type = last(type_joueur),
+            rs_a = sum((pumps * (round_number < 6))/tentation_limite)/4,
+            rs_p = sum((pumps * (round_number > 5))/tentation_limite)/5) %>% 
+  group_by(limit_apply) %>% 
+  summarise(ratio_saturation_ante = round(mean(rs_a), 2),
+            ratio_saturation_post = round(mean(rs_p), 2),
+            difference = ratio_saturation_ante - ratio_saturation_post)
+
+trunc_rate_tib <- prep_data %>% 
+  filter(!in_baseline, limit_request) %>% 
+  group_by(sub_id) %>% 
+  summarise(limit_apply = last(limit_apply),
+            player_type = last(type_joueur),
+            rs_a = min(1, sum((pumps * (round_number < 6))/tentation_limite)/4),
+            rs_p = min(1, sum((pumps * (round_number > 5))/tentation_limite)/5)) %>% 
+  group_by(limit_apply) %>% 
+  summarise(ratio_saturation_ante = round(mean(rs_a), 2),
+            ratio_saturation_post = round(mean(rs_p), 2),
+            difference = ratio_saturation_ante - ratio_saturation_post)
+
+tibble(la = c("limit not apply", "limit apply"),
+       r_before = paste0(sat_rate_tib$ratio_saturation_ante, " (", trunc_rate_tib$ratio_saturation_ante, ")"),
+       r_after = paste0(sat_rate_tib$ratio_saturation_post, " (", trunc_rate_tib$ratio_saturation_post, ")"),
+       difference = paste0(sat_rate_tib$difference, " (", trunc_rate_tib$difference, ")")) %>% 
+  kable(digits = 2,
+        booktabs = TRUE,
+        caption = "mean saturation ratio (truncated saturation ratio)",
+        col.names = c("", "before treatment", "after treatment", "difference")) %>%
+  kable_styling(c("striped", "bordered"), full_width = T, latex_options = "HOLD_position")
+```
+
+The following can be observed:
+
+1. The subjects do not saturate their constraint on average. 
+Indeed the saturation ratio is less than 1.
+2. The subjects exceed their constraint when they can, the saturation ratio is 
+higher than this truncated value. 
+The difference indicates that in terms of the chosen limit, the overshoot is 
+important.
+3. We find the fact that when the limit is applied, the saturation reduction is 
+more important. 
+But that a reduction is also visible in the subjects for whom the constraint was 
+not applied.
+4. On the other hand, the truncated saturation ratio does not seem to evolve 
+before and after treatment whether the limit is applied or not. 
+
+We can therefore conclude that choosing a constraint encourages subjects to 
+self-constrain by reducing their overshoot of the constraint. 
+But this does not allow us to know if this self-constraint only reduces the 
+overshoot of the constraint or if it also has an impact for the choices below 
+the value chosen as limit.
+
+```{r 2_diff_a_bl_tp, cache=TRUE}
+bl_a <- prep_data %>% 
+  filter(round_number < 6, in_baseline) %>% 
+  select(pumps)
+
+temptation_a <- prep_data %>% 
+  filter(round_number < 6, !in_baseline) %>% 
+  select(pumps)
+
+## baseline vs tentation avant
+bla_tp_a <- mcmc_stuff(bl_a, temptation_a, 
+           x1label = "baseline", x2label = "temptation")
+
+## baseline ====
+bl_p <- prep_data %>% 
+  filter(round_number > 5, in_baseline) %>% 
+  select(pumps)
+mf_bl_a <- mean(bl_a$pumps)
+mf_bl_p <- mean(bl_p$pumps)
+## baseline avant vs apres
+bla_blp <- mcmc_stuff(bl_a, bl_p, 
+                      x1label = "ante-treatment", x2label = "post-treatment")
+## limit refuse ====
+lr_a <- prep_data %>% 
+  filter(round_number < 6, !in_baseline, !limit_request) %>% 
+  select(pumps)
+lr_p <- prep_data %>% 
+  filter(round_number > 5, !in_baseline, !limit_request) %>% 
+  select(pumps)
+## limit refuse avant vs apres
+lra_lrp <- mcmc_stuff(lr_a, lr_p, 
+                      x1label = "ante-treatment", x2label = "post-treatment")
+## limit not apply ====
+ln_a <- prep_data %>% 
+  filter(round_number < 6, !in_baseline, limit_request, !limit_apply) %>% 
+  select(pumps)
+ln_p <- prep_data %>% 
+  filter(round_number > 5, !in_baseline, limit_request, !limit_apply) %>% 
+  select(pumps)
+## limit not apply avant vs apres
+lna_lnp <- mcmc_stuff(ln_a, ln_p, 
+                      x1label = "ante-treatment", x2label = "post-treatment")
+## limit apply ====
+la_a <- prep_data %>% 
+  filter(round_number < 6, !in_baseline, limit_request, limit_apply) %>% 
+  select(pumps)
+la_p <- prep_data %>% 
+  filter(round_number > 5, !in_baseline, limit_request, limit_apply) %>% 
+  select(pumps)
+## limit apply avant vs apres
+laa_lap <- mcmc_stuff(la_a, la_p, 
+                      x1label = "ante-treatment", x2label = "post-treatment")
+
+## Ex-post ====
+lep_a <- prep_data %>% 
+  filter(round_number < 6, !in_baseline, limit_request, !limit_apply) %>% 
+  select(pumps)
+lep_p <- prep_data %>% 
+  filter(round_number > 5, !in_baseline, limit_request, !limit_apply) %>% 
+  transmute(pumps = unlist(Map(min, pumps, tentation_limite)))
+## limit apply ex-post avant vs apres
+lea_lep <- mcmc_stuff(lep_a, lep_p, 
+                      x1label = "ante-treatment", x2label = "post-treatment")
+```
+
+To complete our analysis we studied the impact of proposing a limit, whether it 
+is accepted and applied, on the level of risk taken by the subjects. 
+To do this we used the Markov-chain Monte Carlo implementation implemented in 
+the PyMC package (@salvatier2016probabilistic). 
+This method allows us to obtain a distribution for the mean rather than a point 
+value. 
+And thus to compare the parameters on their distribution rather than on a 
+hypothetical normal distribution which turns out to be less precise than the 
+estimates that we obtained thanks to PyMC. 
+As MCMC is a Bayesian algorithm, we had to make assumptions on the distribution 
+of the data and on the associated parameters. 
+We chose as a prior a Poisson distribution of the data whose parameter is 
+distributed according to an exponential law with a mean equal to the observed 
+mean of the data. 
+The Poisson distribution is justified in that the observed data are discrete, 
+and for the values of the studied parameters the number of theoretical 
+observations outside the sample is very low. 
+Moreover this hypothesis offers better results than the alternative of using a 
+binomial distribution.
+
+The differences in mean between the before and after treatment periods are 
+presented in the graph below. 
+The differences are compared for 5 different situations. 
+First in the baseline situation where no differences should be observed between 
+the first 4 periods and the next 5. 
+Then in the temptation treatment according to the choice of the subjects when 
+they were proposed a limit and its consequences. 
+Finally, we studied what would have happened if the limit they had requested had 
+been applied to the subject who had requested it but was refused.
+
+```{r, fig.cap='effect on mean'}
+tibble(n = seq(-3, 1.5, 0.01),
+       baseline = bla_blp$ecdf$delta(n),
+       `limit refused` = lra_lrp$ecdf$delta(n),
+       `limit not apply` = lna_lnp$ecdf$delta(n),
+       `limit apply` = laa_lap$ecdf$delta(n),
+       `limit apply ex-post` = lea_lep$ecdf$delta(n)) -> treatment_effect
+
+treatment_effect %>% 
+  pivot_longer(-n, values_to = "probability", names_to = "treatment") %>% 
+  ggplot(aes(n, probability, color = treatment)) + 
+  geom_line() +
+  labs(title = "effect of treatment on mean")
+```
+
+```{r 2_compare_treat}
+dl <- list(Lr = lra_lrp$param_plot$data$delta,
+           Ba = bla_blp$param_plot$data$delta,
+           Ln = lna_lnp$param_plot$data$delta,
+           La = laa_lap$param_plot$data$delta,
+           Le = lea_lep$param_plot$data$delta)
+
+ct <- matrix(nrow = length(dl), ncol = length(dl), 
+             dimnames = list(names(dl), names(dl)))
+
+for (i in seq_along(dl)) {
+  ct[, i] <- unlist(lapply(dl, function(x) mean(dl[[i]] >= x)))
+}
+```
+
+```{r 2_get_mcmc}
+nearest_n <- function(treatment, proba, te = treatment_effect) {
+  value <- te[[treatment]]
+  te[[1]][which(abs(value - proba) == min(abs(value - proba)))[1]]
+}
+
+mean_ci <- function(treatment, size, te = treatment_effect) {
+  c(nearest_n(treatment, 0.5 - size, te), nearest_n(treatment, 0.5 + size, te))
+}
+
+p_ci <- function(treatment, size, te = treatment_effect) {
+  paste0("[", 
+         paste(round(mean_ci(treatment, size, te), 2), collapse = ", "),
+         "]")
+}
+```
+
+We have for the 5 different situations the following estimates in terms of 
+average difference between the first 4 rounds and the next 5:
+
+1. *limit refused*: mean of `r round(nearest_n("limit refused", 0.5), 2)` 
+with credible interval at 95% `r p_ci("limit refused", 0.475)`.
+We can see that refusing a limit tend to increase the risk taken by subjects.
+2. *baseline*: mean of `r round(nearest_n("baseline", 0.5), 2)` 
+with credible interval at 95% `r p_ci("baseline", 0.475)`.
+So for baseline their is no significant difference between the four first 
+rounds and the subsequent rounds.
+3. *limit not apply*: mean of `r round(nearest_n("limit not apply", 0.5), 2)` 
+with credible interval at 95% `r p_ci("limit not apply", 0.475)`.
+The fact that subjects ask for a limit even if it is not enforced, decreases the 
+risk taken by the subjects. 
+Although this reduction is small, it is significantly different from what is 
+observed for the baseline.
+4. *limit apply*: mean of `r round(nearest_n("limit apply", 0.5), 2)` 
+with credible interval at 95% `r p_ci("limit apply", 0.475)`.
+When the limit is applied to the subject who requested it, the average risk 
+reduction for subjects is greater than for those to whom the limit was not 
+applied. 
+However, it is estimated that the probability that the application of the limit 
+will result in a greater reduction in the limit is only 
+`r round(100 * ct["La", "Ln"], 2)`%.
+5. *limit apply ex-post*: mean of `r round(nearest_n("limit apply ex-post", 0.5), 2)` 
+with credible interval at 95% `r p_ci("limit apply ex-post", 0.475)`).
+The most significant reduction in risk-taking is observed when the limit is 
+applied ex-post to subjects who asked for the limit without receiving it.
+
+This analysis of the effect of proposing a limit allows us to complete the 
+elements mentioned above. 
+First of all, if the temptation treatment does not create a difference in terms 
+of risk behavior compared to the baseline, this is due to the fact that even if 
+the subjects who asked for a limit reduced their risk taking, the subjects who 
+refused it increased their risk taking. 
+Second, we show that asking for a limit, even if it is not enforced, leads 
+subjects to reduce their risk-taking. 
+This shows that subjects are able to self-constrain. 
+But this self-constraint does not seem to be as effective as a binding limit 
+because the reduction in risk-taking is greater when the limit requested by the 
+subjects is applied. 
+Finally, we see that the reduction in risk-taking is even greater when the limit 
+is applied ex-post. 
+This confirms what we have seen with the saturation of the constraint, that is 
+to say that the effort of self-constraint to reduce the level of risk taken is 
+applied by reducing the risk taken below the limit requested but that the 
+subjects do not seem to succeed in not exceeding their limit by themselves. 
+This observation is consistent with the idea of convex self-control costs but 
+this hypothesis will have to be tested by future work.
+
+
+## Conclusion {#conclusion}
+
+The extant literature has investigated the effects of hard commitment devices, 
+that impose financial and non-financial costs in case of breach of commitment 
+(e.g., @ashraf2006tying) separately from soft mechanisms, such as signing a 
+pledge, that are backed solely by guilt and discomfort (e.g., @bhanot2017cheap). 
+As not everyone is comfortable with the idea of a commitment device that imposes 
+significant penalties or restricts future freedoms, those who cannot stomach the 
+thought of hard commitments may do better with a different flavor of commitment 
+device. 
+It is, therefore, important to understand to what extent soft commitments are a 
+good substitute for hard ones. 
+Our experimental study is the first, to the best of our knowledge, that compared 
+the impact of a hard commitment device relative to soft and no commitment, thus 
+disentangling the effect of pecuniary and non-pecuniary costs on one's capacity 
+to not succumb to temptation. 
+
+To study the effects of hard versus soft commitments, including a condition with 
+no commitment device, in a comparable and controlled environment, we implemented 
+an online experiment with 1527 participants. 
+Compared to more standard experiments that examined temptation in the lab, our 
+subject pool is more diverse in terms of age and occupation (only 7.5\% were 
+between 18 and 24 years old). 
+Furthermore, compared to some field experiments (e.g., @ashraf2006tying), our 
+study retains the advantages of laboratory studies in terms of control over the 
+subject's decision environment as we implemented an online balloon analogue risk 
+task. 
+Finally, in terms of our subject pool, contrary to some field studies (e.g., 
+@milkman2014holding), our participants are particularly tempted by the activity 
+that they can choose to limit as we recruited participants a pool of individuals 
+who have engaged in sort of gambling activity over the last 12 months prior to 
+the study. 
+Thus, our experiment can be viewed  as an artefactual field experiment, to use 
+@harrison2004field taxonomy because we use a standard task with an abstract 
+framing, but with a nonstandard pool of participants.
+
+Our results demonstrate that there is a demand for constraint in about one third 
+of the subjects. 
+The subjects who request this constraint decrease their risk-taking even when 
+this constraint is not applied. 
+We see that the decrease in risk-taking is more important in subjects for whom 
+this constraint is hard. 
+We have shown that the decrease in risk-taking in subjects for whom the 
+constraint is soft is different and complementary to the decrease in 
+risk-taking in subjects for whom the constraint is hard.
+This complementarity of behaviors between hard and soft constraints 
+invites us to explore theoretical models that postulate that individuals are 
+both requesting constraints and capable of self-constraint. 
+Among these models, temptation models such as those proposed on the 
+@gul2001temptation model allow to rationalize the behaviors highlighted in 
+this article. 
+More specifically the model of @noor2015menu allows to rationalize the 
+effect of the application of the ex-post limit as well as the non-saturation of 
+the constraint by subject.
+
+## Reference {#ref}

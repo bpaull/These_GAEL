@@ -1,0 +1,1190 @@
+# Repeated Choice
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, cache = TRUE)
+options(dplyr.summarise.inform = FALSE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(glmnet)
+library(plotly)
+library(parallel)
+
+Rcpp::sourceCpp("help/rcpp/cum_rcpp.cpp")
+source("help/CRRA/crra_function.R")
+source("help/ghost_treatment.R")
+source("help/boot_strap_correlation.R")
+
+
+
+theme_set(theme_light())
+
+
+## Function ====
+q_treatment <- function(x) {
+  if (x %in% c('A', 'B', 'C')) return('before')
+  if (x %in% c('D', 'E', 'F')) return('after')
+  if (x %in% c('G', 'H', 'I')) return('both')
+  NA
+}
+p_treatment <- function(x) {
+  if (x %in% c('A', 'D', 'G')) return('1')
+  if (x %in% c('B', 'E', 'H')) return('10')
+  if (x %in% c('C', 'F', 'I')) return('100')
+  NA
+}
+
+bootstrap_mean <- function(x, n_strap, n_round) {
+  stopifnot({n_round <= length(x)})
+  
+  replicate(n_strap, {mean(sample(x, n_round))})
+}
+## Comparing estimator ----
+formule_builder <- function(lag_tib, n_ind = 3) {
+  formule <- "n ~ 1"
+  for (i in 1:5) {
+    if (!all(lag_tib[[n_ind]] == lag_tib[[i + n_ind]], na.rm = TRUE))
+      formule <- paste0(formule, " + n_", i)
+  }
+  
+  formule
+}
+
+predict_lagged <- function(subject_play, nb_train) {
+  l_df <- data.frame(
+    n   = subject_play,
+                     n_1 = lag(subject_play, 1),
+                     n_2 = lag(subject_play, 2),
+                     n_3 = lag(subject_play, 3),
+                     n_4 = lag(subject_play, 4),
+                     n_5 = lag(subject_play, 5))
+  
+  tt_list <- split(l_df, 
+                   c(rep("train", nb_train), 
+                     rep("test", length(subject_play) - nb_train)))
+  
+  model <- lm(formule_builder(tt_list$train, 1), data = tt_list$train)
+  
+  pred <- predict(model, tt_list$test)
+  
+  mean((pred - tt_list$test$n)^2)
+}
+## Add tmp
+treatment_agg <- function(x, vec_agg, ind_agg) {
+  ind_agg(unlist(lapply(x, vec_agg)))
+}
+
+
+
+
+## Hyper parametre ====
+## all subject graph ----
+n_x <- 5
+n_y <- 5
+## stability analyse ----
+n_strap <- 5000
+n_round <- 75
+## parallel computation  ----
+nb_core <- detectCores() - 1
+```
+
+```{r 4_data_loading}
+read_csv("data/chapter_3/full_data.csv") %>% 
+  group_by(subject_id) %>% 
+  arrange(time_stamp) %>% 
+  mutate(add_time = time_stamp - lag(time_stamp),
+         add_time = if_else(is.na(add_time), 0, add_time),
+         q_treat = sapply(treatment, q_treatment),
+         p_treat = sapply(treatment, p_treatment)) -> changes_ds
+
+subjectId <- unique(changes_ds$subject_id)
+
+changes_ds %>% 
+  group_by(subject_id, choice) %>% 
+  summarise(nb_change = n(),
+            n = last(n),
+            time_choose = max(time_stamp) - min(time_stamp),
+            add_time = sum(add_time),
+            treatment = unique(treatment),
+            q_treat = unique(q_treat),
+            p_treat = unique(p_treat),
+            nb_trials = unique(nb_trials),
+            l1_1 = unique(l1_1),
+            l1_2 = unique(l1_2),
+            l1_3 = unique(l1_3),
+            l1_4 = unique(l1_4),
+            l2_1 = unique(l2_1),
+            l2_2 = unique(l2_2),
+            l2_3 = unique(l2_3),
+            l2_4 = unique(l2_4),
+            WorkTimeInSeconds = unique(WorkTimeInSeconds),
+            r_min = ifelse(n == 64, 64, n/(64 - n)),
+            r_max = ifelse(n == 64, Inf, (n + 1)/(63 - n)),
+            r = min(mean(r_min, r_max), 64)) -> choices_ds
+
+choices_ds %>% 
+  filter(choice > 10) %>% 
+  group_by(subject_id) %>% 
+  summarise(nb_choice = n(),
+            nb_change = sum(nb_change),
+            time_choose = max(time_choose) - min(time_choose),
+            add_time = sum(add_time),
+            WorkTimeInSeconds = unique(WorkTimeInSeconds),
+            treatment = unique(treatment),
+            q_treat = unique(q_treat),
+            p_treat = unique(p_treat),
+            nb_trials = unique(nb_trials),
+            l1_1 = unique(l1_1),
+            l1_2 = unique(l1_2),
+            l1_3 = unique(l1_3),
+            l1_4 = unique(l1_4),
+            l2_1 = unique(l2_1),
+            l2_2 = unique(l2_2),
+            l2_3 = unique(l2_3),
+            l2_4 = unique(l2_4),
+            n_disct = n_distinct(n),
+            min_n = min(n),
+            max_n = max(n),
+            mean_n = mean(n),
+            sd_n = sd(n),
+            skewness = moments::skewness(n),
+            kurtosis = moments::kurtosis(n),
+            finite_sample_sd = sd_n/sqrt(n_round) * sqrt((100 - n_round)/(100 - 1)),
+            r_global = mean_n/(64 - mean_n),
+            r_local = mean(r),
+            sd_r_local = sd(r),
+            RS = ifelse(sd_n == 0, 1, pracma::hurstexp(n, d = 1, display = F)$Hal),
+            r_estim = optimise(eq_ir_dist.crra, c(-3, 64),  n)$minimum, # Warning provenant
+            irrationality = optimise(eq_ir_dist.crra, c(-3, 64),  n)$objective, # de ces 2 lignes
+            is_economist = sd_n == 0,
+            is_normal = ks.test(n + runif(length(n)), 
+                                "pnorm", mean_n, sd_n)$p.value > 0.05,
+            irrational_choice = mean(n == 0 | n == 64)) -> subjects_ds
+```
+
+```{r 4_stability_test}
+choices_ds %>%
+  filter(choice > 10) %>% 
+  arrange(subject_id, choice) %>% 
+  pull(n) %>% 
+  matrix(ncol = 100, byrow = TRUE) %>% 
+  apply(MARGIN = 1, bootstrap_mean, n_strap, n_round) -> bs_mean
+colnames(bs_mean) <- sort(subjectId)
+
+stability_tib <- tibble(subject_id = sort(subjectId),
+                        KS_pval = NA_real_,
+                        KS_D    = NA_real_,
+                        SW_pval = NA_real_,
+                        SW_W    = NA_real_,
+                        AD_pval = NA_real_,
+                        AD_A    = NA_real_)
+
+for (i in seq_len(nrow(stability_tib))) {
+  sub_id <- stability_tib$subject_id[i]
+  sub_row <- subjects_ds$subject_id == sub_id
+  bs_data <- bs_mean[, sub_id] + rnorm(n_strap, 0, 0.01)
+  ks_test <- ks.test(bs_data, "pnorm", subjects_ds$mean_n[sub_row],
+                     subjects_ds$finite_sample_sd[sub_row])
+  stability_tib[i, "KS_pval"] <- ks_test$p.value
+  stability_tib[i, "KS_D"] <- ks_test$statistic
+  
+  sw_test <- shapiro.test(bs_data)
+  stability_tib[i, "SW_pval"] <- sw_test$p.val
+  stability_tib[i, "SW_W"] <- sw_test$statistic
+  
+  ad_test <- nortest::ad.test(bs_data)
+  stability_tib[i, "AD_pval"] <- ad_test$p.val
+  stability_tib[i, "AD_A"] <- ad_test$statistic
+}
+
+stability_tib %>% 
+  mutate(sub_id = 1,
+         ks = KS_pval > 0.05,
+         sw = SW_pval > 0.05,
+         ad = AD_pval > 0.05,
+         ks_sw    = ks & sw,
+         ks_ad    = ks & ad,
+         sw_ad    = sw & ad,
+         ks_sw_ad = ks & sw & ad,
+         one_pass = ks | sw | ad) %>% 
+  group_by(sub_id) %>% 
+  summarise(signif_ks = sum(ks)/n() * 100,
+            signif_sw = sum(sw)/n() * 100,
+            signif_ad = sum(ad)/n() * 100,
+            signif_ks_sw = sum(ks_sw)/n() * 100,
+            signif_ks_ad = sum(ks_ad)/n() * 100,
+            signif_sw_ad = sum(sw_ad)/n() * 100,
+            signif_ks_sw_ad = sum(ks_sw_ad)/n() * 100,
+            signif_one_pass = sum(one_pass)/n() * 100) %>% 
+  select(-sub_id) -> normality_ds
+```
+
+## Introduction
+
+In this article we are interested in the following question: When an
+individual is confronted several times with the same situation, does he
+always make the same choice? This question has few concrete
+implications. It is indeed unlikely that an individual is to make two
+identical decisions in the same context. But this question seems
+important from a theoretical point of view. First, for modeling, the
+answer to this question is intimately linked to the choice of
+static versus dynamic, deterministic versus stochastic models.
+Secondly, for the analysis of results, especially in experimental
+economics. Insofar as we consider that individuals always act in the
+same way in the same situation, it is only necessary to have one
+observation per situation. But if the behavior varies in the same
+situation it may be necessary to have multiple observations.
+
+In order to answer this question, we conducted an experiment. We
+limited ourselves to a situation where the subjects had to choose
+between different lotteries. We chose the risk preference framework for
+multiple reasons. First of all, to our knowledge, the question of the
+stability of preferences has not been treated in this framework, and
+this is a central domain in economics. Moreover, in this field, we have
+a theory that has already been widely tested on other themes and whose
+extension has difficulty in responding to the contradictions highlighted
+by, among others, @friedman2014risky. These models are for the most part
+developments of the von-Neumann and Morgenstern model of expected
+utility which is a static and deterministic model. Even the stochastic
+models, of which the best known is that of @luce2012individual, are
+built around the existence of a central value for the risk preference
+parameters. It seems important to us to question the static nature of
+the models used. Finally, from a practical point of view, as the
+question of risk preferences has already been treated in experimental
+economics, we have tools to measure the parameters of risk behavior. In
+our experiment, we will use a variant of the method used in
+@lejuez2002evaluation and @crosetto2013bomb to elicit the risk
+preferences of our subjects. We also have results on similar questions
+in the context of risk preferences. For example, @hey1994investigating
+conducted an experiment to test different developments of the expected
+utility model. Even if the situations in the experiment were not the
+same, this experiment shows the ability of different models to explain
+individual decisions. Following the same idea, @wilcox2007predicting
+uses simulations and @hey1994investigating data to estimate the
+predictive power of the models on a new set of situations. Finally, the
+@ert2017revisiting[^401] experiment, which is interested in the learning
+of subjects, provides them with feedback and thus modifies the situation
+between the different elicitation of preferences, but also studies the
+variation of preferences for risk between close situations.
+
+[^401]: We would like to thank Ernan Haruvy for sharing data with us. This allowed us to test our analysis on existing (albeit different) data prior to conducting our experiment.
+
+Our experiment was conducted online at the end of May 2021. 
+The recruitment was done via Amazon Mechanical Turk and we collected data on
+300 subjects as planned in our pre-registration[^402]. 
+The experiment itself was done on a dedicated application developed with the 
+Shiny framework of the R language. 
+It is built on an extremely simple experimental design. After making sure
+that our subjects understood how the risk elicitation task works, we
+measured their risk preferences 100 times. 
+The measurements were taken one after the other without any feedback, the
+payoffs and resolution of uncertainty being calculated only at the end of the 
+experiment.
+
+[^402]: Pre-registered hypothesis are available with asPredicted code 
+[zx667](https://aspredicted.org/zx667.pdf)
+
+As the measurements are made in similar situations to each other, we
+expect that the 100 measurements will be identical for each subject.
+However, we observe that this is only the case for
+`r round(mean(subjects_ds$is_economist) * 100, 2)`% . We show that only for
+`r round(mean(subjects_ds$is_normal) * 100, 2)`%  the answers are
+normally distributed and that for at least
+`r round(100 - normality_ds$signif_one_pass, 2)`% , the data does
+not seem to admit a unique central value. Moreover, we show that
+measures of risk preferences can lead to the wrong conclusion that a
+treatment has an effect. 
+And that models built on a risk aversion
+parameter are of poor quality both in describing the data and in
+predicting the future behavior of subjects even in the simplest
+situation. 
+But it seems possible to significantly improve the quality of
+predictions by using models that take into account the past behavior of
+the subjects.
+
+Our experiment shows that it should not be taken for granted that when
+confronted with the same situation several times an individual will
+always respond in the same way. 
+Responses can vary significantly not only between but also within subjects. 
+Within-subjects variations can be so extreme
+that the behavior of a subject cannot be satisfactorily summarized
+by a central value. 
+This implies that we must pay particular attention
+to the conclusion that we draw from a difference between two measures,
+but also to the behavioral conclusion that we can deduce from a risk
+aversion parameter. 
+Finally, these results must be put into perspective
+by the fact that our experiment has few equivalents and that,
+consequently, the results we have obtained are uncertain and must be
+supported and corrected by other studies.
+
+## Experimental design
+
+Our experimental design allows us to measure 100 times the risk
+preferences of each subject. Each of these measurements is performed
+under conditions as close to each other as possible. Each of the
+measures is performed using an elicitation mechanism regularly used for
+similar purposes in economics and psychology. Each of the elicitations
+is incentivized by an amount that even if relatively small in absolute
+value is much higher than the average remuneration used in experimental
+economics on the target population. Moreover once the amount is put in
+relation to the effort and duration of the task, the corresponding
+remuneration is similar or even higher than the remuneration of subjects
+in laboratories. Our protocol also includes a learning period with
+feedback in addition to the traditional control questions in order to
+ensure that the subjects have fully understood how the elicitation
+procedure works and its impact on their compensation.
+
+We believe that our experimental design allows us to satisfactorily
+study how individuals behave in the face of risk on a repeated basis. We
+have a large number of observations per subject which allows us to
+perform robust statistical analyses at the individual level. And the
+observations are comparable at the individual level because we made sure
+that the conditions are as close as possible in terms of incentive,
+information, form and time.
+
+### Recruitment
+
+Our experiment took place from May 25^th^ to May 27^th^, 2021. 
+It involved 300 subjects[^411]. 
+The recruitment was done using Amazon Mechanical Turk and no
+constraint of competence or localization was applied. 
+The subjects were
+paid a fixed amount of 0.5\$ plus a variable amount depending on the
+lotteries they chose. 
+In order to ensure the quality of the answers provided 
+and rule out automatic replies by bots,
+we controlled for a number of parameters on the answers provided by
+our subjects:
+
+[^411]: 317 subjects finished the experiment but only those
+having entered a valid payment and control code at end of experiment were taken into
+account in the analysis.
+
+1.  A response time for the experiment of less than 10 minutes.
+2.  A number of trials higher than 3 for the control questions.
+3.  A number of changes in the answer before validation less than 112
+    (the minimum possible is 110) or more than 200.
+4.  A small variation in response time to the lottery (a standard
+    deviation of response time of less than 1 second).
+5.  A small variation in response time between responses (a standard
+    deviation of time less than 2 seconds).
+
+None of these criteria is in itself a sign of poor response quality, but
+the combination of several of them could be problematic. 
+Fortunately, only 23 subjects accumulated 2 and only 2 accumulated 3 (and no 
+subject was flagged for 4 or more criteria). 
+This leads us to believe that the answers provided by the
+subjects can be considered of good quality and not polluted by
+automatic answer programs.
+
+### Experimental timeline
+
+The course of the experiment for the subjects was as follows:
+
+1.  The subjects select the task on Amazon Mechanical Turk, they are
+    informed of the approximate duration as well as the amount of the
+    fixed payment and the nature of the task. They are presented with a
+    link to the experiment.
+2.  When they arrive at the experiment website, they are presented with a login
+    screen that asks them to choose a username and password (or to
+    provide their own if they have experienced a logout problem). If the
+    identifiers are valid they are secretly and randomly assigned to one of the 9
+    treatments.
+3.  The instructions of the experiment are presented to them. The instructions
+    explain the process of the task as well as how they will be rewarded
+    according to the lotteries they have chosen.
+4.  The subjects are then asked to answer 4 simple control questions.
+    They have as many tries as they want to find the right answers, but
+    they have to succeed in order to continue.
+5.  The subjects of the treatments concerned must then answer a
+    questionnaire on risk behavior.
+6.  Subjects are then asked to select 10 lotteries and are shown the
+    bonus they would have obtained based on their choices, but they are
+    warned that these lotteries will not affect their bonuses. This step
+    serves as a learning phase so that the subjects can take the
+    mechanism in hand by themselves.
+7.  Subjects select the 100 lotteries that will be used to calculate
+    their bonus. This phase represents the main body of the experiment.
+8.  The subjects of the concerned treatments have to answer a short
+     questionnaire about their preference for the risks similar to the 
+    one at the beginning of the experiment.
+9.  The lotteries that will be taken into account for the subjects'
+    bonus are drawn and uncertainty resolved in order to calculate the bonus of each subject.
+    The results are presented in a table with a summary of the gains as
+    well as the code to be filled in on Amazon Mechanical Turk so that
+    the subject can receive the bonus. Only the subjects correctly filling the code to AMT are paid and kept for the analysis.
+
+### Treatments and Bonus
+
+Our experiment includes 9 treatments, over two independent dimensions, each with 
+3 modalities. 
+The first dimension concerns the risk behavior questionnaire, that can be run at 
+the beginning, at the end of the experiment or both. 
+The second dimension concerns the lotteries proposed to the subjects. 
+The 3 modalities are the following:
+
+1.  Each lottery is presented on a separate screen and each of the 100
+    lotteries is payoff-relevant. 
+    Each experimental currency unit is worth 0.005\$.
+2.  The lotteries are presented 10 per screen and one lottery per screen
+    is randomly drawn to be payoff-relevant. Each experimental currency unit
+    is worth \$0.05.
+3.  The 100 lotteries are presented all on one screen and a single lottery
+    is randomly drawn to be payoff-relevant. Each experimental currency unit
+    is worth \$0.5.
+
+In each of the treatments the maximum expected payoff is \$8.
+The different treatments should not impact the behavior of the subjects, the
+situations being theoretically similar. 
+Having different payment modality is a robust test against the bipolar 
+behaviorist bias pointed out by @harrison2014experimental.
+However, we cannot use any of our processing to perform robustness tests. 
+Our analysis of the data revealed a ghost treatment effect (detailed in the 
+following analysis) which may make treatments appear statistically different 
+without reason. 
+We therefore chose to conduct the analysis by pooling the treatments.
+
+Incentives may seem too small, but this is not the case. 
+The maximum average gain for our experiment is \$8.5 which
+makes it an extremely well-paid task given that the average time to
+complete it is `r round(mean(subjects_ds$WorkTimeInSeconds)/60)`
+minutes. 
+This amount is also extremely dependent on the subject's choices. 
+It can indeed vary from 0.5\$ to 8.5\$ depending on the choice,
+and even in treatments where the value of a unit is 0.005\$ the amount
+expected from a lottery can vary from 0\$ to 0.08\$ which may seem low
+but should be put in comparison with the time needed to make this
+decision (in the order of a second) and the amount usually paid for
+tasks on Amazon Mechanical Turk (e.g. @sjaastad2021ulyssean pays
+subjects 0.01\$ to correctly count the number of colored cells in a 150
+cell matrix in 50 seconds). This leads us to believe that the collected
+responses reflect, a decision similar to the 
+one usually observed in experimental economics when eliciting
+responses from subjects in a brick-and-mortar laboratory.
+
+
+### Elicitation mechanism
+
+The objective of our experimental design is to have subjects make the
+same choice multiple times (or at least choices that are as close as
+possible) and to incentivize them, within the framework of utility
+theory, to make the same decision each time. We have therefore chosen to
+repeat the same risk elicitation task 100 times in a row. The
+repetitions are done one after the other without any feedback until the
+end of the experiment. The different elicitations are performed in a
+short time (less than 2 hours for the slowest).
+The different choices do
+not or can not differ between them in terms of information, time or gain
+already acquired. The main difference is that as the experiment
+progresses, the number of decisions made by a subject increases, but
+this factor does not influence decision making in the expected utility
+model (and in many other models in decision theory).
+
+To ensure that subjects are encouraged to make the same decision in each
+of their choices, we chose to use an elicitation method inspired by the Balloon 
+Analaog Risk Task (BART, @lejuez2002evaluation) and the Bomb Risk Elicitation 
+Task (BRET @crosetto2013bomb). 
+
+Our task is the same as BART but without the ball. 
+Removing the balloon is a way to avoid the subject being distracted by the 
+balloon animations or being biased by his experience with real ball as 
+highlighted in @steiner2021representative and @de2020burst.
+In our task subjects have to choose a value *n* between 0 and 64. 
+This value corresponds to a lottery which allows them to win $n$ units (whose 
+value depends on the treatment as explained later) with a probability of 
+$\frac{64 - n}{64}$ and 0 otherwise. 
+By considering subjects whose utility function is of the CRRA
+type and using the form used by @wakker2008explaining: 
+$$
+u(x) = 
+\begin{cases} 
+  x^r & \text{if } r>0\\
+  -x^r & \text{if } r<0\\
+  ln(x) & \text{if } r=0
+\end{cases}
+$$ 
+We can show that this task allows to elicit the preferences of
+individuals with a risk aversion parameter between 0.016 and 64. And
+that for a value r between these 2 values :
+$$
+n^* = \frac{64r}{1 + r}
+$$ 
+With $n^*$ the value that maximizes the utility function $u(\cdot)$. We can
+also associate to each possible value of $n$ the parameter $r$ for which
+the utility function would be maximized (except for the values 0 and 64
+which are choices strictly dominated by all others): 
+$$
+r = \frac{n}{64 - n}
+$$
+For each iteration of the task performed by a subject, we can
+therefore easily associate a risk aversion parameter.
+
+## Results
+
+Our analysis will be composed of 3 parts. 
+In the first part we will describe the individual choices in terms of variance 
+and associated distributions. 
+In doing so we will show that individual behavior is highly variable and that 
+they are not normally distributed as is often assumed in economic data analysis.
+In the second part we will show the consequences of these specificities
+and their impact on the statistical methods used to test hypotheses and
+the reliability of the results. Finally, we will briefly look at a
+potential way to improve the methods usually used to estimate risk
+aversion.
+
+### Models
+
+Using the elicited values we will estimate different models. 
+We will then compare these models according to their Mean Square Error (MSE) on 
+subsets of our data of different sizes. 
+In all situations we adopt the standard practice in machine learning of training
+the models on sets distinct from the test set on which we measure the MSE. 
+The models we use are the following:
+
+1. **dummy**: This model simply predicts for each subject and each
+period 32. 
+This value is the central value among those available.
+This model does not learn anything about the behavior of the
+subjects and is only used as a reference to judge the performance of
+the other models. 
+The models performing less well than this model are probably not relevant.
+2. **mean, median, mode**: These models predict for each subject the simple
+    mean/median/mode of the values observed during the training periods.
+3. **r_irr**: This metric is proposed to have a metric that internalizes 
+individual errors. 
+We therefore use this index *r of irrationality* which for a set of choices of a 
+subject indicates the value r which minimizes the irrationality in terms of 
+certain equivalent.
+This model predicts the value corresponding to the specific risk 
+aversion parameter $r$ of a CRRA utility function
+that minimizes for each subject its irrationality index over
+the learning period. 
+We define irattionality index as the sum of the
+difference between the certainty equivalent chosen by the subject
+and the certainty equivalent of the optimal choice for a given
+utility function. 
+$$
+d_{irr} = \sum_{i =1}^{i = N}c(n^*, u)-c(n_i, u) 
+$$ 
+with $c(n, u)$ the certainty equivalent of the choose $n$ for
+an individual with an utility function $u$, and $n^*$ the choice that
+maximize the utility function $u$. 
+From this metric we estimate utility function for subject by minimising 
+$d_{irr}$. 
+This model has the advantage of being able to be calculated for different sets 
+of choices and to take into account the strictly dominated choices made by a subject.
+4. **r_local**: This model predicts for each subject the value
+corresponding to the average of the r-values calculated for each
+training period. This model has the advantage that it can be
+computed for different sets of choices like the previous one.
+
+### Specifities of individuals choice
+
+The first notable feature of our results is the significant heterogeneity in
+individual behavior. Indeed, the subjects have in the experiment
+extremely different attitudes both in terms of average values chosen and
+variance around this average. But even for the individuals closest to each other
+in terms of mean and variance there can be significant differences in behavior
+both in the frequency of variations and in their amplitudes. 
+Figure \@ref(fig:4_spag_plot) gives a visual glimpse of the behavioral 
+heterogeneity. 
+Each line corresponds to the choices of an individual and the individuals are 
+divided by increasing average choice over the rows and by increasing variation 
+over the columns. 
+Each cell of the graph contains `r length(subjectId)/(n_x * n_y)` individuals.
+
+```{r 4_spag_plot, fig.width= 10, fig.height=12, fig.cap= "Choose of subjects"}
+# n_x <- 5
+# n_y <- 5
+
+choices_ds %>% 
+  select(subject_id, choice, n) %>% 
+  filter(choice > 10) %>% 
+  mutate(mean_n = mean(n),
+         sd_n = sd(n)) %>% 
+  ungroup() %>% 
+  mutate(mean_group = arules::discretize(mean_n, breaks = n_x, method = "frequency"),
+         id_mg = as.numeric(mean_group)) %>% 
+  group_by(mean_group) %>% 
+  mutate(sd_group = arules::discretize(sd_n, breaks = n_y, method = "frequency"),
+         id_sg = as.numeric(sd_group) - (id_mg - 1) * n_y) %>% 
+  ggplot(aes(x = choice, y = n, color = subject_id)) +
+  facet_wrap(id_sg ~ mean_group) +
+  geom_line(aes(group = subject_id), alpha = 0.6) +
+  guides(color = "none") +
+  labs(title = "Individuals plays group by mean and variance") +
+  scale_color_viridis_d()
+```
+
+This large variation in individual behavior is less evident in the
+statistics. 
+In the table \@ref(tab:4_sum_stat_table) we have reported the 
+quantiles of the mean and standard deviation per subject. 
+In this table we have also indicated the quantiles for the 95% confidence 
+interval for the parameter $r$ per subject under the assumption of normal data, 
+as well as the part of the observations that should be outside the observed 
+values (inferior to 0 or superior to 64) under the assumption of a normal and a 
+Poisson distribution.
+
+```{r 4_sum_stat_table}
+subjects_ds %>% 
+  select(mean_n, sd_n, r_local, sd_r_local) %>% 
+  mutate(obs_0 = pnorm(0, mean_n, sd_n) * 100,
+         obs_64 = pnorm(64, mean_n, sd_n, lower.tail = FALSE) * 100,
+         total_obs = obs_0 + obs_64,
+         total_obs_poi = ppois(64, mean_n, lower.tail = FALSE) * 100,
+         lb_n = mean_n + sd_n * qnorm(0.025),
+         hb_n = mean_n + sd_n * qnorm(0.975),
+         lb_r = ifelse(lb_n > 0, lb_n/(64 - lb_n), 0),
+         hb_r = ifelse(hb_n <= 63, hb_n/(64 - hb_n), 64),
+         range_r = hb_r - lb_r) %>% 
+  select(mean_n, sd_n, r_local, sd_r_local, range_r, total_obs, total_obs_poi) %>% 
+  lapply(quantile, c(0.05, 0.25, 0.5, 0.75, 0.95)) %>% 
+  as.data.frame() -> stat_des_df
+rownames(stat_des_df) <- c("quantile 5%", "quantile 25%", "median", 
+                           "quantile 75%", "quantile 95%")
+
+stat_des_df %>% 
+  kable(digits = 2, 
+        col.names = c("mean", "standard deviation", "mean r", 
+                      "standard deviation r", "width of r C.I.", 
+                      "% normal estim not in [0,64]", "% Poisson estim not in [0,64]"),
+        caption = "Statistique of individual choice") %>% 
+  kable_styling(c("striped"), full_width = T)
+```
+
+Average results are consistent with
+the literature on risk attitudes in the laboratory. The majority of the subjects
+are risk averse (average $n$ lower than 32) and very few subjects have an
+average higher than 48 (theoretical equivalent to an $r$ of 3). On the
+other hand, with a median standard deviation of
+`r round(stat_des_df$sd_n[3], 2)` the variability of the data is
+extremely high. This variability makes us think that the behavior of the
+subjects does not come down to a constant choice with a low variability
+around this choice. In any case, this variability has a major impact on
+the estimates of a risk aversion parameter from these data. Indeed, if we
+calculate the confidence interval for the parameter $r$ per subject from
+the average choice and the standard deviation observed under the
+assumption of normality of the data, we obtain extremely wide intervals
+as shown in the corresponding column of table [^431].
+
+[^431]: Note that as under the assumption of normality it is possible to
+    observe values of n lower than 0 (and higher than 64) the values for
+    the parameter r were brought back to 0 (and to 64) for the extreme
+    cases and that this reduces the size of the reported confidence
+    interval.
+
+This high variability also makes the hypothesis that the data is
+approximately normally distributed aberrant.
+For at least half of the subjects
+we would have under the hypothesis of normality more than
+`r round(stat_des_df$total_obs[3], 2)`% of the data which would not be
+included between 0 and 64[^432]. 
+However, if we assume a Poisson distribution, the proportion of observations
+outside the limits is very low and even negligible. 
+Unfortunately this type of distribution has only one parameter for the mean and the
+variance, which makes its use specious at the individual level, given
+what we have seen in the previous graph. 
+To finish with the hypothesis of normality of the individual choices, a 
+Kolmogorov-Smirnov[^433] test was carried out by individual on their choice. 
+For `r round(100 * (1 - mean(subjects_ds$is_normal)), 2)`% of the subjects
+the test rejects the hypothesis of normality of the data at a threshold
+alpha of 5%. 
+We are therefore confident that a normal approximation is a poor representation 
+of the behavior of our subjects, especially for some of them.
+
+[^432]: To claim that our results can be described with a normal distribution 
+would be similar to saying that a model that predicts that the height of 
+`r round(stat_des_df$total_obs[3], 2)`%% of humans is less than 0 cm or greater 
+than 3m accurately describes reality. 
+
+[^433]: As normality test are sensitive to ties, and our observations are integer 
+and this contain ties, we add an uniform noise to observation before running the 
+test.
+
+Can the behavior of individuals be described using a central value?  
+To test this we calculate for
+each individual their mean choice `r n_strap` times, drawing `r n_round` out of the 100 choices
+and then we test if these different values of the mean are
+normally distributed. This method consists in testing the central limit
+theorem on the individual bootstrapped mean. We
+use 3 different normality tests to ensure the reliability of the
+results obtained. The tests used here are the Kolmogorov-Smirnov
+(KS), the Shapiro-Wilk (SW) and the Anderson-Darling test (AD).
+Each test is based on a different criterion and we expect to have
+different but consistent results. In the table \@ref(tab:4_norm_test), we report for each
+test and their different combination the percentage of subjects for whom
+the test is not considered significant at the 5% alpha level.
+
+```{r 4_norm_test}
+normality_ds %>% 
+  kable(col.names = c("Kolmogorov-Smirnov", "Shapiro-Wilk", "Anderson-Darling",
+                      "KS & SW", "KS & AD", "SW & AD", "KS & SW & AD", 
+                      "KS or SW or AD"), digits = 2,
+        caption = "Share of subject who choice pass normality test at 5%") %>% 
+  kable_styling(c("striped"), full_width = T)
+```
+
+The normality tests show that for a significant proportion of subjects,
+the mean is not normally distributed. The proportion of subjects varies
+according to the test, from `r round(100 - normality_ds$signif_ks, 2)`%
+for the Kolmogorov-Smirnov test to
+`r round(100 - normality_ds$signif_sw, 2)`% for the Shapiro-Wilk test.
+
+This difference is explained by the statistics used, the
+Kolmogorov-Smirnov test takes into account the maximum deviation between
+the empirical distribution and the theoretical distribution while the
+Shapiro-Wilk test tests the difference between the ordered values and
+the observed values. We can say that the share of the subjects concerned
+is between `r round(100 - normality_ds$signif_ks_sw_ad, 2)`% and
+`r round(100 - normality_ds$signif_one_pass, 2)`% but it is difficult to
+give an exact value.
+
+Beyond the fact that this confirms that individual data are not normally
+distributed for a significant number of subjects, it raises an even more
+important issue. Indeed, if the mean of the individual data itself is
+not normally distributed, this indicates that we are in a situation
+where the central limit theorem does not apply. This may have two
+causes, first, our sample is too small to allow the mean to converge.
+This would be problematic given that the number of data per individual
+that we have is much higher than what is usually done in experimental
+economics. Moreover, it would suggest that the data are distributed
+according to a probability distribution for which it is necessary to
+observe a large number of data to obtain a reliable estimate of the
+mean, which excludes most of the distributions usually used to model
+this type of data. Second, the decision process of the subjects is of a
+type that does not admit first and second order moments.
+This result shows us that random choice models such as @gul2006random, 
+@gul2014random or @cerreia2019deliberately are not suitable to describe the 
+choices of our subjects. 
+These models have in common that even if the choices of the subjects can vary 
+between 2 iterations they should be distributed around a central value in this 
+situation. 
+
+### Consequences
+
+While the results reported above might seem like technicalities, we will show 
+that they have implications for the methods used and the results reported in
+risk elicitation studies. 
+The first impact of the way individuals choose is on the statistical methods 
+used to test hypotheses in experimental economics.
+The commonly used approach is to
+separate the observations that will be available according to the
+application or not of a treatment. We distinguish here three approaches.
+The first one, which is called in between, consists in applying the
+treatment to a part of the subjects and not applying it to another part,
+and in comparing the two groups. The second approach, called within,
+consists of applying the treatment to all subjects but on a subset of
+the observations collected by subjects, and comparing the results
+between the periods when the treatment was applied or not. The last one,
+the difference in difference (diffDiff) approach, consists in combining
+the two other approaches. The subjects are separated in two groups and
+the treatment is applied only to a part of the observations of one
+group, which allows to compare the differences of variations between the
+two groups for the periods when the treatment is applied or not. The
+comparison is then generally made using a test of equality of means
+between the groups.
+
+We propose here to study ghost treatment. That is to say that we randomly group
+our observations as if our subjects had been subjected
+to a treatment when in fact they were not.
+To simulate a between-subjects treatment, the same number of subjects
+were randomly drawn from each group. 
+To simulate a within-subjects treatment we draw a
+period and we take for each subject the same number of observations
+before and after this period. 
+To simulate a difference-in-difference
+treatment we apply the same method used for within-subjects treatments but with
+two randomly selected groups as done for between-subjects treatments.
+For the first type, we
+compare the means of the $n$ between the 2 groups with the help of a
+Student's t test. For the difference in difference simulations we
+compare the difference in means between the groups for the differences
+between the periods using the same test. For each of the presented
+approaches we test the results with a bootstrap method on individuals
+and periods. For each of the parameters we performed 5000 draws. For
+each draw we performed a test with a type I risk threshold of 5%.
+In the graph below we present the share of the draws for which the
+differences in behavior were judged as statistically significant (note
+that the ordinate axis is presented as a % of the maximum choice made by
+the subjects which is 100 in between and 50 for the other methods).
+
+```{r 4_gt_plot}
+ghost_within   <- readRDS("data/chapter_3/ghost_treatment_within.Rds")
+ghost_diffdiff <- readRDS("data/chapter_3/ghost_treatment_diffdiff.Rds")
+ghost_between  <- readRDS("data/chapter_3/ghost_treatment_beetween.Rds")
+
+tibble(nb_choice = 1:100,
+       within_300 = rep(matrix(unlist(lapply(ghost_within, 
+                                  function(x) mean(x <= 0.05))), nrow = 50)[, 59],
+                        each = 2),
+       within_10  = rep(matrix(unlist(lapply(ghost_within, 
+                                  function(x) mean(x <= 0.05))), nrow = 50)[, 1],
+                        each = 2),
+       diffDiff_150 = rep(matrix(unlist(lapply(ghost_diffdiff, 
+                                  function(x) mean(x <= 0.05))), nrow = 50)[, 71],
+                          each = 2),
+       between_150 = matrix(unlist(lapply(ghost_between, 
+                                  function(x) mean(x <= 0.05))), nrow = 100)[, 71],
+       between_10 = matrix(unlist(lapply(ghost_between, 
+                                  function(x) mean(x <= 0.05))), nrow = 100)[, 1]) %>% 
+  pivot_longer(-nb_choice, names_to = "types") %>% 
+  separate(types, c("treatment", "nb_subjects")) %>% 
+  ggplot(aes(nb_choice, value, color = treatment)) + 
+  geom_line(aes(linetype = nb_subjects)) +
+  labs(title = "Ghost treatment",
+       subtitle = "100 choice for between treatment and 50 for other treatment",
+       x = "% of maximum number of choice",
+       y = "% of case with significative difference",
+       color = "type of treatment",
+       linetype = "number of subjects") +
+  scale_color_viridis_d()
+
+
+rm(ghost_within)
+rm(ghost_diffdiff)
+rm(ghost_between)
+```
+
+Since the groups are randomized, it is expected that the rate of
+significant cases will be equal to the type I error, that is 5%. 
+Especially in within as no or little individual variation is assume in the 
+experimental litterature.
+But we notice that only the difference-in-difference method gives the expected
+result. 
+The two other methods present a rate of significant cases much
+higher than what is expected, higher than 75% when we use all the
+observations we have. 
+This rate of significant cases seems to be little
+affected by the number of subjects, in the case of the between-subjects method
+the number of subjects does not even seem to have any impact On the
+other hand, this rate seems to increase with the number of observations
+per subject. 
+
+This situation is particularly problematic if we wish to
+test a hypothesis on individual behavior, because taking too few
+observations leads to low power and increasing the number of
+observations without using adequate methods leads to a high risk of
+wrongly detecting an effect.
+
+Another element in data is the low correlation of risk elicitation task with 
+itself.
+We tested the correlation of the observations between different periods.
+The periods were selected using three different methods:
+
+1.  *random*: the periods were randomly drawn without replacement to form
+    two groups of equal size.
+2.  *ordered*: the periods were randomly drawn without replacement
+    before and after a value randomly drawn to form 2 groups of equal
+    size.
+3.  *consecutive*: the same number of consecutive periods were drawn before and
+    after a randomly drawn value. This method is the closest to an
+    experiment consisting in testing the correlation of the elicitation
+    task with itself.
+
+For each of these methods we used a bootstrap method on the number of
+periods and we made for each value 5000 draws. The graph below shows the
+evolution of the average correlation by method as a function of the
+number of periods.
+
+```{r 4_corr_plot}
+random_cor <- readRDS("data/chapter_3/random_cor.Rds")
+consec_cor <- readRDS("data/chapter_3/consec_cor.Rds")
+orderer_cor <- readRDS("data/chapter_3/orderer_cor.Rds")
+
+tibble(nb_periods = 1:50,
+       corr_random = unlist(random_cor),
+       corr_consecutive = unlist(consec_cor),
+       corr_ordered  = unlist(orderer_cor)) %>% 
+  pivot_longer(-nb_periods, names_to = "type", names_prefix = "corr_") -> corr_tible
+corr_tible %>% 
+  ggplot(aes(nb_periods, value, color = type)) + 
+  geom_line() +
+  labs(title = "Correlation evolution",
+       x = "number of periods observed",
+       y = "correlation") +
+  ylim(c(0,1)) +
+  scale_color_viridis_d()
+
+rm(random_cor, consec_cor, orderer_cor)
+```
+
+As in theory we measure the correlation between independent and
+identically distributed observations, we expect the measured correlation
+to be close to 1, only subject to random sampling variations and
+identical for the 3 methods.
+But we observe that the measured
+correlation varies between the three methods. Except for the ordered
+method whose result seems to be independent of the number of periods,
+the two other methods show a clear trend with the increase of the number
+of periods considered. The average correlation measured by the consecutive method
+is decreasing with the number of periods, while it is increasing for the
+random method. Moreover, the average correlation remains relatively low
+compared to what is theoretically expected. Indeed, all methods and
+number of observations taken together, it is between
+[`r paste0(round(range(corr_tible$value), 2), collapse = ", ")`]. And
+for the consecutive method with 50 observations per subject it is only
+`r round(pull(filter(corr_tible, type == "consecutive", nb_periods == 50)), 2)`.
+The observed correlation is therefore much lower than 1. 
+The risk elicitation measure is therefore less correlated with itself than one 
+would expect. 
+This must be taken into account in studies where different risk measurement 
+methods are compared as in @crosetto2016theoretical. 
+In this kind of exercise the correlation observed between two methods can be low 
+compared to the theoretical value of 1 but be quite close to the correlation 
+that a method has with itself. 
+Beyond these practical considerations, this correlation of 
+`r round(pull(filter(corr_tible, type == "consecutive", nb_periods == 50)), 2)` 
+tells us that our method of eliciting risk preferences is not reliable to 
+indicate that an individual is more risk averse than another; 
+indeed the ranking between individuals is likely to be different between 2 
+measures.
+
+An issue related to the question of correlation is the question of the
+predictability of future behavior. 
+This question has to our knowledge been little studied, and never on the same 
+set of choices as the one used for the learning of behaviors. 
+We will therefore compare different estimators according to the quality of their 
+prediction on a set of observations different from the training set. 
+This is cross validation, a commonly used method in machine learning. 
+It allows to compare models while avoiding overfitting problems. 
+In the following graph we show the
+results of different models according to the number of periods devoted
+to learning (the number of test periods and 100 minus the number of
+observations devoted to learning) in terms of mean square error. 
+
+
+```{r}
+dummy_32 <- readRDS("data/chapter_3/dummy_32.Rds")
+cross_val <- readRDS("data/chapter_3/cross_validation_mse.Rds")
+
+as_tibble(apply(cross_val, c(1, 2), mean)) %>% 
+  select(-r_global) %>% 
+  mutate(dummy = rowMeans(dummy_32),
+         n_folds = 1:99) %>% 
+  pivot_longer(-n_folds, names_to = "estimator") %>% 
+  ggplot(aes(n_folds, value, color = estimator)) +
+  geom_line() +
+  scale_color_viridis_d() +
+  labs(title = "Model error as a function of training sample size",
+       x = "number of training periods",
+       y = "Mean Squared Error")
+```
+
+We see that the models that perform the worst are the models that can be
+generalized to other choice sets. The r_irr model always performs worse
+than the dummy model and the r_local model performs worse as soon as the
+number of observations per subject becomes larger than 10. These two
+models perform poorer as the number of observations in the learning
+sample increases. In general these two models perform worse than the
+dummy model and do not seem to be relevant for predicting individual
+behavior. The mode-based model performs a little better than the dummy
+model when the number of training observations is higher than 14 but
+less otherwise. The best performing models are the median- and mean-based
+models. Both have a similar behavior in performing better when the
+training period is long. In the end, these 2 models perform much better
+than the dummy model. The mean-based model performs a little better than
+the median-based model. But even with 99 training periods the mean based
+model displays an MSE of more than 155.
+
+### Estimations
+
+In order to test the ability of the different models to predict the
+future behavior of the subjects, we use a similar approach to the
+previous one, but we separate the training and test samples according to
+their order. We create a training sample of size m for a subject by
+selecting the first m observations. Then we compute the MSE on the next
+100-m observations, for each subject. By doing so we effectively test
+the ability of the models to predict future behavior by respecting the
+serial nature of the data. We can therefore construct a linear regression
+model for each subject that includes as an explanatory variable for a
+choice the choices made in previous periods. For each subject the model
+includes up to the last 5 choices in order to predict the choice of the
+current period, note that for some subjects the choices of the previous
+periods can be perfectly correlated between them and that in this case
+the number of previous choices included is reduced in order not to
+include two variables perfectly correlated between them. In order to be
+able to compare the performances of the different models we have used in
+addition to the linear regression some of the models used previously. In
+the graph below we present the performance in terms of MSE of the
+different models for different learning sample sizes.
+
+```{r 4_dummy_estim}
+subjects_play_list <- split(subset(choices_ds, choice > 10)$n, 
+                            subset(choices_ds, choice > 10,)$subject_id)
+
+nb_period <- 15:99
+obsv <-  lapply(subjects_play_list, `[`, nb_period + 1)
+dummy <- rowMeans(as.data.frame(Map(function(x, y) (x - y)^2, 32, obsv)))
+
+pred <- lapply(subjects_play_list, function(x) 
+  sapply(nb_period, function(y) mean(x[1:y])))
+
+estim_mean <- rowMeans(as.data.frame(Map(function(x, y) (x - y)^2, pred, obsv)))
+
+pred <- lapply(subjects_play_list, function(x) {
+  r <- ifelse(x == 64, 64, x/(64 - x))
+  R <- sapply(nb_period, function(y) mean(r[1:y]))
+  64 * R / (1 + R)
+  })
+
+r_local <- rowMeans(as.data.frame(Map(function(x, y) (x - y)^2, pred, obsv)))
+
+pred <- lapply(subjects_play_list, function(x) {
+  
+  
+  R <- sapply(nb_period, function(y) 
+    optimise(eq_ir_dist.crra, c(-3, 64),  x[1:y])$minimum)
+  64 * R / (1 + R)
+  })
+
+r_irr <- rowMeans(as.data.frame(Map(function(x, y) (x - y)^2, pred, obsv)))
+
+lin_reg <- rowMeans(as.data.frame(lapply(subjects_play_list, 
+                                         function(x) sapply(nb_period, 
+                                                            function(y) 
+                                                              predict_lagged(x, y)))))
+
+prediction <- tibble(nb_obs = nb_period,
+                     dummy,
+                     mean = estim_mean,
+                     `r local` = r_local,
+                     `r irrationality` = r_irr,
+                     `linear regression`= lin_reg)
+
+prediction %>% 
+  pivot_longer(-nb_obs, names_to = "estimator", values_to = "mse") %>% 
+  ggplot(aes(nb_obs, mse, color = estimator)) +
+  geom_line() +
+  coord_cartesian(ylim = c(0,600)) +
+  labs(title = "Evolution of the different estimator",
+       x = "number of training period",
+       y = "MSE") +
+  scale_color_viridis_d()
+```
+
+As before, the least efficient models are those based on the calculation
+of a risk aversion parameter. This type of model offers a lower
+predictive power than the dummy model which always predicts 32. The
+mean-based model still offers better results than the dummy model. It is
+also the best performing model when the number of observations in the
+training sample is low (about less than 40). Finally, the linear
+regression model offers extremely variable results for a small number of
+observations (about 40) but when the number of observations in the
+training sample is sufficient it is this type of model that gives the
+best results. Moreover, it seems that the regression model learns more
+than the mean-based model when the number of observations increases,
+which can lead us to hope that with a larger number of observations we
+can obtain good predictions.
+
+By comparing the predictions of linear and mean models, we show the
+importance of a subject's previous choices on his decisions. If linear
+regressions offer better results it is because in some way the
+individual choices are not independent and it is possible to build
+models taking into account this dependence. Insofar as the linear
+regressions we have built here were built in a rudimentary way and that
+no model selection tools or even interaction terms or variables of order
+different from 1 were tested, it would be possible to have better
+results for this type of model. Another possibility of improvement would
+be the use of other classes of models like random forests.
+
+This shows that to predict individual behavior, models based on a risk
+aversion parameter perform poorly on the simplest possible task. That
+when it comes to summarize these predictions using a single parameter or
+when we have few observation, the best parameter are the
+average of observations. But that the predictions obtained in this way
+are likely to be mediocre. But it should be possible to obtain better
+quality predictions if we use the right models and have a large number
+of observations.
+
+
+## Conclusion
+
+In this article we have tried to provide some answers to the following
+question: When an individual is confronted several times with the same
+situation, does he always make the same choice? To do this, we proposed
+an experimental protocol in which our subjects were repeatedly asked the
+same question. The repetitions are done one after the other and the
+subjects receive no feedback before the end of the experiment. The question
+asked concerns risk preferences. Risk preferences are central to many
+decisions and their elicitation has already been widely studied in
+experimental economics. We therefore chose to adapt the BART method used
+in economics and psychology. This allowed us to repeatedly ask a
+question with the following properties:
+
+1.  The answer to the question is simple (choose a number between 0 and
+    64) and fast, especially since the subject chooses to always answer
+    in the same way.
+2.  Subjects are encouraged to answer according to their preferences.
+3.  A subject with fixed preferences is encouraged to answer always in
+    the same way.
+4.  The set of possible responses is large and therefore allows for
+    variations in responses of different magnitudes.
+
+With this question, we expected subjects to respond in the same way on all
+occasions.
+
+But our results show that the subjects act in a varied way and that only
+a `r round(mean(subjects_ds$is_economist)*100, 2)`% of them always make
+the same choice. So even if the average value chosen by the subjects is
+coherent with the literature on the subject, the variability of the
+choices is very important between the subjects and high for an important
+part of the subjects. We show that this variability in the answers has
+important consequences on the modeling and estimation of the preferences
+for the risk. First of all, the estimation of a risk aversion parameter
+is extremely imprecise with a coefficient of variation for the parameter $r$ of 
+roughtly `r round(3/0.7*100)` for CRRA function.
+The distribution of the answers is not normal for
+`r round(100 * (1 - mean(subjects_ds$is_normal)), 2)`% of the subjects
+and for `r round(100 - normality_ds$signif_one_pass, 2)`% of the
+subjects we cannot even be confident that their answer can be
+described with a central value.
+
+Beyond the theoretical considerations for modeling that our results
+raise, we also show that the way individuals choose has practical
+consequences both on the methods used in experimental economics to test
+hypotheses and on the reliability of the conclusions that can be deduced
+from the estimation of a risk aversion parameter. Indeed, our results
+show that in a situation of repeated choice with between- or within-subjects
+experimental designs the chances of concluding wrongly that there is a
+significant effect are significantly higher than the significance threshold chosen for the tests.
+The difference-in-difference designs do not seem to suffer from this
+effect. We also show that the correlation of risk aversion measures for
+the same task is only about
+`r round(pull(filter(corr_tible, type == "consecutive", nb_periods == 50)), 2)`.
+This value is much lower than what one would expect (a correlation of 1)
+and may explain the low level of correlation observed between the
+various methods of measuring risk preferences. Moreover, we show that
+models based on the evaluation of a risk aversion parameter that can be
+generalized to different sets are very poor models for describing
+individual behavior. The best alternative to describe individual
+behaviors with a parameter is to use the mean observation. This
+paradoxical conclusion with our first conclusion led us to test an
+alternative model, individual linear regression. We compared this new
+model with the others according to their predictive power. We show that
+the predictive power of models based on a risk aversion parameter is as
+bad as their descriptive power. But we also show that when the number of
+observations is sufficient, the model based on linear regressions
+provides better results than the average. This shows us that it is easy to 
+achieve better results than those proposed by the economic models.
+
+Our results suggest that a static model based on a risk aversion
+parameter is not suitable to describe individual behavior. Indeed, we
+have shown that this type of model obtains poor results both from a
+descriptive and predictive point of view even in the simplest task. This
+is consistent with the work of @wilcox2007predicting which shows the
+weaknesses of this type of model in a slightly more complex task.
+However, it seems possible to learn more about individual behavior by
+having enough observations on repeated choices to train statistical
+models that could highlight behavioral regularities.
+
+Finally, we can answer our question by saying that the elements at our
+disposal lead us to say that confronted with the same situation several
+times, individuals will act in different ways. But this question would
+deserve more work and results than the few elements we have brought
+here.
+
+\newpage
+
+## References

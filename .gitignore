@@ -37,3 +37,12 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+## Manualy added
+# bookdown
+_book/
+_bookdown_files/
+_main.*
+
+# analysis
+data/*
