@@ -46,3 +46,4 @@ _main.*
 
 # analysis
 data/*
+*.Rproj
