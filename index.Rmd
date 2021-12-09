@@ -30,25 +30,25 @@ topology.
 Where $\Delta$ is the set of all measures on the Borel $\sigma$-algebra of $Z$ a 
 compact metric space $(Z,d)$ of all prizes.
 
-This approach was initiated by KREPS1979. 
+This approach was initiated by @kreps1979representation. 
 And this models must allow preference for the restrictions, that is to say that 
 an individual can prefer a menu to a menu which is his super set 
 (i.e to prefer a menu containing less elements).
 
 We are interested in this model because it allows us to rationalize behavior
 that cannot be rationalized within expected utility theory. 
-For example, the demand for a costly commitment (XXXX), the exercise of self-control (YYYY) or the choice of subscriptions inconsistent with the use of a service (DELAMAL2006). 
+For example, the demand for a costly commitment (XXXX), the exercise of self-control (YYYY) or the choice of subscriptions inconsistent with the use of a service [@dellavigna2006paying]. 
 We chose to focus on the temptation model from an experimental point of view 
 because the theoretical literature already proposes a large number of models 
-(the reader who wants to be convinced can consult the literature review on the subject GULLIP2011), but the experimental literature on the subject does not propose a design allowing to compare these models;
+(the reader who wants to be convinced can consult the literature review on the subject @lipman2013temptation), but the experimental literature on the subject does not propose a design allowing to compare these models;
 Both in terms of their descriptive and predictive performance and in terms of their accuracy in describing behavioral frequencies such as the exercise of self-control or the willingness to pay for a commitment.
 The experimental literature on temptation is focused on the demonstration of existence of 
 behavior predicted by theoretical models of temptation and in contradiction with 
 the expected utility model. 
 To mention only a few of these works, the exercise of self-control and the costs 
-it induces first by MARSHMALREF and then in XXXX, the preference for a 
-restricted set of choices in TOUSSAERT2018 and the demand for an expensive 
-commitment in HOUSER2018. 
+it induces first by @mischel1989delay and then in @kuhn2014self, the preference for a 
+restricted set of choices in @toussaert2018eliciting and the demand for an expensive 
+commitment in @houser2018temptation. 
 This leaves room for an experimental design that would allow us to measure the 
 effects of temptation on preferences and thus differentiate the different 
 temptation models.
@@ -68,9 +68,9 @@ theory and on the reliability of the preferences elicited.
 The original title of this thesis was "Temptation and strategic interaction: 
 theory and experiment". 
 The objective was to propose an extension to the existing temptation model, 
-notably those of GP2001 and FL2006, to take into account the combined effects of temptation and strategic interactions. 
+notably those of @gul2001temptation and @fudenberg2006dual, to take into account the combined effects of temptation and strategic interactions. 
 The original PhD thesis project was based on work carried out for my master thesis. 
-My master thesis consisted in a model that adapted the FL2006 model for two individuals, each composed of two selves and having to decide on the distribution of a budget where their choice 
+My master thesis consisted in a model that adapted the @fudenberg2006dual model for two individuals, each composed of two selves and having to decide on the distribution of a budget where their choice 
 are strategic substitute. 
 The model developed for the master thesis highlighted that with strategic substitute choice, the 
 individual with the lowest self-control costs must compensate for the lack of 
@@ -78,7 +78,7 @@ self-control of the other individual.
 
 My first original work within the scope of this original plan was to propose an experiment to test the 
 behavioral predictions of the model developed in my master's thesis. 
-For that I realized a small experiment (40 subjects) built on the experimental design used by houser2018temptation. 
+For that I realized a small experiment (40 subjects) built on the experimental design used by @houser2018temptation. 
 In this first experiment we tested the self-control capacity of the subjects by asking 
 them to perform a boring, paid task (looking at a screen displaying the current time) and giving them the possibility to switch to a more interesting, but unpaid task (surfing the 
 internet). 
@@ -178,7 +178,8 @@ temptation models against statistical models in order to have a reference point.
 
 
 As during these three years of thesis my work deviated from the initial subject, 
-I chose to rename my thesis NEWTITLE. 
+I chose to rename my thesis *Two Different Experimental Approches For Testing 
+Temptation And A Test Of Stability Of Individual Risk Preferences* 
 Indeed, the central point of this thesis  is to explore experimental methods to 
 test temptation. 
 The last two chapters are attempts to answer technical problems on the subject. 
