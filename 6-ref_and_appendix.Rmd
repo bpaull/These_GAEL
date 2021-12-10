@@ -4,13 +4,51 @@
 
 # (APPENDIX) Appendix {-} 
 
-# Experimental instruction for chapter 2
+# Experimental instruction for chapter 2 {#expe-instruc2}
 
-This will be Appendix A.
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/pump_decision.png")
+```
 
-# Experimental instruction for chapter 3
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/pump_explosion.png")
+```
 
-This will be Appendix B.
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/pump_instructions.png")
+```
 
 
-# Experimental instruction for chapter 4
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/temptation_instructions.png")
+```
+
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/temptation_decision.png")
+```
+
+
+# Experimental instruction for chapter 3 {#expe-instruc3}
+
+Instruction of the experiment are display as follow:
+
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/consigne_c3_1.png")
+```
+
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/consigne_c3_2.png")
+```
+
+```{r, echo=FALSE, out.width='90%'}
+knitr::include_graphics("annexe_file/consigne_c3_3.png")
+```
+
+# Experimental instruction for chapter 4 {#expe-instruc4}
+
+Instruction of the experiment are display as follow:
+
+```{r, echo=FALSE, out.height='120%', out.width='90%'}
+knitr::include_graphics("annexe_file/consigne_c4.png")
+```
+

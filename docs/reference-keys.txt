@@ -39,6 +39,6 @@ mm4
 result4
 discu4
 conclusion5
-experimental-instruction-for-chapter-2
-experimental-instruction-for-chapter-3
-experimental-instruction-for-chapter-4
+expe-instruc2
+expe-instruc3
+expe-instruc4

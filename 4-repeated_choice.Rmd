@@ -390,6 +390,7 @@ The course of the experiment for the subjects was as follows:
 3.  The instructions of the experiment are presented to them. The instructions
     explain the process of the task as well as how they will be rewarded
     according to the lotteries they have chosen.
+    Instructions are provided in appendix [Appendix C](#expe-instruc4).
 4.  The subjects are then asked to answer 4 simple control questions.
     They have as many tries as they want to find the right answers, but
     they have to succeed in order to continue.

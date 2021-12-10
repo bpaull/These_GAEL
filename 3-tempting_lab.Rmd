@@ -252,7 +252,8 @@ This screen describes the next steps in the experiment and details how the
 subject will earn his payoff. 
 The subject is given a description of the menu and how the lottery works. 
 Particular emphasis is put on the impact on the bonus of the mechanism of choice 
-of a menu. <!-- Instructions are provided in appendix X -> please DO provide instructions, for all experiments; it is standard practice. -->
+of a menu. 
+Instructions are provided in [Appendix B](#expe-instruc3).
 2. The subject has to answer a short series of multiple-choice control questions. 
 To continue, the subject must answer all questions correctly. 
 To do so, he has as many attempts as he wants and a help is displayed for the 
