@@ -1,4 +1,4 @@
-# Intra-personal conflict and self-commitment: Evidence from a sample of French gamblers
+# Intra-personal conflict and self-commitment: Evidence from a sample of French gamblers {#fdj}
 
 
 ```{r, include=FALSE}
@@ -73,7 +73,7 @@ mcmc_stuff <- function(X1, X2, x1label = "x1", x2label = "x2") {
 }
 ```
 
-## Introduction {#introduction}
+## Introduction {#intro2}
 
 Self control is an important non-cognitive skill that is associated with 
 favorable economic and social outcomes 
@@ -218,7 +218,7 @@ participants to our study decide to eliminate tempting options from their choice
 set. 
 
 
-## Experimental Design and Procedure {#design}
+## Experimental Design and Procedure {#mm2}
 
 ### Experimental conditions
 
@@ -372,7 +372,7 @@ The average payoff was €1.60 (std 1.84).
 In addition to their earnings related to their decisions, each subject was paid a €5 participation fee. 
 
 
-## Results {#result}
+## Results {#result2}
 
 ```{r 2_loading_data}
 readRDS("data/chapter_1/working_data.Rds") %>% 
@@ -442,9 +442,9 @@ We therefore apply our analysis to rounds 2 to 10.
 
 For both datasets, we calculated the average before and after treatment for 
 each type of player. 
-The results are reported in the table below.
+The results are reported in the table \@ref(tab:desc-stat2).
 
-```{r}
+```{r desc-stat2}
 prep_data <- prep_data %>% filter(round_number > 1,  !is.na(type_joueur))
 
 tib_mean <- prep_data %>% 
@@ -471,10 +471,9 @@ tib_mean %>% select(1, 6, 7, 5, 3, 4, 2) %>%
   kable(col.names = c("", "baseline low type", "baseline middle type", 
                       "baseline hight type", "temptation low type", 
                       "temptation middle type", "temptation hight type"),
-        booktabs = TRUE, 
         digits = 2, 
         caption = "mean numbers of pumps") %>% 
-  kable_styling(c("striped"), full_width = T, latex_options = "HOLD_position")
+  kable_styling(c("striped"))
 
 # tp_pumps <- split(prep_data$pumps, prep_data$type_joueur)
 # 
@@ -535,10 +534,10 @@ This quantity is consistent with that observed by @houser2018temptation (28.6%
 when the limit has no cost) and @toussaert2018eliciting (35.8%). 
 This subject confirms that there is a demand for a constraint in our subjects. 
 Moreover the limit chosen by the subjects is binding for at least a part of them. 
-In the table below we report the number of subjects who requested a limit and 
+In the table \@ref(tab:limit-ask2) we report the number of subjects who requested a limit and 
 exceeded or reached it before and after it was proposed to them.
 
-```{r}
+```{r limit-ask2}
 prep_data <- prep_data %>%
   group_by(sub_id) %>% 
   mutate(binding_limit = max(pumps) > tentation_limite) %>% 
@@ -561,14 +560,13 @@ saturation_tib %>%
             n_sat_p  = mean(n_sat_p >= 1)) %>% 
   mutate(limit_apply = if_else(limit_apply, "limit apply", "limit not apply")) %>% 
   kable(digits = 2,
-        booktabs = TRUE,
         caption = "share of subject who ask for a limit",
         col.names = c("", 
                       "limit exceed before treatment", 
                       "limit reach before treatment", 
                       "limit exceed after treatment", 
                       "limit reach after treatment")) %>%
-  kable_styling(c("striped", "bordered"), full_width = T, latex_options = "HOLD_position")
+  kable_styling(c("striped", "bordered"))
 ```
 
 We see that for 41% of the subjects the limit that is requested is restrictive 
@@ -600,11 +598,11 @@ This saturated version has the advantage of not being influenced by the
 application of the limit and will thus allow us to compare the behaviors of the 
 subjects for whom the limit has not been applied with those to whom it has been 
 applied.
-The table below shows the mean value of the saturation ratio and in parenthesis 
+The table \@ref(tab:sat-ratio2) shows the mean value of the saturation ratio and in parenthesis 
 the truncated ration value before and after treatment for the subjects who 
 requested a limit.
 
-```{r}
+```{r sat-ratio2}
 sat_rate_tib <- prep_data %>% 
   filter(!in_baseline, limit_request) %>% 
   group_by(sub_id) %>% 
@@ -634,10 +632,9 @@ tibble(la = c("limit not apply", "limit apply"),
        r_after = paste0(sat_rate_tib$ratio_saturation_post, " (", trunc_rate_tib$ratio_saturation_post, ")"),
        difference = paste0(sat_rate_tib$difference, " (", trunc_rate_tib$difference, ")")) %>% 
   kable(digits = 2,
-        booktabs = TRUE,
         caption = "mean saturation ratio (truncated saturation ratio)",
         col.names = c("", "before treatment", "after treatment", "difference")) %>%
-  kable_styling(c("striped", "bordered"), full_width = T, latex_options = "HOLD_position")
+  kable_styling(c("striped", "bordered"))
 ```
 
 The following can be observed:
@@ -747,7 +744,7 @@ Moreover this hypothesis offers better results than the alternative of using a
 binomial distribution.
 
 The differences in mean between the before and after treatment periods are 
-presented in the graph below. 
+presented in the figure \@ref(fig:mean-effect2). 
 The differences are compared for 5 different situations. 
 First in the baseline situation where no differences should be observed between 
 the first 4 periods and the next 5. 
@@ -756,7 +753,7 @@ they were proposed a limit and its consequences.
 Finally, we studied what would have happened if the limit they had requested had 
 been applied to the subject who had requested it but was refused.
 
-```{r, fig.cap='effect on mean'}
+```{r mean-effect2, fig.cap='effect on mean for the different groups'}
 tibble(n = seq(-3, 1.5, 0.01),
        baseline = bla_blp$ecdf$delta(n),
        `limit refused` = lra_lrp$ecdf$delta(n),
@@ -854,7 +851,7 @@ This observation is consistent with the idea of convex self-control costs but
 this hypothesis will have to be tested by future work.
 
 
-## Conclusion {#conclusion}
+## Conclusion {#discu2}
 
 The extant literature has investigated the effects of hard commitment devices, 
 that impose financial and non-financial costs in case of breach of commitment 
@@ -908,5 +905,3 @@ this article.
 More specifically the model of @noor2015menu allows to rationalize the 
 effect of the application of the ex-post limit as well as the non-saturation of 
 the constraint by subject.
-
-## Reference {#ref}

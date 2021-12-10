@@ -1,4 +1,4 @@
-# Conclusion
+# Conclusion {#conclusion5}
 
 This thesis has been for me the opportunity to shape my understanding of 
 economic research; 
@@ -19,5 +19,52 @@ encouraged me to develop an experimental protocol for the temptation model of
 the capacity of individuals to exercise self-control. 
 This approach that tests the behavioral predictions of the models is the common 
 approach in the literature. 
-This approach allows us to document the specificities of individual behaviors 
+This approach allows to document the specificities of individual behaviors 
 and thus guide the development of theories. 
+But identifying behaviors consistent with a theory does not test its validity. 
+As pointed out by Karl Popper in @popper2005logic a given behavior can be 
+predicted by a large number of different models, he also underlines the 
+asymmetry between confirmation and denial of a theory. 
+No matter how many observations in favor of a theory we have, it only takes one 
+observation to invalidate it. 
+This must however be relativized by the imprecision and the possible errors of 
+observations. 
+But this idea encouraged me to adopt a different approach from the standard 
+approach in experimental economics in the second half of my thesis. 
+The idea is to construct the experimental protocol in such a way as to 
+repeatedly observe a situation in which we know the theoretically expected 
+behavior. 
+We then compare the observed behavior to the behavior predicted by one or more 
+theories. 
+This approach, even if it does not allow us to falsify a theory in the sense of 
+Karl Popper, allows us to compare different models.
+
+By applying this approach and comparing economic models to simple statistical 
+models I have shown in this thesis that the temptation model proposed by 
+@gul2001temptation predicts behaviors that are actually observed in our 
+experience. 
+This model represents a more accurate description of subjects' choices for menus 
+than the standard expected utility model. 
+But @gul2001temptation's model does not describe behaviors more accurately than 
+a model that ignores the composition of a menu. 
+This lack of descriptive and predictive ability is also found with the 
+expectation utility model for lottery choices. 
+It has been shown that individual choices in the area of risk preferences are 
+highly variable. 
+We have also shown that even if the expected utility models and the 
+@gul2001temptation model do not correctly account for the choices of the 
+subjects, it is possible to propose models that better describe the individual 
+choices than the constant response models that equalize our economic models. 
+
+To conclude, I would like to propose an interesting way to improve risk 
+preference models. 
+The idea comes from the foreword @aliprantis2006hitchhiker 
+"It has become clear in the last couple of decades that eco-
+nomic models capable of addressing real policy questions must be both stochastic
+and dynamic. There are fundamental aspects of the economy that static mod-
+els cannot capture. Deterministic models, even chaotically deterministic models,
+seem unable to explain our observations of the world.". 
+I think that looking for models that allow individual choices to be both dynamic 
+and random could improve the predictive and descriptive capacity of models in 
+economics.
+

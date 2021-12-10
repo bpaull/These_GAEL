@@ -1,4 +1,4 @@
-# Descriptive Power of Tempting Model
+# Descriptive Power of Tempting Model {#tempting-lab}
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, cache = TRUE)
@@ -133,8 +133,7 @@ menu_df %>%
                              USE.NAMES = FALSE)) -> all_d
 ```
 
-\newpage
-## Introduction
+## Introduction {#intro3}
 
 In this chapter we present an experiment which aims to test the descriptive 
 capacity of the model proposed by @gul2001temptation (hereafter G-P). 
@@ -217,13 +216,9 @@ the theoretical value of the resulting menu to the one indicated by the subject.
 We do not test the validity of the axioms but that of their theoretical 
 consequence.
 
-\newpage
-## materials and methods
+## materials and methods {#mm3}
 
 ### Experimental design
-
-#### Recruitment
-\
 
 Our experience took place from 12/06/2020 to 19/08/2020.
 It took place online and the recruitment of the subjects was done via the Amazon 
@@ -248,9 +243,6 @@ The target number of subjects was 300.
 valid for 297 of them. 
 The 7 subjects whose code was not valid were excluded from the dataset and were 
 not paid.
-
-#### Experimental Timeline
-\
 
 The experience proceeds 
 as follows:
@@ -290,10 +282,6 @@ comparisons indicating the amount won via the auction and the lottery results.
 The total of the 6 auctions and lotteries is also displayed along with a 
 reminder that the subject must fill in the code displayed on this page on AMT.
 
-
-#### Treatment and Bonus
-\
-
 Our experiment is composed of only one treatment.
 The earnings of the subjects are paid via the AMT platform. 
 They are composed of a fixed part of 1\$ paid to all the subjects who filled in 
@@ -305,9 +293,6 @@ Our subjects were thus paid an average of  `r round(mean(payed_bonus), 2)`$ for
 an average time of `r round(mean(amt_time/60))` seconds spent on our experiment.
 So an average wage per hour of 
 `r round(mean(payed_bonus)/mean(amt_time/3600), 2)`$
-
-#### Elicitation procedure
-\
 
 The objective of our experimental protocol is to elicit the value that subjects 
 place on menus. 
@@ -393,9 +378,6 @@ The subject then have to choose in each of these menus 1 and only 1 lottery.
 
 ### Estimations and Models
 
-#### Estimations
-\
-
 In order to implement the economic models on our data, it is necessary to 
 estimate the preferences of the subjects. In the following sections we present 
 the methods we have chosen.
@@ -456,9 +438,6 @@ singletons.
 The preferences estimated in this way allow us to calculate the value predicted 
 by the expected utility model for each of our 35 menus.
 
-#### Models
-\
-
 In our analysis we will compare the results of 5 different models. 
 These models are grouped in two categories, the statistical models which are the 
 application of statistical methods to our data and the economic models which are 
@@ -514,10 +493,7 @@ This model uses the same estimation as the previous one but this time the
 temptation effect of all the items of a menu is taken into account not only the 
 one of a particular item.
 
-
-
-\newpage
-## Results
+## Results {#result3}
 
 Our analysis is based on the assumption (that we don't test) of symmetry of the 
 WTC. 
@@ -529,9 +505,6 @@ our data so that the left menu is always the larger of the two menus to compare
 by modifying the WTC multiplying it by -1 when necessary. 
 This modification is intended to make the analysis easier to understand and does 
 not change the results.
-
-#### Preference estimation  
-\
 
 The starting point for estimating the different economic models presented is the 
 estimation of individual preferences. 
@@ -563,7 +536,7 @@ preferences.
 This may seem low and could call into question our method of estimating 
 preferences. 
 However, our estimates are strongly correlated with the subjects' responses as 
-presented in the graph below. 
+presented in the figure \@ref(fig:uEstim-plot3). 
 The small number of subjects with single-peak preferences combined with the 
 elements presented in the next chapter concerning the difficulties of estimating 
 individual utility functions leads us not to try to smooth values in our 
@@ -573,7 +546,7 @@ If this does not pose a major problem in the case of the estimation of
 singletons, we will see that it is on the other hand problematic for the 
 estimation of the temptation effect.
 
-```{r 3_u_estim_obs_plot}
+```{r uEstim-plot3, fig.cap="High correlation between observation and estimation WTC for size 1 menus"}
 all_d %>% 
   filter(comparaison_type == "1 vs 1") -> tmp
 
@@ -598,10 +571,10 @@ To normalize we substract to all value the estimate for the temptation element
 $2$.
 We obtain estimates for each subject, but as foreseen by our design, we do not 
 have the estimates for each item. 
-The table below summarizes the percentage of subjects for whom we have no 
+The table \@ref(tab:no-estim3) summarizes the percentage of subjects for whom we have no 
 estimate by item.
 
-```{r}
+```{r no-estim3}
 sub_no_v <- v_estim %>% apply(1, is.na) %>% rowSums() %>% table()
 
 v_estim %>% apply(1, is.na) %>% colMeans() %>% t() %>% 
@@ -630,7 +603,8 @@ value and
 when we restrict on observation for which we have all item estimated. 
 Since restriction to full estimate item menus don't seem to have an important 
 impact in the analysis, in the following we willuse all available data.
-The graph below shows the distribution of the estimates for each of the items.
+The figure \@ref(fig:pref-estim-plot3) shows the distribution of the estimates 
+for each of the items.
 
 ```{r}
 # all_d %>% 
@@ -653,7 +627,7 @@ The graph below shows the distribution of the estimates for each of the items.
 # cor(all_d$o_wtc, all_d$gp_wtc, use = "pair")
 ```
 
-```{r 3_pref_estim_plot}
+```{r pref-estim-plot3, fig.cap="Distribution of the estimate value of item for all subjects"}
 all_estim <- u_estim %>% 
   t() %>%  
   cbind.data.frame(v_estim %>% 
@@ -677,9 +651,6 @@ does not seem to be a significant difference.
 There are no elements that appear to be outliers in these estimates.
 Using these estimates we can calculate for each of our economic models the WTC 
 of each comparison made by our subjects. 
-
-#### Statistical models estimations
-\
 
 As a comparison tool to judge the quality of the predictions of our models we 
 estimate two statistical models, a constant response model and a regression 
@@ -707,9 +678,9 @@ menu and $S_i$ the same for the presence of $i$ in the smallest menu.
 Note that our model does not contain the indicator variable $S_{32}$ because it 
 is a linear combination of the other variables given the menu size constraint. 
 The estimates of each of the model parameters for each subject are shown in the 
-graph below.
+figure \@ref(fig:reg-estim-plot3).
 
-```{r 3_reg_coef_plot}
+```{r reg-estim-plot3, fig.cap="Distribution of the coefficent by items for all subjects"}
 reg_coef <- lapply(ecD_reg_indMod, `[[`, "coefficients")
 reg_coef <- matrix(unlist(reg_coef), nrow = 13, 
                    dimnames = list(names(reg_coef[[1]]), names(reg_coef)))
@@ -750,11 +721,9 @@ other models, we will not try to interpret its coefficients at the individual
 level. 
 We will simply compare the predictions generated by this model with the 
 predictions of other models and the responses of the subjects.
-
-#### Result of the models
-\
  
-Now that we have estimated the different parameters for our 5 models, we can compare their performances using 3 different metrics:
+Now that we have estimated the different parameters for our 5 models, we can 
+compare their performances using 3 different metrics:
 
 1. Mean Square Error (MSE), which is the mean square difference between the 
 predictions of a model and the observed values. 
@@ -777,11 +746,11 @@ as the one observed[^341].
 of binary prediction or we can improve the predictions of a model by taking the 
 opposite of these predictions.
 
-In the table below, we present the results of the five models according to 
+In the table \@ref(tab:models-table3), we present the results of the five models according to 
 the three metrics, calculated on all the comparisons.
 
 
-```{r 3_global_models_table}
+```{r models-table3}
 all_d %>% 
   select(o_wtc, cool_models) %>% 
   pivot_longer(-o_wtc, names_to = "model") %>% 
@@ -826,7 +795,7 @@ in descriptive power.
 But insofar as these two models perform less well than the constant response 
 model, it seems unwise to use them.
 
-The table below shows the performance of each model according to the type of 
+The table \@ref(tab:comp-models-table3) shows the performance of each model according to the type of 
 comparison. 
 Before detailing the results, it should be remembered that the different models 
 were trained using the size 1 menu comparison and the size 2 menu comparison 
@@ -834,7 +803,7 @@ with the size 1 menus.
 These two categories represents `r round(22/0.35, 2)`% of the observations. 
 
 
-```{r 3_byComp_models_table}
+```{r comp-models-table3}
 # all_d %>% 
 #   group_by(comparaison_type) %>% 
 #   summarise(across(c(cool_models), ~ cor(o_wtc, .x, use = "pair"), 
@@ -942,13 +911,13 @@ constant response model on this metric too.
 
 We have just seen that economic models are poor descriptors of subjects' 
 behavior when dealing with menus of more than one option. 
-In the graph below we show that these models have in common to predict that 
-subjects are indifferent between two menus much more frequently than what we 
-observe.
+In the figure \@ref(fig:pred-plot3) we show that these models have in common to 
+predict that subjects are indifferent between two menus much more frequently 
+than what we observe.
 And that this is also their main difference with the linear regression model 
 which has better performances.
 
-```{r 3_models_pred_plot}
+```{r pred-plot3, fig.cap="Distribution of the WTC value predict by models"}
 all_d %>% 
   select(o_wtc, gp_wtc, t_wtc, ec_reg_wtc) %>% 
   pivot_longer(everything(), names_to = "models") %>% 
@@ -959,11 +928,13 @@ all_d %>%
   geom_density(alpha = 0.66) +
   scale_size_manual(values = c(2, 0.25) ) +
   labs(title = "prediction of different models",
-       color = NULL) +
+       color = NULL,
+       x = "WTC") +
   guides(size = "none")
 ```
 
-If the economic models often predict the value 0 -- i.e., indifference between the two compared menus -- this is because they evaluate the 
+If the economic models often predict the value 0 -- i.e., indifference between 
+the two compared menus -- this is because they evaluate the 
 menus according to the preferred item they contain. 
 In the case of the expected utility model this implies that all menus that share the 
 same preferred item will have the same estimated value. 
@@ -1017,8 +988,7 @@ particular item.
 #                    labels = c("2", "4", "6", "8", "16", "32"))
 ```
 
-\newpage
-## Discussion
+## Discussion {#discu3}
 
 In this chapter we have proposed an experiment to test the temptation model 
 proposed in @gul2001temptation.
@@ -1061,6 +1031,3 @@ We believe that in order to propose models with better descriptive power it
 would be useful to have more information on the structure of individual errors. 
 This would allow us to improve the descriptive performance of risk preference 
 models as well as models derived from them such as the Gul-Pesendorfer model.
-
-\newpage
-## Reference

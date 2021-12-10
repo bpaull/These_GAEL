@@ -1,4 +1,4 @@
-# Repeated Choice
+# Repeated Choice {#multi-choice}
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, cache = TRUE)
@@ -219,7 +219,7 @@ stability_tib %>%
   select(-sub_id) -> normality_ds
 ```
 
-## Introduction
+## Introduction {#intro4}
 
 In this article we are interested in the following question: When an
 individual is confronted several times with the same situation, does he
@@ -318,7 +318,7 @@ by the fact that our experiment has few equivalents and that,
 consequently, the results we have obtained are uncertain and must be
 supported and corrected by other studies.
 
-## Experimental design
+## Experimental design {#mm4}
 
 Our experimental design allows us to measure 100 times the risk
 preferences of each subject. Each of these measurements is performed
@@ -342,8 +342,6 @@ perform robust statistical analyses at the individual level. And the
 observations are comparable at the individual level because we made sure
 that the conditions are as close as possible in terms of incentive,
 information, form and time.
-
-### Recruitment
 
 Our experiment took place from May 25^th^ to May 27^th^, 2021. 
 It involved 300 subjects[^411]. 
@@ -377,8 +375,6 @@ subject was flagged for 4 or more criteria).
 This leads us to believe that the answers provided by the
 subjects can be considered of good quality and not polluted by
 automatic answer programs.
-
-### Experimental timeline
 
 The course of the experiment for the subjects was as follows:
 
@@ -414,8 +410,6 @@ The course of the experiment for the subjects was as follows:
     The results are presented in a table with a summary of the gains as
     well as the code to be filled in on Amazon Mechanical Turk so that
     the subject can receive the bonus. Only the subjects correctly filling the code to AMT are paid and kept for the analysis.
-
-### Treatments and Bonus
 
 Our experiment includes 9 treatments, over two independent dimensions, each with 
 3 modalities. 
@@ -462,9 +456,6 @@ cell matrix in 50 seconds). This leads us to believe that the collected
 responses reflect, a decision similar to the 
 one usually observed in experimental economics when eliciting
 responses from subjects in a brick-and-mortar laboratory.
-
-
-### Elicitation mechanism
 
 The objective of our experimental design is to have subjects make the
 same choice multiple times (or at least choices that are as close as
@@ -520,7 +511,7 @@ $$
 For each iteration of the task performed by a subject, we can
 therefore easily associate a risk aversion parameter.
 
-## Results
+## Results {#result4}
 
 Our analysis will be composed of 3 parts. 
 In the first part we will describe the individual choices in terms of variance 
@@ -532,8 +523,6 @@ and their impact on the statistical methods used to test hypotheses and
 the reliability of the results. Finally, we will briefly look at a
 potential way to improve the methods usually used to estimate risk
 aversion.
-
-### Models
 
 Using the elicited values we will estimate different models. 
 We will then compare these models according to their Mean Square Error (MSE) on 
@@ -579,22 +568,20 @@ corresponding to the average of the r-values calculated for each
 training period. This model has the advantage that it can be
 computed for different sets of choices like the previous one.
 
-### Specifities of individuals choice
-
 The first notable feature of our results is the significant heterogeneity in
 individual behavior. Indeed, the subjects have in the experiment
 extremely different attitudes both in terms of average values chosen and
 variance around this average. But even for the individuals closest to each other
 in terms of mean and variance there can be significant differences in behavior
 both in the frequency of variations and in their amplitudes. 
-Figure \@ref(fig:4_spag_plot) gives a visual glimpse of the behavioral 
+Figure \@ref(fig:spag-plot4) gives a visual glimpse of the behavioral 
 heterogeneity. 
 Each line corresponds to the choices of an individual and the individuals are 
 divided by increasing average choice over the rows and by increasing variation 
 over the columns. 
 Each cell of the graph contains `r length(subjectId)/(n_x * n_y)` individuals.
 
-```{r 4_spag_plot, fig.width= 10, fig.height=12, fig.cap= "Choose of subjects"}
+```{r spag-plot4, fig.width= 10, fig.height=12, fig.cap='All choice. Each line show the 100 choices of a subject'}
 # n_x <- 5
 # n_y <- 5
 
@@ -619,7 +606,7 @@ choices_ds %>%
 
 This large variation in individual behavior is less evident in the
 statistics. 
-In the table \@ref(tab:4_sum_stat_table) we have reported the 
+In the table \@ref(tab:sum-stat-table4) we have reported the 
 quantiles of the mean and standard deviation per subject. 
 In this table we have also indicated the quantiles for the 95% confidence 
 interval for the parameter $r$ per subject under the assumption of normal data, 
@@ -627,7 +614,7 @@ as well as the part of the observations that should be outside the observed
 values (inferior to 0 or superior to 64) under the assumption of a normal and a 
 Poisson distribution.
 
-```{r 4_sum_stat_table}
+```{r sum-stat-table4}
 subjects_ds %>% 
   select(mean_n, sd_n, r_local, sd_r_local) %>% 
   mutate(obs_0 = pnorm(0, mean_n, sd_n) * 100,
@@ -649,9 +636,9 @@ stat_des_df %>%
   kable(digits = 2, 
         col.names = c("mean", "standard deviation", "mean r", 
                       "standard deviation r", "width of r C.I.", 
-                      "% normal estim not in [0,64]", "% Poisson estim not in [0,64]"),
+                      "% normal estimation not in [0,64]", "% Poisson estimation not in [0,64]"),
         caption = "Statistique of individual choice") %>% 
-  kable_styling(c("striped"), full_width = T)
+  kable_styling(c("striped"))
 ```
 
 Average results are consistent with
@@ -713,17 +700,17 @@ use 3 different normality tests to ensure the reliability of the
 results obtained. The tests used here are the Kolmogorov-Smirnov
 (KS), the Shapiro-Wilk (SW) and the Anderson-Darling test (AD).
 Each test is based on a different criterion and we expect to have
-different but consistent results. In the table \@ref(tab:4_norm_test), we report for each
+different but consistent results. In the table \@ref(tab:norm-test4), we report for each
 test and their different combination the percentage of subjects for whom
 the test is not considered significant at the 5% alpha level.
 
-```{r 4_norm_test}
+```{r norm-test4}
 normality_ds %>% 
   kable(col.names = c("Kolmogorov-Smirnov", "Shapiro-Wilk", "Anderson-Darling",
                       "KS & SW", "KS & AD", "SW & AD", "KS & SW & AD", 
                       "KS or SW or AD"), digits = 2,
         caption = "Share of subject who choice pass normality test at 5%") %>% 
-  kable_styling(c("striped"), full_width = T)
+  kable_styling(c("striped"))
 ```
 
 The normality tests show that for a significant proportion of subjects,
@@ -761,8 +748,6 @@ choices of our subjects.
 These models have in common that even if the choices of the subjects can vary 
 between 2 iterations they should be distributed around a central value in this 
 situation. 
-
-### Consequences
 
 While the results reported above might seem like technicalities, we will show 
 that they have implications for the methods used and the results reported in
@@ -803,14 +788,15 @@ Student's t test. For the difference in difference simulations we
 compare the difference in means between the groups for the differences
 between the periods using the same test. For each of the presented
 approaches we test the results with a bootstrap method on individuals
-and periods. For each of the parameters we performed 5000 draws. For
-each draw we performed a test with a type I risk threshold of 5%.
-In the graph below we present the share of the draws for which the
+and periods. 
+For each of the parameters we performed 5000 draws. 
+For each draw we performed a test with a type I risk threshold of 5%.
+In the figure \@ref(fig:gt-plot4) we present the share of the draws for which the
 differences in behavior were judged as statistically significant (note
 that the ordinate axis is presented as a % of the maximum choice made by
 the subjects which is 100 in between and 50 for the other methods).
 
-```{r 4_gt_plot}
+```{r gt-plot4, fig.cap="Bootstrap t.test at 5% levels for different design"}
 ghost_within   <- readRDS("data/chapter_3/ghost_treatment_within.Rds")
 ghost_diffdiff <- readRDS("data/chapter_3/ghost_treatment_diffdiff.Rds")
 ghost_between  <- readRDS("data/chapter_3/ghost_treatment_beetween.Rds")
@@ -884,11 +870,11 @@ The periods were selected using three different methods:
     task with itself.
 
 For each of these methods we used a bootstrap method on the number of
-periods and we made for each value 5000 draws. The graph below shows the
-evolution of the average correlation by method as a function of the
+periods and we made for each value 5000 draws. The figure \@ref(fig:corr-plot4) 
+shows the evolution of the average correlation by method as a function of the
 number of periods.
 
-```{r 4_corr_plot}
+```{r corr-plot4, fig.cap="Pearson corelation between subject choice."}
 random_cor <- readRDS("data/chapter_3/random_cor.Rds")
 consec_cor <- readRDS("data/chapter_3/consec_cor.Rds")
 orderer_cor <- readRDS("data/chapter_3/orderer_cor.Rds")
@@ -949,13 +935,13 @@ We will therefore compare different estimators according to the quality of their
 prediction on a set of observations different from the training set. 
 This is cross validation, a commonly used method in machine learning. 
 It allows to compare models while avoiding overfitting problems. 
-In the following graph we show the
+In the figure \@ref(fig:plt-error-model4) we show the
 results of different models according to the number of periods devoted
 to learning (the number of test periods and 100 minus the number of
 observations devoted to learning) in terms of mean square error. 
 
 
-```{r}
+```{r plt-error-model4, fig.cap="Descriptives power of different models."}
 dummy_32 <- readRDS("data/chapter_3/dummy_32.Rds")
 cross_val <- readRDS("data/chapter_3/cross_validation_mse.Rds")
 
@@ -988,8 +974,6 @@ than the dummy model. The mean-based model performs a little better than
 the median-based model. But even with 99 training periods the mean based
 model displays an MSE of more than 155.
 
-### Estimations
-
 In order to test the ability of the different models to predict the
 future behavior of the subjects, we use a similar approach to the
 previous one, but we separate the training and test samples according to
@@ -1007,10 +991,10 @@ the number of previous choices included is reduced in order not to
 include two variables perfectly correlated between them. In order to be
 able to compare the performances of the different models we have used in
 addition to the linear regression some of the models used previously. In
-the graph below we present the performance in terms of MSE of the
-different models for different learning sample sizes.
+the figure \@ref(fig:dummy-estim4) we present the performance in terms of MSE of 
+the different models for different learning sample sizes.
 
-```{r 4_dummy_estim}
+```{r dummy-estim4, fig.cap="Predictives power of different models."}
 subjects_play_list <- split(subset(choices_ds, choice > 10)$n, 
                             subset(choices_ds, choice > 10,)$subject_id)
 
@@ -1099,7 +1083,7 @@ quality predictions if we use the right models and have a large number
 of observations.
 
 
-## Conclusion
+## Conclusion {#discu4}
 
 In this article we have tried to provide some answers to the following
 question: When an individual is confronted several times with the same
@@ -1184,7 +1168,3 @@ disposal lead us to say that confronted with the same situation several
 times, individuals will act in different ways. But this question would
 deserve more work and results than the few elements we have brought
 here.
-
-\newpage
-
-## References
