@@ -611,8 +611,8 @@ quantiles of the mean and standard deviation per subject.
 In this table we have also indicated the quantiles for the 95% confidence 
 interval for the parameter $r$ per subject under the assumption of normal data, 
 as well as the part of the observations that should be outside the observed 
-values (inferior to 0 or superior to 64) under the assumption of a normal and a 
-Poisson distribution.
+values (inferior to 0 or superior to 64) under the assumption of a normal 
+distribution.
 
 ```{r sum-stat-table4}
 subjects_ds %>% 
@@ -620,23 +620,26 @@ subjects_ds %>%
   mutate(obs_0 = pnorm(0, mean_n, sd_n) * 100,
          obs_64 = pnorm(64, mean_n, sd_n, lower.tail = FALSE) * 100,
          total_obs = obs_0 + obs_64,
-         total_obs_poi = ppois(64, mean_n, lower.tail = FALSE) * 100,
          lb_n = mean_n + sd_n * qnorm(0.025),
          hb_n = mean_n + sd_n * qnorm(0.975),
          lb_r = ifelse(lb_n > 0, lb_n/(64 - lb_n), 0),
          hb_r = ifelse(hb_n <= 63, hb_n/(64 - hb_n), 64),
          range_r = hb_r - lb_r) %>% 
-  select(mean_n, sd_n, r_local, sd_r_local, range_r, total_obs, total_obs_poi) %>% 
+  select(mean_n, sd_n, r_local, sd_r_local, range_r, total_obs) %>% 
   lapply(quantile, c(0.05, 0.25, 0.5, 0.75, 0.95)) %>% 
   as.data.frame() -> stat_des_df
-rownames(stat_des_df) <- c("quantile 5%", "quantile 25%", "median", 
-                           "quantile 75%", "quantile 95%")
-
+# rownames(stat_des_df) <- c("quantile 5%", "quantile 25%", "median", 
+#                            "quantile 75%", "quantile 95%")
+stat_des_df %>%
+  t() %>%
+  as.data.frame() -> stat_des_df
+rownames(stat_des_df) <- c("mean", "sd", "mean r",
+                      "sd r", "width of r C.I.",
+                      "% estim not in [0,64]")
 stat_des_df %>% 
   kable(digits = 2, 
-        col.names = c("mean", "standard deviation", "mean r", 
-                      "standard deviation r", "width of r C.I.", 
-                      "% normal estimation not in [0,64]", "% Poisson estimation not in [0,64]"),
+        col.names = c("quantile 5%", "quantile 25%", "median", 
+                      "quantile 75%", "quantile 95%"),
         caption = "Statistique of individual choice") %>% 
   kable_styling(c("striped"))
 ```
@@ -646,7 +649,7 @@ the literature on risk attitudes in the laboratory. The majority of the subjects
 are risk averse (average $n$ lower than 32) and very few subjects have an
 average higher than 48 (theoretical equivalent to an $r$ of 3). On the
 other hand, with a median standard deviation of
-`r round(stat_des_df$sd_n[3], 2)` the variability of the data is
+`r round(stat_des_df[2, 3], 2)` the variability of the data is
 extremely high. This variability makes us think that the behavior of the
 subjects does not come down to a constant choice with a low variability
 around this choice. In any case, this variability has a major impact on
@@ -666,13 +669,8 @@ This high variability also makes the hypothesis that the data is
 approximately normally distributed aberrant.
 For at least half of the subjects
 we would have under the hypothesis of normality more than
-`r round(stat_des_df$total_obs[3], 2)`% of the data which would not be
+`r round(stat_des_df[6, 3], 2)`% of the data which would not be
 included between 0 and 64[^432]. 
-However, if we assume a Poisson distribution, the proportion of observations
-outside the limits is very low and even negligible. 
-Unfortunately this type of distribution has only one parameter for the mean and the
-variance, which makes its use specious at the individual level, given
-what we have seen in the previous graph. 
 To finish with the hypothesis of normality of the individual choices, a 
 Kolmogorov-Smirnov[^433] test was carried out by individual on their choice. 
 For `r round(100 * (1 - mean(subjects_ds$is_normal)), 2)`% of the subjects
@@ -683,7 +681,7 @@ of the behavior of our subjects, especially for some of them.
 
 [^432]: To claim that our results can be described with a normal distribution 
 would be similar to saying that a model that predicts that the height of 
-`r round(stat_des_df$total_obs[3], 2)`%% of humans is less than 0 cm or greater 
+`r round(stat_des_df[6, 3], 2)`%% of humans is less than 0 cm or greater 
 than 3m accurately describes reality. 
 
 [^433]: As normality test are sensitive to ties, and our observations are integer 
@@ -702,15 +700,17 @@ results obtained. The tests used here are the Kolmogorov-Smirnov
 Each test is based on a different criterion and we expect to have
 different but consistent results. In the table \@ref(tab:norm-test4), we report for each
 test and their different combination the percentage of subjects for whom
-the test is not considered significant at the 5% alpha level.
+the test is not considered significant at the 5\% alpha level.
 
 ```{r norm-test4}
 normality_ds %>% 
-  kable(col.names = c("Kolmogorov-Smirnov", "Shapiro-Wilk", "Anderson-Darling",
-                      "KS & SW", "KS & AD", "SW & AD", "KS & SW & AD", 
-                      "KS or SW or AD"), digits = 2,
-        caption = "Share of subject who choice pass normality test at 5%") %>% 
-  kable_styling(c("striped"))
+  select(-c(signif_ks_ad, signif_ks_sw, signif_sw_ad)) %>% 
+  kable(digits = 2,
+        col.names = c("KS", "SW", "AD",
+                      # "KS & SW", "KS & AD", "SW & AD", 
+                      "KS & SW & AD", "KS or SW or AD"),
+        caption = "Share of subject who choice pass normality test at 5%",
+        booktabs = TRUE)
 ```
 
 The normality tests show that for a significant proportion of subjects,
