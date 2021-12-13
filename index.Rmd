@@ -15,4 +15,14 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
 
+# Abstract {-}
+
+## English version {-}
+
+*Abstract in progress*
+
+
+## Version Française {-}
+
+*Résumé en cours* 
 

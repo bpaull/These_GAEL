@@ -639,8 +639,8 @@ rownames(stat_des_df) <- c("mean", "sd", "mean r",
                       "% estim not in [0,64]")
 stat_des_df %>% 
   kable(digits = 2, 
-        col.names = c("quantile 5%", "quantile 25%", "median", 
-                      "quantile 75%", "quantile 95%"),
+        col.names = c("quant 5%", "quant 25%", "median", 
+                      "quant 75%", "quant 95%"),
         caption = "Statistique of individual choice") %>% 
   kable_styling(c("striped"))
 ```
@@ -704,14 +704,16 @@ test and their different combination the percentage of subjects for whom
 the test is not considered significant at the 5\% alpha level.
 
 ```{r norm-test4}
-normality_ds %>% 
-  select(-c(signif_ks_ad, signif_ks_sw, signif_sw_ad)) %>% 
+normality_ds %>%
+  select(-c(signif_ks_ad, signif_ks_sw, signif_sw_ad)) %>%
   kable(digits = 2,
         col.names = c("KS", "SW", "AD",
-                      # "KS & SW", "KS & AD", "SW & AD", 
+                      # "KS & SW", "KS & AD", "SW & AD",
                       "KS & SW & AD", "KS or SW or AD"),
-        caption = "Share of subject who choice pass normality test at 5%",
-        booktabs = TRUE)
+        caption = "Share of subject who choice pass normality test",
+        booktabs = TRUE) 
+
+
 ```
 
 The normality tests show that for a significant proportion of subjects,
