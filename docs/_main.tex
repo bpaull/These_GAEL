@@ -111,7 +111,7 @@
 
 \title{Two Different Experimental Approches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences}
 \author{Bettega Paul}
-\date{2021-12-11}
+\date{2021-12-13}
 
 \begin{document}
 \maketitle
@@ -120,6 +120,63 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
+\hypertarget{abstract}{%
+\chapter*{Abstract}\label{abstract}}
+\addcontentsline{toc}{chapter}{Abstract}
+
+\hypertarget{english-version}{%
+\section*{English version}\label{english-version}}
+\addcontentsline{toc}{section}{English version}
+
+This these presents three experiments conducted online between 2018 and 2021.
+The first two experiments aim to test the temptation model proposed by
+\citet{gul2001temptation} (hereafter G-P).
+The first one by studying the impact of hard and soft commitment on risk
+preferences.
+It confirms the demand for a commitment from about 30\% of the subjects and
+allows to highlight the way subjects use their self-control when the limit they
+requested is applied or not.
+This allows us to show that asking for a constraint has the effect of reducing
+the level of risk taken by the subjects and that this reduction of risk is
+different if the commitment is hard or soft.
+The second experiment tests the descriptive performance of the G-P model and
+compares it to the expected utility model and to two statistical models.
+This experiment shows that the G-P model is able to describe subjects' choices
+for lottery menus more accurately than the expected utility model in terms of
+precision, tendency and preferences.
+However, we show that neither model is significantly more accurate than an
+individual constant response model that does not take into account the
+composition of the menus.
+The third experiment tests the stability of individuals' risk preferences.
+It shows that subjects' preferences are extremely variable both between and
+within subjects.
+This experiment shows that the choices of the subjects are not only not normally
+distributed but that they are not even distributed in such a way that their mean
+is normally distributed.
+This experiment also shows that the distribution of individual choices has the
+consequence of distorting the type-I risks for statistical tests on experimental
+designs in within and between.
+It also results in poor predictive and descriptive performance of the expected
+utility model on individual choices.
+The predictions made by a model based on a CRRA-type utility function are less
+efficient than those made by a dummy model that simply predicts the average
+value of the possible interval.
+Although we do not propose an explanation for these results, we show that simple
+linear regression models that take into account a subject's previous choices
+perform much better than models based on a risk aversion parameter.
+Overall, this thesis shows that it can be relevant to compare economic models
+with statistical reference models in order to test their descriptive or
+predictive capacity.
+This approach allows to apply the methods of comparison of models developed in
+machine learning during the last years and will allow to compare the
+contributions of economic models and machine learning models.
+
+\hypertarget{version-franuxe7aise}{%
+\section*{Version Française}\label{version-franuxe7aise}}
+\addcontentsline{toc}{section}{Version Française}
+
+\emph{Résumé en cours}
+
 \hypertarget{intro1}{%
 \chapter{Introduction}\label{intro1}}
 
@@ -2196,7 +2253,7 @@ distribution.
 \centering
 \begin{tabular}[t]{l|r|r|r|r|r}
 \hline
-  & quantile 5\% & quantile 25\% & median & quantile 75\% & quantile 95\%\\
+  & quant 5\% & quant 25\% & median & quant 75\% & quant 95\%\\
 \hline
 mean & 7.56 & 19.06 & 27.64 & 34.47 & 45.06\\
 \hline
@@ -2265,11 +2322,10 @@ different but consistent results. In the table \ref{tab:norm-test4}, we report f
 test and their different combination the percentage of subjects for whom
 the test is not considered significant at the 5\% alpha level.
 
-\textbackslash begin\{table\}
+\begin{table}
 
-\textbackslash caption\{\label{tab:norm-test4}Share of subject who choice pass normality test at 5\%\}
+\caption{\label{tab:norm-test4}Share of subject who choice pass normality test}
 \centering
-
 \begin{tabular}[t]{rrrrr}
 \toprule
 KS & SW & AD & KS \& SW \& AD & KS or SW or AD\\
@@ -2277,8 +2333,7 @@ KS & SW & AD & KS \& SW \& AD & KS or SW or AD\\
 69.67 & 54.33 & 60.67 & 43.33 & 79.33\\
 \bottomrule
 \end{tabular}
-
-\textbackslash end\{table\}
+\end{table}
 
 The normality tests show that for a significant proportion of subjects,
 the mean is not normally distributed. The proportion of subjects varies

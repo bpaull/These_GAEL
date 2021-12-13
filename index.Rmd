@@ -5,24 +5,65 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [bibliography.bib]
-# url: your book url like https://bookdown.org/yihui/bookdown
+url: https://bpaull.github.io/These_GAEL/
 # cover-image: path to the social sharing image like images/cover.jpg
 description: |
-  This is a minimal example of using the bookdown package to write a book.
-  The HTML output format for this example is bookdown::gitbook,
-  set in the _output.yml file.
+  This is the document for my economic Phd thesis conducted between 2018 and 
+  2021 at the Grenoble Apply Economics Laboratory.
 link-citations: yes
-github-repo: rstudio/bookdown-demo
+github-repo: bpaull/These_GAEL
 ---
 
 # Abstract {-}
 
 ## English version {-}
 
-*Abstract in progress*
+This these presents three experiments conducted online between 2018 and 2021. 
+The first two experiments aim to test the temptation model proposed by 
+@gul2001temptation (hereafter G-P). 
+The first one by studying the impact of hard and soft commitment on risk 
+preferences. 
+It confirms the demand for a commitment from about 30% of the subjects and 
+allows to highlight the way subjects use their self-control when the limit they 
+requested is applied or not. 
+This allows us to show that asking for a constraint has the effect of reducing 
+the level of risk taken by the subjects and that this reduction of risk is 
+different if the commitment is hard or soft.
+The second experiment tests the descriptive performance of the G-P model and 
+compares it to the expected utility model and to two statistical models. 
+This experiment shows that the G-P model is able to describe subjects' choices 
+for lottery menus more accurately than the expected utility model in terms of 
+precision, tendency and preferences. 
+However, we show that neither model is significantly more accurate than an 
+individual constant response model that does not take into account the 
+composition of the menus.
+The third experiment tests the stability of individuals' risk preferences. 
+It shows that subjects' preferences are extremely variable both between and 
+within subjects. 
+This experiment shows that the choices of the subjects are not only not normally 
+distributed but that they are not even distributed in such a way that their mean 
+is normally distributed. 
+This experiment also shows that the distribution of individual choices has the 
+consequence of distorting the type-I risks for statistical tests on experimental 
+designs in within and between. 
+It also results in poor predictive and descriptive performance of the expected 
+utility model on individual choices.
+The predictions made by a model based on a CRRA-type utility function are less 
+efficient than those made by a dummy model that simply predicts the average 
+value of the possible interval. 
+Although we do not propose an explanation for these results, we show that simple
+linear regression models that take into account a subject's previous choices 
+perform much better than models based on a risk aversion parameter.
+Overall, this thesis shows that it can be relevant to compare economic models 
+with statistical reference models in order to test their descriptive or 
+predictive capacity. 
+This approach allows to apply the methods of comparison of models developed in 
+machine learning during the last years and will allow to compare the 
+contributions of economic models and machine learning models.
+
 
 
 ## Version Française {-}
 
-*Résumé en cours* 
+**Résumé en cours**
 
