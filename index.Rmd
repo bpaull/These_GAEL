@@ -72,3 +72,4 @@ BUT I thin that another major contribution is that it is HARD, very hard, to tes
 
 **Résumé en cours**
 
+<!-- you have no acknowledgments / thanks section. It is usaully done; then of course it is up to you. It is custom to thank the people that foudn the money for your experiments for instance, and the projects that were involved. But again, up to you. -->
