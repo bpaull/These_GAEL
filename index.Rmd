@@ -18,17 +18,18 @@ github-repo: bpaull/These_GAEL
 
 ## English version {-}
 
-This these presents three experiments conducted online between 2018 and 2021. 
+This thesis presents three experiments conducted online between 2018 and 2021. 
 The first two experiments aim to test the temptation model proposed by 
 @gul2001temptation (hereafter G-P). 
-The first one by studying the impact of hard and soft commitment on risk 
+The first experiment studies the impact of hard and soft commitment on risk 
 preferences. 
-It confirms the demand for a commitment from about 30% of the subjects and 
-allows to highlight the way subjects use their self-control when the limit they 
-requested is applied or not. 
+It confirms previous results in the literature whereby 
+about 30% of the subjects display a demand for a commitment  and 
+allows us to sehd light on the way subjects use their self-control when the limit they 
+requested is not applied. <!-- when the limit is applied then there is no need for self control, right? -->
 This allows us to show that asking for a constraint has the effect of reducing 
 the level of risk taken by the subjects and that this reduction of risk is 
-different if the commitment is hard or soft.
+different whether the commitment is hard or soft. <!-- clearly state the result, as "different" can mean stronger or weaker; so just say "this reduction... is weaker when the commitment is soft" (or whatever our result sis, I forgot, sorry) -->
 The second experiment tests the descriptive performance of the G-P model and 
 compares it to the expected utility model and to two statistical models. 
 This experiment shows that the G-P model is able to describe subjects' choices 
@@ -36,21 +37,21 @@ for lottery menus more accurately than the expected utility model in terms of
 precision, tendency and preferences. 
 However, we show that neither model is significantly more accurate than an 
 individual constant response model that does not take into account the 
-composition of the menus.
+composition of the menus. <!-- nor preferences, right? I mean, in a way yes, it is not a k = 32 model as in chapter 3, but can we say it does take into account preferences? Not sure... -->
 The third experiment tests the stability of individuals' risk preferences. 
 It shows that subjects' preferences are extremely variable both between and 
 within subjects. 
 This experiment shows that the choices of the subjects are not only not normally 
 distributed but that they are not even distributed in such a way that their mean 
-is normally distributed. 
+is normally distributed. <!-- maybe a sentence on why do you think this happens? serial correlation that oughtn't be there? -->
 This experiment also shows that the distribution of individual choices has the 
-consequence of distorting the type-I risks for statistical tests on experimental 
-designs in within and between. 
+consequence of distorting the type-I risks for statistical tests on both witin- and between-subjects experimental 
+designs. <!-- again, give us the sign: it distorts in which direction? we would accept too many H0; so maybe say so, it makes it more interesting, and it uses 2-3 words more. -->
 It also results in poor predictive and descriptive performance of the expected 
 utility model on individual choices.
 The predictions made by a model based on a CRRA-type utility function are less 
 efficient than those made by a dummy model that simply predicts the average 
-value of the possible interval. 
+value over the possible interval. <!-- I would say: "predicts risk neutrality for all trials". Because this is what it is, EV maximisation (risk neutrality) wth 0 parameters utperforms a theory with one free parameter (EUT) and one with 2 (G-P) -->
 Although we do not propose an explanation for these results, we show that simple
 linear regression models that take into account a subject's previous choices 
 perform much better than models based on a risk aversion parameter.
@@ -60,6 +61,10 @@ predictive capacity.
 This approach allows to apply the methods of comparison of models developed in 
 machine learning during the last years and will allow to compare the 
 contributions of economic models and machine learning models.
+<!-- I don't think this is the oly contribution of your thesis, NOR the major one. 
+I think that you should stress all of your contributions here. 
+One is definitely the use of horse races with stats models as a sanity check for our delirious attempts at modeling in econ. Spot on, correct for you to say it, and well said. I'll be even more blunt, actually. 
+BUT I thin that another major contribution is that it is HARD, very hard, to test temptation models in the lab properly. That despite all your best efforts and a design in chapt 2 that gets as close as possible to the theory, the theory fails. That we do not have to be naïve about testing theories -- it's really hard -- and that people writing theories should maybe consider the fact that making their theory testable is their job. Now, I venture a bit too far here, but I'd like you to point out at least ONE result pertaining to G-P / temptation and not only the "technical " result "use stat models if you want to be serious". The rest is actually pretty fine. -->
 
 
 
