@@ -1,5 +1,7 @@
 # References {-}
 
+<!-- you surely have a way to better format the references; there must be automatic styling CSS or other, because right now it is not very good. look for an out-of-the-box style; add some padding between lines (to tightly packed now). Minor point, but now it is really unreadable because of the too flat format. -->
+
 <div id="refs"></div>
 
 # (APPENDIX) Appendix {-} 
