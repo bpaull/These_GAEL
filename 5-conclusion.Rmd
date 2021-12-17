@@ -1,4 +1,4 @@
-# Conclusion {#conclusion5}
+# Conclusion {-#conclusion5}
 
 This thesis has been for me the opportunity to shape my understanding of 
 economic research; 
@@ -20,7 +20,6 @@ My collaboration with Rustam Romaniuc, Dimitri Dubois and Paolo Crosetto
 encouraged me to develop an experimental design for the temptation model of 
 @gul2001temptation but which aimed at highlighting the demand for commitment and
 the capacity of individuals to exercise self-control. 
-<!-- comment: in general "exp protcol" is French; "exp design" is English. Though "protocol" also exists it is far less used -->
 <!-- For the two sentences below (This approach ... of theories), I'd try something more explicit. Something like "In this chapter we adopt the approach commonly followed in most of the literature in behavioral and experimental economics: testing the behavioral predictions of a model, with the aim of documenting the existence of a specific behaviour and its characteristics, thus guiding the developmen of theories". Maybe too long and convoluted, but I think it "leads" by hand the reader more. Then, as usual, up to you. -->
 This approach that tests the behavioral predictions of the models is the common 
 approach in the literature. 
@@ -32,7 +31,6 @@ predicted by a large number of different models. Moreover, there is an
 asymmetry between confirmation and refutation of a theory: no matter how many 
 observations in favor of a theory we have, it only takes one 
 observation to invalidate it. 
-<!-- in general, Popper is way too harsh, as ONE obs usually does NOT validate a theory, and rightly so. It is rather extreme to cite Popper, phil of science has moved on to more nuanced takes, but it's fine here, and then you nuance yourself further down. Just wanted to tell you though, as this might come up in the defense / discussion :-) -->
 This must however be relativized by the imprecision and the possible errors of 
 observations. 
 But this idea encouraged me to adopt a different approach from the standard 
@@ -43,13 +41,11 @@ behavior.
 We then compare the observed behavior to the behavior predicted by one or more 
 theories. 
 This approach, even if it does not allow us to falsify a theory in the sense of 
-Popper, allows us to compare different models. <!-- and do what exactly with the results? filter out bad theories? concentrate on the good ones? is goodness of fit the metric we'd like to have / prefer? -->
-
+Karl Popper, allows us to compare different models. 
 By applying this approach and comparing economic models to simple statistical 
 models I have shown in this thesis that the temptation model proposed by 
 @gul2001temptation predicts behaviors that are actually observed in our 
-experience. <!-- so here you say it predicts; then in sentence 2 that it does better than EUT; and in sentcence 3 that it does worse than stupid model; and in sentence 4 yous tart with "this lack of validity"... I understand that you do this to build up your argument, but "lack of" means "NONE OF IT" and you startedin sentence 1 with "it does predict". 
-I suggest 1. to tone down the first sentence, possibly with "it does predict up to a point" or "partially predicts" or similar; and 2. toen down the last sentence also, as there is no "lack f predictive validity" but rather "low and disappointing" predictive validity. The 4 sentence are fine, and the argument too, but it would be stronger if it were more nuanced; too bold a claim is just not believed and hence weaker. And you have to make claims you can support. -->
+experience. 
 This model represents a more accurate description of subjects' choices for menus 
 than the standard expected utility model. 
 But @gul2001temptation's model does not describe behaviors more accurately than 
@@ -61,21 +57,18 @@ highly variable.
 We have also shown that even if the expected utility models and the 
 @gul2001temptation model do not correctly account for the choices of the 
 subjects, it is possible to propose models that better describe the individual 
-choices than the constant response models that perform as well as our economic models. 
-<!-- equalize = "égaliser" like in the score of a match/game. "perform" is better. -->
+choices than the constant response models that perform as well as our economic models.
 
-To conclude, I would like to propose an interesting way to improve risk 
+To conclude, I would like to propose a way to improve risk 
 preference models. 
-<!-- "interesting" means "basically useless". Just don't use it. Find another adjective of use none. If it is interesting, it should appear from your description of it. -->
 The idea comes from the foreword @aliprantis2006hitchhiker: 
 "*It has become clear in the last couple of decades that economic 
 models capable of addressing real policy questions must be both stochastic
 and dynamic. There are fundamental aspects of the economy that static models
 cannot capture. Deterministic models, even chaotically deterministic models,
 seem unable to explain our observations of the world*".
-I think that looking for models that allow individual choices to be both dynamic 
+I think that looking for models in decsion theory that allow individual choices 
+to be both dynamic 
 and random could improve the predictive and descriptive capacity of models in 
 economics.
-<!-- Yeah well but these models DO exist in econ. They are not widespreadly cited / used yet, but they DO exist. 
-For instance you get, in a completely different area, the DSGE class of models - Dynamic Stochastic General Equilibrium models, that you know, theri very name does what you want. And there are dynamic, stochastic models of choice around. You and I are not fluent in them, does not mean they do not exist. So maybe say that *in the specific domain of risk/temptation* as a result of your work you urge people to consider developing dynamic/stochastic extensions of the models used, as your work clearly shows that what we have in store right now performs poorly on data when compared to dummy, stupid models. And that it's time to move to other stuff, and adopt best practices used elsewhere. Which is what you do in a sense, but being more explicit about the fact that you are not advocating a revolution on a blank sheet of pper but an evolution in a direction that is already fruitfully exploited elewhere would be better IMHO.-->
 
