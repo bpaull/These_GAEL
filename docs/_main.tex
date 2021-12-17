@@ -37,7 +37,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={Two Different Experimental Approches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences},
-  pdfauthor={Bettega Paul},
+  pdfauthor={Paul Bettega},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -110,8 +110,8 @@
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \title{Two Different Experimental Approches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences}
-\author{Bettega Paul}
-\date{2021-12-13}
+\author{Paul Bettega}
+\date{2021-12-17}
 
 \begin{document}
 \maketitle
@@ -128,17 +128,18 @@
 \section*{English version}\label{english-version}}
 \addcontentsline{toc}{section}{English version}
 
-This these presents three experiments conducted online between 2018 and 2021.
+This thesis presents three experiments conducted online between 2018 and 2021.
 The first two experiments aim to test the temptation model proposed by
 \citet{gul2001temptation} (hereafter G-P).
-The first one by studying the impact of hard and soft commitment on risk
+The first experiment studies the impact of hard and soft commitment on risk
 preferences.
-It confirms the demand for a commitment from about 30\% of the subjects and
-allows to highlight the way subjects use their self-control when the limit they
-requested is applied or not.
+It confirms previous results in the literature whereby
+about 30\% of the subjects display a demand for a commitment and
+allows us to sehd light on the way subjects use their self-control when the limit they
+requested is not applied.
 This allows us to show that asking for a constraint has the effect of reducing
 the level of risk taken by the subjects and that this reduction of risk is
-different if the commitment is hard or soft.
+larger when the commitment is hard instead of soft.
 The second experiment tests the descriptive performance of the G-P model and
 compares it to the expected utility model and to two statistical models.
 This experiment shows that the G-P model is able to describe subjects' choices
@@ -154,13 +155,13 @@ This experiment shows that the choices of the subjects are not only not normally
 distributed but that they are not even distributed in such a way that their mean
 is normally distributed.
 This experiment also shows that the distribution of individual choices has the
-consequence of distorting the type-I risks for statistical tests on experimental
-designs in within and between.
+consequence of increase the type-I risks for statistical tests on both witin- and between-subjects experimental
+designs.
 It also results in poor predictive and descriptive performance of the expected
 utility model on individual choices.
 The predictions made by a model based on a CRRA-type utility function are less
 efficient than those made by a dummy model that simply predicts the average
-value of the possible interval.
+value over the possible interval.
 Although we do not propose an explanation for these results, we show that simple
 linear regression models that take into account a subject's previous choices
 perform much better than models based on a risk aversion parameter.
@@ -175,29 +176,30 @@ contributions of economic models and machine learning models.
 \section*{Version Française}\label{version-franuxe7aise}}
 \addcontentsline{toc}{section}{Version Française}
 
-\emph{Résumé en cours}
+\textbf{Résumé en cours}
 
 \hypertarget{intro1}{%
-\chapter{Introduction}\label{intro1}}
+\chapter*{Introduction}\label{intro1}}
+\addcontentsline{toc}{chapter}{Introduction}
 
 In this thesis, we try to provide elements to test temptation models in the
 laboratory.
 By temptation model we mean here the model proposed in \citet{gul2001temptation} and
 the models inspired by it, like \citet{noor2010uphill} or \citet{noor2015menu}.
+
 Specifically, we are interested in models with the following two characteristics:
 They model preferences for menus, that is, preferences for sets of choices in
 which only one alternative can be chosen.\footnote{More technicaly menus are subset of the set \(\Delta\) endow with the weak
   topology.
   Where \(\Delta\) is the set of all measures on the Borel \(\sigma\)-algebra of \(Z\) a
   compact metric space \((Z,d)\) of all prizes.}
-
 This approach was initiated by \citet{kreps1979representation}.
 And this models must allow preference for the restrictions, that is to say that
 an individual can prefer a menu to a menu which is his super set
 (i.e to prefer a menu containing less elements).
 
 We are interested in this model because it allows us to rationalize behavior
-that cannot be rationalized within expected utility theory.
+that cannot be rationalized within the expected utility theory.
 For example, the demand for a costly commitment \citep{bryan2010commitment, ashraf2006tying}, the exercise of self-control \citep{dellavigna2004contract} or the choice of subscriptions inconsistent with the use of a service \citep{dellavigna2006paying}.
 We chose to focus on the temptation model from an experimental point of view
 because the theoretical literature already proposes a large number of models
@@ -213,12 +215,10 @@ commitment in \citet{houser2018temptation}.
 This leaves room for an experimental design that would allow us to measure the
 effects of temptation on preferences and thus differentiate the different
 temptation models.
-I therefore propose an experiment to test the descriptive capacity of different
-temptation models.
 
 This thesis is composed of three chapters, each describing an online experiment.
-The first two experiments aim at testing temptation models, the first one
-focusing on a behavioral aspect through the effect of commitment on risk taking.
+The first two experiments aim at testing temptation models.
+The first experiment focuses on a behavioral aspect through the effect of commitment on risk taking.
 The second one tests the descriptive capacity of temptation models by eliciting
 preferences for menus.
 The last one does not test temptation but the stability of preferences for money.
@@ -228,12 +228,12 @@ theory and on the reliability of the preferences elicited.
 
 The original title of this thesis was ``Temptation and strategic interaction:
 theory and experiment''.
-The objective was to propose an extension to the existing temptation model,
+The objective was to propose an extension to the existing temptation models,
 notably those of \citet{gul2001temptation} and \citet{fudenberg2006dual}, to take into account the combined effects of temptation and strategic interactions.
 The original PhD thesis project was based on work carried out for my master thesis.
-My master thesis consisted in a model that adapted the \citet{fudenberg2006dual} model for two individuals, each composed of two selves and having to decide on the distribution of a budget where their choice
-are strategic substitute.
-The model developed for the master thesis highlighted that with strategic substitute choice, the
+My master thesis consisted in a model that extended the \citet{fudenberg2006dual} individual-choice model to two individuals, each composed of two selves and having to decide on the distribution of a budget when their choices
+are strategic substitutes.
+The model developed for the master thesis highlighted that when actions are strategic substitutes, the
 individual with the lowest self-control costs must compensate for the lack of
 self-control of the other individual.
 
@@ -248,18 +248,19 @@ My experimental design consisted of two parts.
 The first part was a replication of the \citet{houser2018temptation} experiment and aimed at estimating the individual self-control capacity of the subjects.
 The second part aimed at testing their self-control capacity in a context with strategic interactions.
 For this purpose, the remuneration of the daunting task was modified to place
-pairs of subjects in a situation where their choice are strategic substitute.
-The -- ex-ante unexpected -- results of this experiment are that all of our subjects chose to keep performing the
-boring task during the 2 hours of our experiment.
+pairs of subjects in a situation where their choices are strategic substitute.
+The -- ex-ante unexpected -- results of this experiment are that all of our
+subjects chose to keep performing the
+boring task for the whole 2 hours that experiment lasted.
 This did not replicate the results of \citet{houser2018temptation} who found that
 28.7\% of the subjects keep performing the tasks without paying to avoid
-temptations and, crucially, did not allow us to test the influence of strategic
+temptations and, did not allow us to test the influence of strategic
 interactions.
 The differences in results with \citet{houser2018temptation} can be explained by the
 differences in dates between the 2 experiments, the original experiment having
 taken place in the early 2010s and mine in late 2018.
 The relationship to the internet has strongly evolved between these two dates
-(think of the actual use of smartphone for example)
+(think of the actual use of smartphones for example)
 and makes an activity like surfing the internet in a lab much less attractive.
 This first experiment taught me two lessons that were then applied in the
 remainder of the thesis.
@@ -272,20 +273,21 @@ an experimental protocol that does not rely on binary choices but allows for
 greater variability in individual behavior.
 
 I therefore started to work on an experimental design, which would give rise to
-\protect\hyperlink{tempting-lab}{chapter 3},
+\protect\hyperlink{tempting-lab}{chapter 2},
+
 that would allow the measure the effect of temptation at the
-individual level and which does not depend on the \emph{a priori} level of temptation generated by an
+individual level and which does not depend on the a priori level of temptation generated by an
 alternative but which allows us to identify which are the alternatives that the
 subject considers tempting.
 In order to do this, I chose to construct the experimental design in such a way
 as to be as close as possible to the theoretical framework proposed by
 \citet{gul2001temptation}.
-This allow to directly elicit individual preferences for menus, and to build the
+This allowed me to directly elicit individual preferences for menus, and to build the
 menus in such a way as that they induce different level of the temptation
-according to different theory.
+according to different theories.
 
-In parallel to the preparation of this protocol, Rustam Romaniuc and Dimitri
-Dubois offered me through Paolo Crosetto the opportunity to propose a treatment
+In parallel to the preparation of this protocol, Rustam Romaniuc (Montpellier Business School) and Dimitri
+Dubois (INRAE Montpellier) offered me through Paolo Crosetto the opportunity to propose a treatment
 concerning temptation in their experimental project on risk.
 Their project planned to measure risk preferences repeatedly before and after an
 intervention.
@@ -313,33 +315,34 @@ observations of the subjects of our control group, who was not exposed to any tr
 However, if there are many experiments which inform us about the average level
 of preference for the subject (for example the \citet{lejuez2002evaluation} or
 \citet{crosetto2013bomb} to quote only the ones which inspired chapter 3), there is to
-our knowledge no article concerning the individual variability of the
+our knowledge no article concerning the whitin-subject individual variability of the
 measurement of preferences for risk.
-Their is works like \citet{ert2017revisiting} that make multiple measure but don't
-compute variability or like \citet{wilcox2007predicting} that compute estimation
-error but no one to the best of my knowledge compute individual variability.
+There exists works, like \citet{ert2017revisiting}, that take multiple measures of risk
+but don't
+compute variability; and works like \citet{wilcox2007predicting} that compute estimation
+error across repetitions; but no one, to the best of my knowledge, has directly computed individual variability.
 Individual variability is necessary to judge the quality of the estimates, as
 well as to use simulations to calibrate the experiments and to judge the
 reliability of the experimental results.
 I have therefore realized an experiment to test the variability of risk
-preferences which is described in the \protect\hyperlink{multi-choice}{fourth chapter} of this thesis.
+preferences which is described in the \protect\hyperlink{multi-choice}{chapter 3} of this thesis.
 This experiment shows that the variability of individual preferences is
 large and must be taken into account in the analysis of experimental
-results in the domain of risk attitudes
-, on the one hand by having as often as possible a
-difference-in-difference analysis as other analysis design causes an
-underestimation of the risk of the first type, and on the other hand by
+results in the domain of risk attitudes, on the one hand by having as often as possible a
+difference-in-difference analysis as other analyses cause an
+underestimation of the Type-I risk
+, and on the other hand by
 recurring as little as possible to individual level estimations.
-Finally, in order to take into account the results of chapter 3 I opted for a
-difference-in-difference analysis for the first chapter using a Bayesian rather
+In order to take into account the results of chapter 3 I opted for a
+difference-in-difference analysis for chapter 1 using a Bayesian rather
 than a frequentist approach for the estimates to account for individual
 variability.
-For chapter two I chose to modify the analysis to test the validity of the
+For chapter 2 I chose to modify the analysis to test the validity of the
 temptation models against statistical models in order to have a reference point.
 
 As during these three years of thesis my work deviated from the initial subject,
 I chose to rename my thesis \emph{Two Different Experimental Approches For Testing
-Temptation And A Test Of Stability Of Individual Risk Preferences}
+Temptation And A Test Of Stability Of Individual Risk Preferences}.
 Indeed, the central point of this thesis is to explore experimental methods to
 test temptation.
 The last two chapters are attempts to answer technical problems on the subject.
@@ -391,8 +394,8 @@ following elements:
   descriptors of subjects' choices on menus than a constant choice model.
 \item
   The third chapter highlights that individual choices in the risk domain are
-  very variable to such an extent that it does not seem to be described correctly
-  by a distribution with a central moment.
+  very variable to such an extent that it does not seem to be pssible to correctly describe them
+  using a distribution with a central moment.
   This puts into question both the expected utility model and most random models
   such as \citet{gul2006random}, \citet{ratcliff2008diffusion} or \citet{cerreia2019deliberately}.
   This chapter also highlights a ghost treatment effect, finding significant
@@ -405,7 +408,7 @@ in the expected utility model that invite us to further explore the variability
 of individual preferences.
 
 \hypertarget{fdj}{%
-\chapter{Intra-personal conflict and self-commitment: Evidence from a sample of French gamblers}\label{fdj}}
+\chapter{Intra-personal conflict and self-commitment}\label{fdj}}
 
 \hypertarget{intro2}{%
 \section{Introduction}\label{intro2}}
@@ -710,15 +713,21 @@ The results are reported in the table \ref{tab:desc-stat2}.
 
 \caption{\label{tab:desc-stat2}mean numbers of pumps}
 \centering
-\begin{tabular}[t]{l|r|r|r|r|r|r}
+\begin{tabular}[t]{l|r|r|r}
 \hline
- & baseline low type & baseline middle type & baseline hight type & temptation low type & temptation middle type & temptation hight type\\
+  & before treatment & after treatment & total\\
 \hline
-before treatment & 21.00 & 21.51 & 21.62 & 21.21 & 18.78 & 23.90\\
+baseline low type & 21.00 & 20.65 & 20.81\\
 \hline
-after treatment & 20.65 & 21.06 & 22.90 & 21.08 & 19.99 & 21.28\\
+baseline middle type & 21.51 & 21.06 & 21.26\\
 \hline
-total & 20.81 & 21.26 & 22.33 & 21.14 & 19.46 & 22.44\\
+baseline hight type & 21.62 & 22.90 & 22.33\\
+\hline
+temptation low type & 21.21 & 21.08 & 21.14\\
+\hline
+temptation middle type & 18.78 & 19.99 & 19.46\\
+\hline
+temptation hight type & 23.90 & 21.28 & 22.44\\
 \hline
 \end{tabular}
 \end{table}
@@ -767,13 +776,17 @@ exceeded or reached it before and after it was proposed to them.
 
 \caption{\label{tab:limit-ask2}share of subject who ask for a limit}
 \centering
-\begin{tabular}[t]{l|r|r|r|r}
+\begin{tabular}[t]{l|r|r}
 \hline
- & limit exceed before treatment & limit reach before treatment & limit exceed after treatment & limit reach after treatment\\
+  & limit not apply & limit apply\\
 \hline
-limit not apply & 0.41 & 0.25 & 0.3 & 0.31\\
+limit exceed before treatment & 0.41 & 0.42\\
 \hline
-limit apply & 0.42 & 0.25 & 0.0 & 0.42\\
+limit reach before treatment & 0.25 & 0.25\\
+\hline
+limit exceed after treatment & 0.30 & 0.00\\
+\hline
+limit reach after treatment & 0.31 & 0.42\\
 \hline
 \end{tabular}
 \end{table}
@@ -2707,7 +2720,8 @@ deserve more work and results than the few elements we have brought
 here.
 
 \hypertarget{conclusion5}{%
-\chapter{Conclusion}\label{conclusion5}}
+\chapter*{Conclusion}\label{conclusion5}}
+\addcontentsline{toc}{chapter}{Conclusion}
 
 This thesis has been for me the opportunity to shape my understanding of
 economic research;
@@ -2723,7 +2737,7 @@ The experiment presented in chapter 2 is an example of this approach and it
 suffers from this approach which limits the robustness of the analysis of the
 data in this chapter.
 My collaboration with Rustam Romaniuc, Dimitri Dubois and Paolo Crosetto
-encouraged me to develop an experimental protocol for the temptation model of
+encouraged me to develop an experimental design for the temptation model of
 \citet{gul2001temptation} but which aimed at highlighting the demand for commitment and
 the capacity of individuals to exercise self-control.
 This approach that tests the behavioral predictions of the models is the common
@@ -2732,22 +2746,21 @@ This approach allows to document the specificities of individual behaviors
 and thus guide the development of theories.
 But identifying behaviors consistent with a theory does not test its validity.
 As pointed out by Karl Popper in \citet{popper2005logic} a given behavior can be
-predicted by a large number of different models, he also underlines the
-asymmetry between confirmation and denial of a theory.
-No matter how many observations in favor of a theory we have, it only takes one
+predicted by a large number of different models. Moreover, there is an
+asymmetry between confirmation and refutation of a theory: no matter how many
+observations in favor of a theory we have, it only takes one
 observation to invalidate it.
 This must however be relativized by the imprecision and the possible errors of
 observations.
 But this idea encouraged me to adopt a different approach from the standard
 approach in experimental economics in the second half of my thesis.
-The idea is to construct the experimental protocol in such a way as to
+The idea is to construct the experimental design in such a way as to
 repeatedly observe a situation in which we know the theoretically expected
 behavior.
 We then compare the observed behavior to the behavior predicted by one or more
 theories.
 This approach, even if it does not allow us to falsify a theory in the sense of
 Karl Popper, allows us to compare different models.
-
 By applying this approach and comparing economic models to simple statistical
 models I have shown in this thesis that the temptation model proposed by
 \citet{gul2001temptation} predicts behaviors that are actually observed in our
@@ -2763,27 +2776,20 @@ highly variable.
 We have also shown that even if the expected utility models and the
 \citet{gul2001temptation} model do not correctly account for the choices of the
 subjects, it is possible to propose models that better describe the individual
-choices than the constant response models that equalize our economic models.
+choices than the constant response models that perform as well as our economic models.
 
-To conclude, I would like to propose an interesting way to improve risk
+To conclude, I would like to propose a way to improve risk
 preference models.
-The idea comes from the foreword \citet{aliprantis2006hitchhiker}
-``It has become clear in the last couple of decades that eco-
-nomic models capable of addressing real policy questions must be both stochastic
-and dynamic. There are fundamental aspects of the economy that static mod-
-els cannot capture. Deterministic models, even chaotically deterministic models,
-seem unable to explain our observations of the world.''.
-I think that looking for models that allow individual choices to be both dynamic
+The idea comes from the foreword \citet{aliprantis2006hitchhiker}:
+``\emph{It has become clear in the last couple of decades that economic
+models capable of addressing real policy questions must be both stochastic
+and dynamic. There are fundamental aspects of the economy that static models
+cannot capture. Deterministic models, even chaotically deterministic models,
+seem unable to explain our observations of the world}''.
+I think that looking for models in decsion theory that allow individual choices
+to be both dynamic
 and random could improve the predictive and descriptive capacity of models in
 economics.
-
-\hypertarget{references}{%
-\chapter*{References}\label{references}}
-\addcontentsline{toc}{chapter}{References}
-
-\hypertarget{refs}{}
-\begin{CSLReferences}{0}{0}
-\end{CSLReferences}
 
 \hypertarget{appendix-appendix}{%
 \appendix}
@@ -2819,6 +2825,10 @@ Instruction of the experiment are display as follow:
 Instruction of the experiment are display as follow:
 
 \includegraphics[width=0.9\linewidth,height=1.2\textheight]{annexe_file/consigne_c4}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{0}{0}
+\end{CSLReferences}
 
   \bibliography{bibliography.bib}
 

@@ -16,7 +16,6 @@ fig:gt-plot4
 fig:corr-plot4
 fig:plt-error-model4
 fig:dummy-estim4
-intro1
 fdj
 intro2
 mm2
@@ -38,7 +37,6 @@ intro4
 mm4
 result4
 discu4
-conclusion5
 expe-instruc2
 expe-instruc3
 expe-instruc4
