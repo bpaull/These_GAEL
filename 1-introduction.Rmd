@@ -73,7 +73,7 @@ pairs of subjects in a situation where their choices are strategic substitute.
 The -- ex-ante unexpected -- results of this experiment are that all of our 
 subjects chose to keep performing the 
 boring task for the whole 2 hours that experiment lasted. 
-This did not replicate the results of @houser2018temptation  who found that 
+This did not replicate the results of @houser2018temptation  who found that only
 28.7% of the subjects keep performing the tasks without paying to avoid 
 temptations and, did not allow us to test the influence of strategic 
 interactions.

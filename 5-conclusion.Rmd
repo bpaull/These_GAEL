@@ -10,17 +10,13 @@ models I wanted to test.
 My goal was to place my subjects in a situation as close as possible to the 
 theoretical model while exploring as much as possible the impact of the 
 different parameters of the model on individual preferences. 
-<!-- The sentence below is still unclear -- better than the last iteration, but still a bit circular and not very clear. 
-What do you want to say? that chapt2 suffers because it is over-reliant on econ theory. Then say so explicitly. 
-Else it is "bad because approach, and approach bad" and it is not really informative. Which approach? Why does it limit the robustness? to the cost of being a bit repetitive, it is better to be precise and clearly convey the message. -->
 The experiment presented in chapter 2 is an example of this approach and it 
-suffers from this approach which limits the robustness of the analysis of the 
-data in this chapter. 
+suffers from this intention to be as close as possible to the theory which 
+limits the robustness of the analysis of the data in this chapter. 
 My collaboration with Rustam Romaniuc, Dimitri Dubois and Paolo Crosetto 
 encouraged me to develop an experimental design for the temptation model of 
 @gul2001temptation but which aimed at highlighting the demand for commitment and
 the capacity of individuals to exercise self-control. 
-<!-- For the two sentences below (This approach ... of theories), I'd try something more explicit. Something like "In this chapter we adopt the approach commonly followed in most of the literature in behavioral and experimental economics: testing the behavioral predictions of a model, with the aim of documenting the existence of a specific behaviour and its characteristics, thus guiding the developmen of theories". Maybe too long and convoluted, but I think it "leads" by hand the reader more. Then, as usual, up to you. -->
 This approach that tests the behavioral predictions of the models is the common 
 approach in the literature. 
 This approach allows to document the specificities of individual behaviors 
@@ -41,7 +37,7 @@ behavior.
 We then compare the observed behavior to the behavior predicted by one or more 
 theories. 
 This approach, even if it does not allow us to falsify a theory in the sense of 
-Karl Popper, allows us to compare different models. 
+Karl Popper, allows us to compare empirically different models. 
 By applying this approach and comparing economic models to simple statistical 
 models I have shown in this thesis that the temptation model proposed by 
 @gul2001temptation predicts behaviors that are actually observed in our 
