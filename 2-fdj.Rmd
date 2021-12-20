@@ -131,7 +131,7 @@ Our aim in this paper is to fill this gap.
 
 To study the comparative effects of soft relative to hard and no commitments, we 
 designed a controlled experiment that we implemented online. 
-Our sample of 1527 participants who, in the last 12 months prior to their 
+Our sample is made up of 1527 participants who, in the last 12 months prior to their 
 participation in our experiment, engaged in some sort of legal gambling with 
 *la Française des Jeux*, the operator of France's national lottery games, with 
 whom we partnered for this study. 
@@ -146,7 +146,7 @@ we are not aware of any online study on the topic of temptation and self-control
 using a sample of participants with similar characteristics to our participants.
 
 The experiment consists of two conditions, a *Baseline* that implements a 
-modified balloon analogue risk task (BART, @lejuez2002evaluation) and a 
+modified Balloon Analogue Risk Task (BART, @lejuez2002evaluation) and a 
 *Commitment* condition. 
 The BART is a risk-elicitation game in which subjects pump air in a fictional 
 balloon, and collect money proportional to the number of pumps, unless the 
@@ -178,7 +178,7 @@ ex-post application of the limit we show that the effect of accepting the limit
 on risk-taking is complementary to the mechanical effect of the limit and not a 
 substitute. 
 We can thus see the effects of a hard or soft commitment on risk-taking 
-behavior.
+behavior. <!-- why ths sentence here? it is too general after the details given above, and it does not add anything, as far as I can see-->
 
 Our paper relates to the literature that sought to test whether and how 
 commitment devices can make people succumb less to temptation. 
@@ -213,7 +213,7 @@ Our experiment allows subjects to eliminate tempting options from their choice
 set by choosing an upper limit on the number of pumps that they will be able to 
 select. 
 However, whereas @gul2001temptation are interested in modelling the demand for 
-such commitments, we empirically analyze their behavioral effects after some 
+such commitments, we empirically analyze the behavioral effects after some 
 participants to our study decide to eliminate tempting options from their choice 
 set. 
 
@@ -302,7 +302,9 @@ Additionally, we make sure that those who are offered the possibility to choose 
 The second design choice that requires a detailed discussion concerns the stochastic aspect of the limit. 
 The fact that the limit was binding with a 25\% chance allows us to capture the demand for a commitment device as well as subjects' self-control when the limit is effectively implemented (thus, making it a hard commitment) compared to when it is non binding (making it a soft commitment). 
 Since the limit has a positive probability of being applied, revealing one's true preference is a dominant strategy. 
-Since it is applied to a minority of subjects only, we can study self-control under a soft and a hard commitment device.   <!-- expand here --> 
+Since it is applied to a minority of subjects only, we can study self-control under a soft and a hard commitment device.
+<!-- well, that is not really an argument is it? If we had in mind soft vs hard the whole time, we should have made 50/50. The real reason, I suppose, is that we were interested in GP-style testing and inference at first. Still, we can defend it by saying that the behavior of soft commit is of relative mor einterest to us, for... reasons. But all in all this is a very weak defense of the 75%/25% rule, because it simply does not follow.-->
+<!-- expand here --> 
 
 
 ### Participants
@@ -320,34 +322,31 @@ Therefore, all our subjects have some appetite for gambling, which makes this
 study original compared to using a population that may be less prone to 
 temptation than the general population.[^212]
 
-[^212]: For example, Milkman et al. (2013) study temptation and commitment in a sample of gym users. 
+[^212]: For example, Milkman et al. (2013) <!-- transform in proper citation --> study temptation and commitment in a sample of gym users. 
 It is quite possible that people who have a gym subscription differ in terms of willpower from people who have no gym subscription. 
 
 
 <!-- Socio-demo info -->
-The other novelty of our study is that our subjects are more representative of the general population of the country where the study was conducted than the standard subjects included in many experiments that have dealt so far with the topic of temptation and commitment (for example, @ariely2002procrastination, @casari2009pre, and @houser2018temptation, rely on a population of students).
+The other novelty of our study is that our subjects are more representative of the general population of the country where the study was conducted than the standard subjects included in many experiments that have dealt so far with the topic of temptation and commitment (for example, @ariely2002procrastination, @casari2009pre, and @houser2018temptation, rely on a population of students). <!-- I know one should not judge from ONE paper, but I have a hard time citing Ariely in papers where i am a coauthor knowing the fabrication he's been proven of doing recently. But up to you. -->
 
 The sample in our experiment was 40.52\% female and 59.48\% male, and relatively more evenly distributed than traditional student samples: 
 7.50\% of participants were between 18 and 24 years old, 20.67\% between 25 and 34 years old, 37.43\% between 35 and 49 years old, 24.89\% between 50 and 64 years old and 9.51\% were 65 years old or older. 
 Considering the socio-professional categories, the sample was composed of 46.25\% of CSP- (employee and worker), 26.78\% of CSP+ (farmer, craftsman, merchant, company manager, liberal professions and intermediate professions), 14.05\% of retired or pre-retired, 9.45\% of inactive (not working or looking for a job) and 3.47\% of students.
 
-<!-- On a aussi les infos sur la CSP des sujets -->
-
-
-
 
 ### Control questions
 
 <!-- Before the BART -->
-All subjects were recruited by the data collection company *Bilendi*. 
+<!-- already said above -->
 Before reading the instructions of the BART, each subject was asked to answer a series of questions about their gambling habits during the last twelve months. 
 The questionnaire was used to collect information for a different project than the present one. 
+<!-- add here that this questionnaire is the Canadian thing (or what is it?) and that it yields three types of players -- else the results by type below do not mean anything; or else get rid of the "type of players" thing in the results. -->
 <!-- Depending on the analyses performed, we may want to add that all subjects had to complete the questionnaire before proceeding to the experimental part -- therefore, we expect that the questionnaire does not influence our results    -->
 
-Additionally, subjects had to answer a series of questions meant to collect socio-demographic information and to check whether they had played one of FDJ's games in the last 12 months (lottery, online poker, and sport betting). Specifically, subjects had to report their gender, age, professional activity, and whether they had bought a lotto ticket, played poker online or made any sport bets within the last twelve months.  
+Additionally, subjects had to answer a series of questions meant to collect socio-demographic information and to check whether they had played one of FDJ's games in the last 12 months. <!-- same, avoid duplication, said right below --> Specifically, subjects had to report their gender, age, professional activity, and whether they had bought a lottery ticket, played poker online or made any sport bets within the last twelve months.  
 
 <!-- After the BART -->
-At the very end of the BART, subjects were asked to answer 10 questions that correspond to the self-efficacy questionnaire. 
+At the end of the 10 BART rounds, subjects were asked to answer 10 questions that correspond to the self-efficacy questionnaire. 
 This information was collected for a different project than the present one. 
 The questionnaire was implemented at the end of the experiment and therefore did not influence subjects' risk-taking and commitment decisions. 
 
@@ -423,12 +422,12 @@ for(i in 1:10) {
 ```
 
 
-We proceed to the analysis using 2 sets of data. 
+We proceed to the analysis using two sets of data. 
 The first one corresponds to the baseline treatment and contains the 
 observations for the `r sum(prep_data$in_baseline)/10` subjects who were not subjected to any treatment. 
 As these subjects simply repeated the elicitation task 10 times, this data 
 serves as a counterfactual. 
-The second data set concerns the `r sum(!prep_data$in_baseline)/10` subjects who were subjected to the temptation treatment. 
+The second data set concerns the `r sum(!prep_data$in_baseline)/10` subjects who were exposed to the temptation treatment. 
 It is on this data set that our analysis focuses.
 
 For these two data sets we have 10 observations per subject. 
@@ -437,11 +436,12 @@ These observations are different from those of the other rounds both in terms of
 distribution (evaluated with a Kolmogorov-Smirnov test at a 95% alpha threshold) 
 and mean (test of equality of means at a 95% alpha threshold) for both the 
 baseline and temptation treatment data. 
-It is assumed that this is different data because it captures a learning effect. 
-We therefore apply our analysis to rounds 2 to 10.
+We assume that this difference captures a learning effect, and we choose to restrict our analysis to rounds 2 to 10.
+<!-- just for the future paper version of this: is the analysis robust to this exclusion? for the thesis, too late and who cares really, it is justified as a restriction (even if in general dropping exp data is really something I do not want to do) -->
 
 For both datasets, we calculated the average before and after treatment for 
 each type of player. 
+<!-- define what a "type of player" is. Else, readers do not know at this point what you are talking about. -->
 The results are reported in the table \@ref(tab:desc-stat2).
 
 ```{r desc-stat2}
@@ -470,8 +470,8 @@ tib_mean <- tib_mean[c(2, 1, 3), ]
 tib_mean %>% select(6, 7, 5, 3, 4, 2) %>% 
   t() %>% as.data.frame() -> tmp
 row.names(tmp) <-  c("baseline low type", "baseline middle type", 
-                      "baseline hight type", "temptation low type", 
-                      "temptation middle type", "temptation hight type")
+                      "baseline high type", "temptation low type", 
+                      "temptation middle type", "temptation high type")
 tmp %>% 
   kable(col.names = c("before treatment", "after treatment", "total"),
         digits = 2, 
@@ -495,7 +495,7 @@ pv_atg <- round(t.test(at_p$`TRUE`, at_p$`FALSE`)$p.val, 2)
 We can make the following observations:
 
 1. The subjects are globally risk averse with an average number of pumps of 
-`r round(mean(prep_data$pumps), 2)`.
+`r round(mean(prep_data$pumps), 2)`, with respect to the risk neutral level of 32.
 2. The high type players are more risk prone than the others but the middle 
 and low type players do not differ.
 3. There is no global difference between the before and after treatment. 
@@ -503,18 +503,19 @@ The p-value of the t-test is `r pv_bft` between the pre- and post-treatment
 choices and the p-value for the post-treatment choices between the baseline 
 group and the temptation group is `r pv_atg`.
 
-Since we cannot reject the hypothesis that the temptation treatment as an effect 
+Since we cannot reject the hypothesis that the temptation treatment has an effect 
 on the amount of risk chosen by subjects, we will now look at the choice of 
 constraint for subjects in the temptation treatment.
+<!-- Wait, I do not follow. HO is "no effect" and we fail to reject it. Right? Here you say that H0 is "there is an effect" and we fail to reject it; but this is wrong I suppose. Is there a "not" missing? -->
 
-To begin with, it is important to remember that the constraint that is proposed 
-to the subjects in this treatment cannot theoretically serve them to improve 
+Theoretically, the constraint that is proposed 
+to the subjects in this treatment cannot serve them to improve 
 their situation. 
 Indeed, if the constraint is applied, it only makes the choice of a higher risk 
 amount impossible. 
 But even without the constraint, the subjects have no incentive to choose a 
 higher amount of risk than they want. 
-Theoretically, we expect subjects not to ask for a constraint.
+We hence expect subjects not to ask for a constraint.
 
 ```{r}
 prep_data %>% 
@@ -531,13 +532,13 @@ prep_data %>%
 ```
 
 
-But we observe that `r as.numeric(ask_limit$total[2]) * 100`% of the subjects 
-have asked for a limit. 
-This quantity is consistent with that observed by @houser2018temptation (28.6% 
+Contrary to the theoretical expectations, we observe that `r as.numeric(ask_limit$total[2]) * 100`% of the subjects 
+asked for a limit. 
+This is consistent with commitment choices observed by @houser2018temptation (28.6% 
 when the limit has no cost) and @toussaert2018eliciting (35.8%). 
-This subject confirms that there is a demand for a constraint in our subjects. 
-Moreover the limit chosen by the subjects is binding for at least a part of them. 
-In the table \@ref(tab:limit-ask2) we report the number of subjects who requested a limit and 
+This confirms that our subjects, as subjects in other related experiments, express a demand for a constraint.
+Moreover the limit chosen by the subjects is binding for at least part of them. 
+In Table \@ref(tab:limit-ask2) we report the number of subjects who requested a limit and 
 exceeded or reached it before and after it was proposed to them.
 
 ```{r limit-ask2}
@@ -561,23 +562,23 @@ saturation_tib %>%
             n_sat_a  = mean(n_sat_a >= 1),
             n_over_p = mean(n_over_p >= 1),
             n_sat_p  = mean(n_sat_p >= 1)) %>% 
-  mutate(limit_apply = if_else(limit_apply, "limit apply", "limit not apply")) %>% 
+  mutate(limit_apply = if_else(limit_apply, "limit applied", "limit not applied")) %>% 
   select(-1) %>% t() %>% as.data.frame() -> tmp
-row.names(tmp) <- c("limit exceed before treatment", 
-                    "limit reach before treatment", 
-                    "limit exceed after treatment", 
-                    "limit reach after treatment")
+row.names(tmp) <- c("Limit exceeded before treatment", 
+                    "Limit reached before treatment", 
+                    "Limit exceeded after treatment", 
+                    "Limit reached after treatment")
 tmp %>% 
   kable(digits = 2,
-        caption = "share of subject who ask for a limit",
-        col.names = c("limit not apply", "limit apply")) %>%
+        caption = "Share of subject asking for a limit",
+        col.names = c("limit not applied", "limit applied")) %>% # note: the order of the headers is here reversed when compared with the mutate() call in line 565. Can you check that this is correct? Looks like (0 is at the right place) but still dubious
   kable_styling(c("striped", "bordered"))
 ```
 
-We see that for 41% of the subjects the limit that is requested is restrictive 
-because it is lower than the maximum that was chosen in the first period. 
-The share of the subjects who reached and exceeded this limit is the same 
-whether the limit is applied or not before treatment. 
+We see that for 41% of the subjects the limit that is requested is binding, i.e. 
+it is lower than the maximum that was chosen in the first period. 
+The share of the subjects who reached and exceeded the limit they asked for in teh first five rounds is the same 
+whether the limit was or not later applied to them. 
 On the other hand, the number of subjects who reached their limit without 
 exceeding it increased after treatment even when the limit was not applied. 
 This seems to indicate an ability of the subjects to self-constrain. 
@@ -586,6 +587,7 @@ exceeded their limit remained constant for subjects for whom the limit was not
 applied but that this number decreased for subjects for whom it was applied. 
 This indicates that the application of the limit does not only have the effect 
 of preventing subjects from taking more than a certain amount of risk.
+<!-- and what does it show instead? -->
 
 But our data allow us to go further in the study of the behavior in front of a 
 constraint. 
@@ -595,7 +597,7 @@ To do this we use a saturation indicator:
 $$
 r_{saturation} = \frac{pumps}{limit}
 $$
-And we refer to this inverse as the degree of constraint of the limit.
+And we refer to this inverse as the degree of constraint of the limit. <!-- you mean "we refer to ITS inverse"? i.e. limit/pups? -->
 We will also refer to the truncated saturation ratio which corresponds to the 
 same ratio but for which the values for which the number of pumps is higher than 
 the limit are reduced to 1. 
@@ -632,7 +634,7 @@ trunc_rate_tib <- prep_data %>%
             ratio_saturation_post = round(mean(rs_p), 2),
             difference = ratio_saturation_ante - ratio_saturation_post)
 
-tibble(la = c("limit not apply", "limit apply"),
+tibble(la = c("limit not apply", "limit apply"), # substitute this with "Limit applied" and "Limit not applied" in a way that does not kill your code, I do not do it to avoid problems. 
        r_before = paste0(sat_rate_tib$ratio_saturation_ante, " (", trunc_rate_tib$ratio_saturation_ante, ")"),
        r_after = paste0(sat_rate_tib$ratio_saturation_post, " (", trunc_rate_tib$ratio_saturation_post, ")"),
        difference = paste0(sat_rate_tib$difference, " (", trunc_rate_tib$difference, ")")) %>% 
@@ -647,12 +649,12 @@ The following can be observed:
 1. The subjects do not saturate their constraint on average. 
 Indeed the saturation ratio is less than 1.
 2. The subjects exceed their constraint when they can, the saturation ratio is 
-higher than this truncated value. 
+higher than its truncated value. 
 The difference indicates that in terms of the chosen limit, the overshoot is 
-important.
-3. We find the fact that when the limit is applied, the saturation reduction is 
-more important. 
-But that a reduction is also visible in the subjects for whom the constraint was 
+important. <!-- can we say if it is significant with some test or other? -->
+3. When the limit is applied, the saturation reduction is 
+more important. <!-- again, significant? I know you do MCMC later on, but maybe a little test? -->
+But a reduction is also visible in the subjects for whom the constraint was 
 not applied.
 4. On the other hand, the truncated saturation ratio does not seem to evolve 
 before and after treatment whether the limit is applied or not. 
@@ -748,29 +750,30 @@ observations outside the sample is very low.
 Moreover this hypothesis offers better results than the alternative of using a 
 binomial distribution.
 
-The differences in mean between the before and after treatment periods are 
-presented in the figure \@ref(fig:mean-effect2). 
+The differences in mean between the 4 periods before the treatment and the 5 after are 
+presented in Figure \@ref(fig:mean-effect2). 
 The differences are compared for 5 different situations. 
-First in the baseline situation where no differences should be observed between 
-the first 4 periods and the next 5. 
-Then in the temptation treatment according to the choice of the subjects when 
-they were proposed a limit and its consequences. 
-Finally, we studied what would have happened if the limit they had requested had 
-been applied to the subject who had requested it but was refused.
+First in the baseline situation where no differences should be observed;  
+then in the temptation treatment according to the choice of the subjects when 
+they were proposed a limit and its consequences.
+Finally, we built a counterfactual: we studied what would have happened to the subjects having 
+requested a limit but to whom it was not applied, in case it was applied to them.
 
 ```{r mean-effect2, fig.cap='effect on mean for the different groups'}
 tibble(n = seq(-3, 1.5, 0.01),
        baseline = bla_blp$ecdf$delta(n),
        `limit refused` = lra_lrp$ecdf$delta(n),
-       `limit not apply` = lna_lnp$ecdf$delta(n),
-       `limit apply` = laa_lap$ecdf$delta(n),
-       `limit apply ex-post` = lea_lep$ecdf$delta(n)) -> treatment_effect
+       `limit not applied` = lna_lnp$ecdf$delta(n),
+       `limit applied` = laa_lap$ecdf$delta(n),
+       `limit applied ex-post` = lea_lep$ecdf$delta(n)) -> treatment_effect
 
 treatment_effect %>% 
   pivot_longer(-n, values_to = "probability", names_to = "treatment") %>% 
   ggplot(aes(n, probability, color = treatment)) + 
   geom_line() +
-  labs(title = "effect of treatment on mean")
+  geom_vline(xintercet = 0, linetype = "dashed", color = "red", alpha = 0.5)+ #this is to give a reference for the reader
+  labs(title = "Effect of treatment on mean pumps")
+# can you add conf int around the ECDF or is it too messy / impossible/ too much of a hassle? 
 ```
 
 ```{r 2_compare_treat}
@@ -813,39 +816,39 @@ with credible interval at 95% `r p_ci("limit refused", 0.475)`.
 We can see that refusing a limit tend to increase the risk taken by subjects.
 2. *baseline*: mean of `r round(nearest_n("baseline", 0.5), 2)` 
 with credible interval at 95% `r p_ci("baseline", 0.475)`.
-So for baseline their is no significant difference between the four first 
+So for baseline, as expected, there is no significant difference between the four first 
 rounds and the subsequent rounds.
-3. *limit not apply*: mean of `r round(nearest_n("limit not apply", 0.5), 2)` 
+3. *limit not applied*: mean of `r round(nearest_n("limit not apply", 0.5), 2)` 
 with credible interval at 95% `r p_ci("limit not apply", 0.475)`.
 The fact that subjects ask for a limit even if it is not enforced, decreases the 
-risk taken by the subjects. 
+risk taken by the subjects. <!-- can we start building a link with the intro and say that this is a soft commitmet? -->
 Although this reduction is small, it is significantly different from what is 
 observed for the baseline.
-4. *limit apply*: mean of `r round(nearest_n("limit apply", 0.5), 2)` 
+4. *limit applied*: mean of `r round(nearest_n("limit apply", 0.5), 2)` 
 with credible interval at 95% `r p_ci("limit apply", 0.475)`.
 When the limit is applied to the subject who requested it, the average risk 
 reduction for subjects is greater than for those to whom the limit was not 
 applied. 
 However, it is estimated that the probability that the application of the limit 
 will result in a greater reduction in the limit is only 
-`r round(100 * ct["La", "Ln"], 2)`%.
-5. *limit apply ex-post*: mean of `r round(nearest_n("limit apply ex-post", 0.5), 2)` 
+`r round(100 * ct["La", "Ln"], 2)`%. <!-- again, can we link this with hrd commitments so to link results with the intro? -->
+5. *limit applied ex-post*: mean of `r round(nearest_n("limit apply ex-post", 0.5), 2)` 
 with credible interval at 95% `r p_ci("limit apply ex-post", 0.475)`).
 The most significant reduction in risk-taking is observed when the limit is 
 applied ex-post to subjects who asked for the limit without receiving it.
 
 This analysis of the effect of proposing a limit allows us to complete the 
-elements mentioned above. 
+elements mentioned above.
 First of all, if the temptation treatment does not create a difference in terms 
 of risk behavior compared to the baseline, this is due to the fact that even if 
 the subjects who asked for a limit reduced their risk taking, the subjects who 
 refused it increased their risk taking. 
 Second, we show that asking for a limit, even if it is not enforced, leads 
 subjects to reduce their risk-taking. 
-This shows that subjects are able to self-constrain. 
+This shows that subjects are able to self-constrain. <!-- drop a mention to soft constraints here! -->
 But this self-constraint does not seem to be as effective as a binding limit 
 because the reduction in risk-taking is greater when the limit requested by the 
-subjects is applied. 
+subjects is applied. <!-- again, refer to soft & hard even in passing here, to connect with the intro -->
 Finally, we see that the reduction in risk-taking is even greater when the limit 
 is applied ex-post. 
 This confirms what we have seen with the saturation of the constraint, that is 
@@ -853,7 +856,7 @@ to say that the effort of self-constraint to reduce the level of risk taken is
 applied by reducing the risk taken below the limit requested but that the 
 subjects do not seem to succeed in not exceeding their limit by themselves. 
 This observation is consistent with the idea of convex self-control costs but 
-this hypothesis will have to be tested by future work.
+this hypothesis will have to be tested by future work. <!-- not for the thesis, but this point will have to be explored further for the paper if it will ever be submitted -- which I think it should. -->
 
 
 ## Conclusion {#discu2}
@@ -895,8 +898,8 @@ framing, but with a nonstandard pool of participants.
 Our results demonstrate that there is a demand for constraint in about one third 
 of the subjects. 
 The subjects who request this constraint decrease their risk-taking even when 
-this constraint is not applied. 
-We see that the decrease in risk-taking is more important in subjects for whom 
+this constraint is not applied, i.e., the constriant turns out to be soft.
+We see nonetheless that the decrease in risk-taking is more important in subjects for whom 
 this constraint is hard. 
 We have shown that the decrease in risk-taking in subjects for whom the 
 constraint is soft is different and complementary to the decrease in 
@@ -906,7 +909,7 @@ invites us to explore theoretical models that postulate that individuals are
 both requesting constraints and capable of self-constraint. 
 Among these models, temptation models such as those proposed on the 
 @gul2001temptation model allow to rationalize the behaviors highlighted in 
-this article. 
+this article. <!-- how? expand at least a little bit -->
 More specifically the model of @noor2015menu allows to rationalize the 
 effect of the application of the ex-post limit as well as the non-saturation of 
-the constraint by subject.
+the constraint by subject. <!-- how? expand at least a little bit -->
