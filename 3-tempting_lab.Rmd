@@ -156,10 +156,10 @@ ability of G-P to describe the actual behavior of the subjects,
 and to compare its performance to various alternatives, ranging from economic to 
 statistical models.
 
-This experiment does not question the existence of behavior at odds with expected utility theory, 
+This experiment does not question the existence of behavior at odds with expected utility theory (hereafter EUT), 
 such as the demand for constraints (@chow2011demand, @gine2010put and @uhl2011self),  
 self-control effects (@burger2011field, @mischel1989delay and 
-@kuhn2014self) or more surprising attitude like in 
+@kuhn2014self) or more surprising attitudes like those observed in 
 @dellavigna2006paying. 
 These behaviors are well established in the experimental literature. 
 Our experiment questions the menu preference approach as a way to rationalize 
@@ -179,25 +179,25 @@ temptation cost or @noor2015menu for more complex interactions among elements of
 a menu -- for a review of application and extensions of the original G-P model see the review by 
 @lipman2013temptation.
 
-Our experience shows that in terms of descriptive power the G-P model is a 
+Our experiment shows that in terms of descriptive power the G-P model is a 
 slight improvement over EUT. 
-But the G-P model does not do better than a model where subjects all evaluate 
+But the G-P model does not do better than a dummy model where subjects all evaluate 
 their menus in the same way and independently of their composition. 
 Moreover, a simple regression model outperforms the G-P model.
 
 The goal of our design is to be as close as possible to the theoretical 
-framework formulated by G-P. We have therefore focused on the ellicitation of 
-the menu value. 
-Therefore we do not have a mechanism that would allow us to identify the 
+framework formulated by G-P. We have therefore focused on the elicitation of 
+the value of menus. 
+Therefore we do not have a mechanism that would allow us to identify the  <!-- why "therefore"? it means "as a consequence of" and I do not see how this consideration follows from the one above... -->
 different states of the world that are at the basis of the temptation models 
 proposed by @dekel2001representing, @dekel2007representing or 
 @dekel2009temptation. 
 Nor can we identify the choices of different selves as in the multiple-self 
 models proposed by @fudenberg2006dual.
 Therefore, we will not propose any interpretation of our data in the framework 
-of these models. 
+of these models. <!-- Our experiment is a pure test of the descriptive validity of the G-P model as compared with EUT and some simple statistical models as a benchmark. [Ok, maybe redundant] -->
 
-Our approach will allow us to propose a method allowing us to elicit the two 
+Our approach will allow us to propose a method to elicit the two 
 functions used in the G-P model for each of our subjects.
 G-P shows that an individual whose preferences are complete, transitive, 
 continuous, independent and satisfying the axiom of *Set Betweenness*: 
@@ -208,31 +208,31 @@ has a utility function for menus of the form:
 $$
 U(A) = max_{x \in A}(u(x) + v(x)) - max_{y \in A}(v(y))
 $$
-With $A$ and $B$ was menus and $u(.)$ and $v(.)$ was Von-Neumann Morgenstren 
+Where $A$ and $B$ are menus and $u(.)$ and $v(.)$ Von-Neumann Morgenstren 
 utility functions.
 What we will do in our analysis is to estimate for each menu the value 
 associated for the function $u(.)$ and for the function $v(.)$ and to compare 
 the theoretical value of the resulting menu to the one indicated by the subject. 
 We do not test the validity of the axioms but that of their theoretical 
-consequence.
+consequence. <!-- over a set of menus. -->
 
-## materials and methods {#mm3}
+## Materials and methods {#mm3}
 
 ### Experimental design
 
-Our experience took place from 12/06/2020 to 19/08/2020.
-It took place online and the recruitment of the subjects was done via the Amazon 
+Our experiment took place online from 12/06/2020 to 19/08/2020.
+The recruitment of the subjects was done via the Amazon 
 Mechanical Turk (AMT) platform. 
 On the AMT platform a job offer was published indicating the approximate 
 duration and the fixed payment as well as an average bonus higher than 5$. 
 From this offer, subjects could accept to participate in our experiment by 
 accepting the task on AMT.
-No selection criteria are applied a priori to the subjects. But only the subjects having filled in a valid end-of-experience code were included in the analysis. Conditions of minimum duration of working time and number of trials are also applied but do not exclude any subject [^321].
+No selection criteria were applied a priori to the subjects. But only the subjects having filled in a valid end-of-experiment code were included in the analysis. Conditions of minimum duration of working time and number of trials were also applied but do not exclude any subject [^321].
 
-[^321]: Only subjects with a valid code are kept because this code allows us to pay the subjects and the author refuses to include subjects who were not paid in the study. The exhaustive inclusion criteria are listed in the pre-registration of the study available with asPredicted code 
+[^321]: Only subjects with a valid code are kept for analysis because this code allows us to pay the subjects and the author refuses to include subjects who were not paid in the study. The exhaustive inclusion criteria are listed in the pre-registration of the study available on asPredicted with the code 
 [qj8mr](https://aspredicted.org/qj8mr.pdf)
 
-The software itself is developed using the R language and the Shiny framework. 
+The software was developed using the R language and the Shiny framework. 
 Once the experiment is completed, the experimental software displays a summary 
 of the subjects' bonus and a unique code to be filled in the corresponding field 
 on the AMT platform. 
@@ -244,7 +244,7 @@ valid for 297 of them.
 The 7 subjects whose code was not valid were excluded from the dataset and were 
 not paid.
 
-The experience proceeds 
+The experiment proceeds 
 as follows:
 
 1. The subject faces a screen with instructions. 
@@ -259,6 +259,7 @@ To continue, the subject must answer all questions correctly.
 To do so, he has as many attempts as he wants and a help is displayed for the 
 questions to which the answer is wrong at the first attempt.
 3. Start of incentivized learning phase:
+<!-- if you wanted to make an indented list for the incentivized phase, it did not work, and the numbers continue monotonically over this "sub-list". -->
   3. The subject has to bid on 10 pairs of menus by indicating with a slider the 
   maximum amount he is willing to pay between -1\$ and 1\$ (the bidding mechanism 
   is described in detail in the following section). 
@@ -270,11 +271,14 @@ questions to which the answer is wrong at the first attempt.
   5. A screen indicates to the subject what amount he has won with the steps 4 and 
   5, either the amount resulting from the selected auction and the amount 
   corresponding to the resolution of the chosen lottery. 
-6. The subject is asked to complete a second quiz similar to the one in step 2 
+6. The subject is asked to complete a second set of control questions similar to the one in step 2 
 but with different questions. 
-7. Main taks: the subject bids on 35 comparisons between 2 menus.
-8. 5 of these comparisons are drawn at random and the subject can choose 1 
-lottery from each of the 5 menus assigned to him according to her bid and the elicitation mechanism.
+7. Main task: the subject bids on 35 comparisons between 2 menus.
+8. 5 of these comparisons are drawn at random and the subject can choose one 
+lottery from each of the five menus assigned to him according to her bid and the elicitation mechanism.
+
+<!-- him, her... I know it's tricky but this subject changes gender within three words. maybe keep him? but in general who cares-->
+
 9. The lotteries are solved and the subject's bonus is calculated as the total 
 won on the 5 bids on the selected comparisons and the results of the 5 chosen 
 lotteries plus what was already won in the learning phase.
@@ -320,11 +324,11 @@ more for a good than he is willing to pay or risks not acquiring the good for an
 amount lower than what he would have been willing to pay. 
 The method we use differs from the one presented in @becker1964measuring because 
 we want to compare menus between them. 
-So we ask subject for the maximum amount he is willing to pay to *exchange* one 
+So we ask subjects for the maximum amount they is willing to pay to *exchange* one 
 menu for another (we will call this amount willingness-to-change, WTC). 
-So to elicit the WTC between 2 menus we present to subjects the one menu on 
-the left of the screen and the other on the right, the subject has to indicate an amount 
-between -\$1 and \$1 corresponding to the maximum amount he is ready to pay to 
+To elicit the WTC between two menus we present to subjects one menu on 
+the left of the screen and another on the right. Subjects have to indicate an amount 
+between -\$1 and \$1 corresponding to the maximum amount they are ready to pay to 
 exchange the menu on the left against the one on the right. 
 If the randomly chosen number is less than the value indicated by the subject, 
 the subject receives the right menu and must pay an amount equal to the number 
@@ -342,7 +346,7 @@ slider from the place where it was initially placed.
 
 As with 6 different items it is possible to build 63 different menus and 
 therefore 1953 different 2-by-2 comparisons, we restricted the comparisons made 
-by the subjects to the one that seemed the most interesting for us[^322]. 
+by the subjects to the ones that seemed the most interesting for us[^322]. 
 The 35 comparisons that we have retained for each subject are the following:
 
 [^322]: In retrospect, knowing the results of the experiment and given the problems found on value 
@@ -359,7 +363,7 @@ but also to cover a wide range of items and menu sizes.
 The menus of size 1 are chosen randomly but in such a way that each menu appears 
 at least once and that it is possible by 2-by-2 comparisons to reconstruct 1 
 chain of all menus of size 1. 
-This comparisons is used to estimate singletons preferences.
+This comparisons is used to estimate preferences over singletons, i.e. over individual lotteries.
 2. 12 comparisons between menus of size 1 and size 2. 
 The menus to be compared are drawn at random but we make sure that the menus of 
 size 2 containing the elements 2 and 32 (the extreme lotteries) are compared at 
@@ -372,9 +376,10 @@ This comparisons is used to estimate temptation preferences
 6. menu of sizes 6 with 1 random menu of each other size. 
 
 Finally, as the subjects have chosen menus and once all the comparisons are 
-done, 5 comparisons among the 35 are be drawn at random and a menu for each of 
+done, 5 comparisons among the 35 are drawn at random and a menu for each of 
 the chosen comparisons is selected using the described procedure. 
-The subject then have to choose in each of these menus 1 and only 1 lottery.
+The subjects then have to choose in each of these menus one and only one lottery.
+This lottery is played and the outcome added to the subjects' payoffs.
 
 
 ### Estimations and Models
@@ -401,35 +406,34 @@ the left-hand member that could be calculated.
 an arbitrary number).
 7. We normalize the values by subtracting the value of one of the singletons. 
 
-We tested this methodology on our data and the procedure seem to converges 
+We tested this methodology on our data and the procedure seem to converge 
 quickly after about 30 iterations the variation in the estimated value is 
 negligible.
 And the result is independent of the singleton chosen as starting point.
 
-This methodology allows us to estimate the preferences for the singletons while 
+This methodology allows us to estimate the preferences over singletons while 
 taking into account the variability in the subjects' responses. 
-However, this method is based on 2 assumptions. 
-The first one is that there is indeed a preference value for the singletons to 
-be estimated and the second one is that the comparison of elements is 
-symmetrical. 
+However, this method is based on two assumptions:
+there exists a preference value for the singletons to 
+be estimated and the comparison of elements is symmetrical. 
 We do not test either of these two hypotheses in our experiment but consider 
 them as valid or at least as reasonable approximations.
 
 To estimate the effect of temptation, we use a procedure similar to the one used 
-to estimate preferences for singletons. 
+to estimate preferences over singletons. 
 The only difference is the way we build the equations from a comparison between 
-2 menus. 
+two menus. 
 As an example, we focus here on comparisons between menus of size 2 and size 1. 
 We use the estimates made on the singletons to identify the preferred item in 
-each menu of size 2, once this item is identified we compute a theoretical 
+each menu of size 2. Once this item is identified we compute a theoretical 
 difference with the menu of size 1 by subtracting the estimated value of the 
 preferred item of the menu of size 2 from the one of size 1. 
 We calculate the corrected comparison of preferences that we use to build our 2 
 equations. 
-For example let's consider the comparison between the menus $A = \{a_1, a_2\}$ 
+For example let us consider the comparison between the menus $A = \{a_1, a_2\}$ 
 and $B = \{b\}$, and suppose that the estimates of the preferences for the singletons yield $hat{u}(\{a_1\}) > \hat{u}(\{a_2\})$. 
 We note $wtc_t = \hat{u}(\{a_1\}) - \hat{u}(\{b\})$. 
-We construct the 2 equations: 
+We build the 2 equations: 
 
 * $A = B + x - wtc_t$
 * $B = A - x + wtc_t$
@@ -451,12 +455,12 @@ willing to pay, over all comparisons between menus of size one and between menus
 of sizes two and one.
 This model predicts that the WTC of an individual for any pair of menu items is 
 his average aggregate WTC. 
-This model is dummy but it is useful as a lower-bar reference point. It seems reasonable to assume that a relevant model is more efficient than this constant response model.
-Using this kind of dummy model as a comparison point is a common practice in 
+This is a  dummy model, but it is useful as a lower-bar reference point. It seems reasonable to assume that a model incorporating preferences has to be more efficient than this constant response model.
+Using this kind of dummy models as a comparison point is a common practice in 
 machine learning.
 
 2. Linear regression. 
-This model consists in estimate a linear regression model for each individual. 
+This model consists in estimating a linear regression model for each individual. 
 The explained variable of this regression is the WTC between 2 menus and the 
 explanatory variables are variables indicating the presence of the elements in 
 the compared menus. 
@@ -468,7 +472,7 @@ case.
 The economic models that we have chosen are the following:
 
 1. The expected utility model (EUT). 
-This is the model that corresponds to the *standard theory* in economics where 
+This is the model that corresponds to the standard theory in economics where <!-- yu told me you do not like italics and bold and then you use them, so I am forcing you to be consistent :-) -->
 the value of a menu depends only on the value of the item inside it that will be 
 chosen, therefore on the preferred item that it contains. 
 We have chosen to call it the expected utility model because our menus contain 
@@ -491,12 +495,12 @@ menus.
 We estimate the value with the following formula:
 $$ U(A) = max_{x \in A}(u(x) + v(x)) - \sum_{y \in A}(v(y)) $$
 This model uses the same estimation as the previous one but this time the 
-temptation effect of all the items of a menu is taken into account not only the 
-one of a particular item.
+temptation effect of all the items of a menu is taken into account not only that
+of a particular item.
 
 ## Results {#result3}
 
-Our analysis is based on the assumption (that we don't test) of symmetry of the 
+Our analysis is based on the assumption of symmetry of the 
 WTC. 
 Indeed, we consider that if an individual is willing to pay x\$ to switch from 
 menu A to menu B, this individual will be willing to pay -x\$ to switch from 
@@ -509,14 +513,12 @@ not change the results.
 
 The starting point for estimating the different economic models presented is the 
 estimation of individual preferences. 
-We will then estimate the preferences of each individual by following the method 
-explained. 
-To estimate the preferences on the singletons we use the 10 comparisons of menus 
+To estimate the preferences over singletons we use the 10 comparisons of menus 
 of size 1 made for each individual. 
 We iterate on the resulting equation system 500 times and we keep as value for 
 each item the average of the last 50 iterations.
 Finally as we compute relative preferences, we normalize each value by 
-subtracting the value of the singleton {2}. 
+subtracting the value of the singleton {2}, i.e., a 50\% chance of earning 2 euros. <!-- I thought it better to provide a little reminder here, feel free to delete it if you find it useless -->
 This method gives us estimates for the 6 possible singletons for 
 `r round(292/2.97, 2)`% of our subjects. 
 An error in the programming of the experimental software has wrongly validated 
@@ -524,12 +526,12 @@ strings of singletons for `r round(5/2.97, 2)`% of the subjects making our
 estimation procedure invalid for them, so we have removed these subjects from 
 our study.
 
-Since singletons can be seen as lotteries, we can test if subjects have 
+Since singletons are lotteries, we can test if subjects have <!-- I mean, they *are* lotteries, right? -->
 consistent preferences in terms of risks. 
 We consider preferences as consistent in terms of risk if the singleton {N} is 
 the singleton whose estimated utility is maximum then the estimated utility of 
 the singleton {P} is higher than that of the singleton {Q} if $N > P > Q$ or if 
-$N < P < Q$ i.e. single-peaked preference. 
+$N < P < Q$ i.e. single-peaked preferences. 
 
 Among our subjects we find that 
 `r round(mean(apply(u_estim, 2, valid_pref)* 100), 2)`% have consistent, single-peaked
@@ -568,9 +570,9 @@ each subject.
 We iterate again 500 times on the equation system provided by the 12 comparisons 
 and we retain for the estimation of the relative utility of each item the 
 average of the last 50 iterations.
-To normalize we substract to all value the estimate for the temptation element 
-$2$.
-We obtain estimates for each subject, but as foreseen by our design, we do not 
+To normalize we subtract from all values the estimate for the temptation element 
+{2}. <!-- consistent notation -->
+We obtain estimates for each subject, but as expected given our design, we do not 
 have the estimates for each item. 
 The table \@ref(tab:no-estim3) summarizes the percentage of subjects for whom we have no 
 estimate by item.
@@ -604,7 +606,7 @@ value and
 when we restrict on observation for which we have all item estimated. 
 Since restriction to full estimate item menus don't seem to have an important 
 impact in the analysis, in the following we willuse all available data.
-The figure \@ref(fig:pref-estim-plot3) shows the distribution of the estimates 
+Figure \@ref(fig:pref-estim-plot3) shows the distribution of the estimates 
 for each of the items.
 
 ```{r}
@@ -653,7 +655,7 @@ There are no elements that appear to be outliers in these estimates.
 Using these estimates we can calculate for each of our economic models the WTC 
 of each comparison made by our subjects. 
 
-As a comparison tool to judge the quality of the predictions of our models we 
+As a benchmark to judge the quality of the predictions of our economic models we 
 estimate two statistical models, a constant response model and a regression 
 model. 
 To estimate the constant response model, we simply compute the average of the 
@@ -698,10 +700,11 @@ reg_coef %>%
   scale_x_discrete(limits = c("2", "4", "6", "8", "16", "32", NA),
                    labels = c("2", "4", "6", "8", "16", "32", "Intercept"))
 ```
-
+<!-- the bowplot here is fine, but it hides the main message that is the position of the coefficients around the zero line. 
+It is hard to see since there is variance and your Y axis scale spans nearly 9 units; so the distance from zero becomes too small to be actually noticed. I know that "zooming in" on the data hides ourliers, and only putting means and error bars loses info... but still, if there was a way to have a better take on the values arund zero it would be better. Raincloud? jittered points? beeswarm? up to you.  -->
 We can see on the graph that the effect in the different variables of the model 
 are of the same order of magnitude and close to 0. 
-The estimated values are close to the one estimated for the economic models 
+The estimated values are close to the ones estimated for the economic models 
 especially by comparing the indicator variables for the largest menu with the 
 preferences for singletons and the one for the smallest menu with the estimates 
 of the preferences for the temptation. However, it would be premature to 
@@ -709,13 +712,13 @@ interpret the coefficients of the regression as individual preferences for the
 different items. 
 Indeed our model does not take into account the interaction between the 
 different variables which could be captured in the estimates of the different 
-coefficients by bias the the interpretation.
+coefficients and bias the interpretation. <!-- I gave my best shot at rewriting this as it made no sense, but I might have gotten it wrong, check -->
 We can however eliminate the hypothesis that subjects evaluate a menu according 
 to the sum of the items that compose it. 
 Indeed in this situation there would be no interaction between the different 
 elements of a menu and we should observe that all the coefficients for the 
 largest menu are higher or equal to 0 and all those for the smallest menu are 
-lower or equal to 0, This is not the case here. 
+lower or equal to 0. This is not the case here. 
 
 As our objective is to use the regression model as a tool for comparison with 
 other models, we will not try to interpret its coefficients at the individual 
@@ -744,8 +747,8 @@ For each model we compute the number of times it predicts a WTC of the same sign
 as the one observed[^341].
 
 [^341]: Note that the possible observations are +,- or = so it is not an exercise 
-of binary prediction or we can improve the predictions of a model by taking the 
-opposite of these predictions.
+of binary prediction in which we could improve the predictions of a model by taking the 
+opposite of these predictions. <!-- is this also a thing that is currently done in ML? if so, say so -->
 
 In the table \@ref(tab:models-table3), we present the results of the five models according to 
 the three metrics, calculated on all the comparisons.
@@ -866,7 +869,7 @@ all_d %>%
 structure(t(all_compar_table[, -c(1, 17)]),
           dimnames = list(names(all_compar_table)[-c(1, 17)], 
                           all_compar_table$comparaison_type)) %>% 
-  as_tibble(rownames = "model") %>% 
+  as_tibble(rownames = "model") %>% # I would delete this "model" thing on top of that column, not needed (and ugly)
   mutate(model = models_to_name(str_extract(model, "[^ ]*$"))) %>% 
   kable(caption = "Performance of models by comparaison type",
         digits = 2) %>% 
@@ -891,7 +894,7 @@ remains superior to the economic model on these data. This may indicate an
 overlearning problem on the training data. 
 
 Now if we look at the performance of the economic models we see that the G-P 
-model performs better than the expected utility model. 
+model performs better than the EUT model. 
 It seems that integrating temptation in the evaluation of the comparison between 
 size 2 and size 1 menus allows to improve the predictions according to our 3 
 metrics. 
@@ -991,8 +994,9 @@ particular item.
 
 ## Discussion {#discu3}
 
-In this chapter we have proposed an experiment to test the temptation model 
-proposed in @gul2001temptation.
+<!-- In this chapter we have proposed an experiment to test the temptation model  -->
+<!-- proposed in @gul2001temptation. -->
+<!-- it was a repetition of what is said in better terms below -->
 In this chapter we have proposed an experiment that compares the descriptive 
 quality of the model in @gul2001temptation with other economic and statistical 
 models.
@@ -1013,19 +1017,19 @@ These models, although an improvement over the expected utility model, are poor
 descriptors of our observations. 
 Their specific item comparison-based approaches underestimate the 
 difference between two menus reported by our subjects, notably by predicting 
-that subjects will be indifferent between options over which subjects dare not indifferent.
+that subjects will be indifferent between options over which subjects are not indifferent.
 
 In this respect, machine learning methods such as simple linear regressions -- that take into account all elements of a menu and not just some preferred ones -- are at least 
-better descriptors on our data than economic models. 
+better descriptors of our data than economic models. 
 We show in effect that a simple model trained at the individual level offers 
 better predictions in terms of trend predictions and preferences between menus 
-than the economic models and the constant response model. 
+than the economic models and the dummy constant response model. 
 
 Nevertheless, it should be noted that our analysis, like the menu choice 
 framework, is based on expected utility theory. 
 And although we used the most robust estimation methods possible, it is possible 
 that our results are biased by a discrepancy between the observed behavior of 
-the subjects and that predicted by the expected utility theory. 
+the subjects and that predicted by expected utility theory. 
 Part of this issue will be studied in the next chapter. 
 
 We believe that in order to propose models with better descriptive power it 
