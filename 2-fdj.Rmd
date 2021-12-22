@@ -1,5 +1,7 @@
 # Intra-personal conflict and self-commitment {#fdj}
 
+> Co-authored with Rustam Romaniuc (Montpellier Business School), Dimitri 
+Dubois (INRAE Montpellier) and Paolo Crosetto
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
