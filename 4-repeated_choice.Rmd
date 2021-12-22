@@ -223,7 +223,7 @@ stability_tib %>%
 
 In this article we are interested in the following question: When an
 individual is confronted several times with the same situation, does he
-always make the same choice? This question has few applied <!-- concrete = béton -->
+always make the same choice? This question has few applied 
 implications. It is indeed unlikely that an individual is to make two
 identical decisions in the same context. But this question is
 important from a theoretical point of view. First, for modelling, the
@@ -239,7 +239,7 @@ In order to answer this question, we conducted an experiment. We
 limited ourselves to a situation where the subjects had to choose
 between different lotteries. We chose the risk preference framework for
 multiple reasons. First of all, to our knowledge, the question of the
-stability of preferences has not been widely treated in this framework, and <!-- on ne paut pas dire que cela n'a jamais été traité, donc on qualifie un peu -->
+stability of preferences has not been treated in this framework, and 
 this is a central domain in economics. Moreover, in this field, we have
 a theory that has already been widely tested on other themes and whose
 extension has difficulty in responding to the contradictions highlighted
@@ -293,7 +293,7 @@ We show that only for
 normally distributed and that for at least
 `r round(100 - normality_ds$signif_one_pass, 2)`% the data does
 not seem to admit a unique central value. Moreover, we show that
-measures of risk preferences over our data can lead to the wrong conclusion that a
+measures of risk preferences can lead to the wrong conclusion that a
 treatment has an effect,
 and that models built on a risk aversion
 parameter are of poor quality both in describing the data and in
@@ -301,8 +301,7 @@ predicting the future behavior of subjects even in the simplest
 situation. 
 But it seems possible to significantly improve the quality of
 predictions by using models that take into account the past behavior of
-the subjects -- i.e. the serial correlation of answers. <!-- right? or else, correct, but I would add a qualifier here for clarity -->
-<!-- and: is it so surprising that subjects exhibit serial correlation? but this is maybe stuff for discussion, see below -->
+the subjects.
 
 Our experiment shows that it should not be taken for granted that when
 confronted with the same situation several times an individual will
@@ -328,7 +327,7 @@ under conditions as close to each other as possible. Each of the
 measures is performed using an elicitation mechanism regularly used for
 similar purposes in economics and psychology. Each of the elicitations
 is incentivized by an amount that even if relatively small in absolute
-terms is much higher than the average payoffs used in experimental
+value is much higher than the average payoffs used in experimental
 economics on the target population. Moreover once the amount is compared
 to the effort and duration of the task, the corresponding
 remuneration is similar or even higher than the remuneration of subjects
@@ -343,7 +342,7 @@ have a large number of observations per subject which allows us to
 perform robust statistical analyses at the individual level. And the
 observations are comparable at the individual level because we made sure
 that the conditions are as close as possible in terms of incentive,
-information, form and time. <!-- what do you mean by form here? -->
+information, presentation and time.
 
 Our experiment took place from May 25^th^ to May 27^th^, 2021. 
 It involved 300 subjects[^411]. 
@@ -638,7 +637,7 @@ subjects_ds %>%
 stat_des_df %>%
   t() %>%
   as.data.frame() -> stat_des_df
-rownames(stat_des_df) <- c("mean choice", "sd", "mean r",
+rownames(stat_des_df) <- c("mean", "sd", "mean r",
                       "sd r", "width of r C.I.",
                       "% estim not in [0,64]")
 stat_des_df %>% 
@@ -662,7 +661,7 @@ the estimates of a risk aversion parameter from these data. Indeed, if we
 calculate the confidence interval for the parameter $r$ per subject from
 the average choice and the standard deviation observed under the
 assumption of normality of the data, we obtain extremely wide intervals
-as shown in the corresponding column of table <!-- reference to the table missing --> [^431].
+as shown in the corresponding column of table \@ref(tab:sum-stat-table4) [^431].
 
 [^431]: Note that as under the assumption of normality it is possible to
     observe values of n lower than 0 (and higher than 64) the values for
@@ -731,8 +730,8 @@ Kolmogorov-Smirnov test takes into account the maximum deviation between
 the empirical distribution and the theoretical distribution while the
 Shapiro-Wilk test tests the difference between the ordered values and
 the observed values. We can say that the share of the subjects concerned
-is between `r round(100 - normality_ds$signif_one_pass, 2)`% and
-`r round(100 - normality_ds$signif_ks_sw_ad, 2)`% but it is difficult to <!-- just inverted to get an increasing progression -->
+is between `r round(100 - normality_ds$signif_ks_sw_ad, 2)`% and
+`r round(100 - normality_ds$signif_one_pass, 2)`% but it is difficult to 
 give an exact value.
 
 Beyond the fact that this confirms that individual data are not normally
@@ -760,7 +759,7 @@ While the results reported above might seem like technicalities, we will show
 that they have implications for the methods used and the results reported in
 risk elicitation studies. 
 The first impact of the way individuals choose is on the statistical methods 
-used to test hypotheses in experimental economics. <!-- give here the punchline of the argument, else it is hard to follow you through the rest. For instance: "The nature of our data is such that inference from the data is very likely to result in false positive results when using standard techniques in Experimental Economics". We distinguish three different approaches to identify treatment effects: between-, within-subjects, and difference in difference." and then you explain. So readers know what to expect, because right now this thing comes off as a bit abrupt and not easy to follow. -->
+used to test hypotheses in experimental economics. 
 The commonly used approach is to
 separate the observations that will be available according to the
 application or not of a treatment. We distinguish here three approaches.
@@ -828,14 +827,11 @@ tibble(nb_choice = 1:100,
   geom_line(aes(linetype = nb_subjects)) +
   labs(title = "Ghost treatments",
        subtitle = "100 choices for between treatment and 50 for other treatment",
-       x = "% of choices considered per subjects",
-       y = "% of significant ghost treatments",
+       x = "% of maximum number of choice",
+       y = "of case with statistically significant difference",
        color = "Type of treatment",
        linetype = "Number of subjects") +
   scale_color_viridis_d()
-# consider adding a reference horizontal line at 5%, it will help to see clearly that diffdiff does the job nicely
-# achtung: tu dis "%" mais sur les y tu as mis une échelle 0-1, donc ou bien tu mets "share" ou bien (conseillé) tu passess à 0-100
-# I changed the labels of the axis, you might disagree, but I find them better
 
 
 rm(ghost_within)
@@ -851,9 +847,9 @@ result.
 The two other methods present a rate of significant cases much
 higher than what is expected, higher than 75% when we use all the
 observations we have. 
-This is particularly striking for the within-subjects case, as no or little individual variation is usually assumed in the 
-experimental literature.
-The high rate of significant ghost treatments seems to be little
+This is particularly striking for the within-subjects case, as no or little 
+individual variation is usually assumed in the experimental literature.
+The high rate of significant cases seems to be little
 affected by the number of subjects.  In the case of the between-subjects method
 the number of subjects does not even seem to have any impact. On the
 other hand, this rate seems to increase with the number of observations
@@ -909,7 +905,6 @@ rm(random_cor, consec_cor, orderer_cor)
 
 As in theory we measure the correlation between independent and
 identically distributed observations, 
-<!-- well, that's in theory theory, because it is the same person and it is a bit of a leap of faith to assume iid within the same person... no? to be discussed below -->
 we expect the measured correlation
 to be close to 1, only subject to random sampling variations and
 identical for the 3 methods.
@@ -1055,7 +1050,7 @@ prediction %>%
   ggplot(aes(nb_obs, mse, color = estimator)) +
   geom_line() +
   coord_cartesian(ylim = c(0,600)) +
-  labs(title = "Evolution of the different estimators", #why not use "model error..." as in the title of the previous figure?
+  labs(title = "Prediction models error", 
        x = "Number of training periods",
        y = "MSE") +
   scale_color_viridis_d()
@@ -1086,11 +1081,10 @@ different from 1 were tested, it would be possible to have better
 results for this type of model. Another possibility of improvement would
 be the use of other classes of models like random forests.
 
-<!-- again, is this so surprising that the choices are not independent? -->
-
 This shows that to predict individual behavior, models based on a risk
-aversion parameter perform poorly on repetitions of one of the simplest possible task. That <!-- you'd have toa rgue why it is THE simplest so better to tone down -->
-when it comes to summarize these predictions using a single parameter or
+aversion parameter perform poorly on repetitions of one of the simplest possible 
+task. 
+That when it comes to summarize these predictions using a single parameter or
 when we have few observation, the best parameter is the
 average of the observations. But that the predictions obtained in this way
 are likely to be mediocre. But it should be possible to obtain better
@@ -1167,7 +1161,6 @@ bad as their descriptive power. But we also show that when the number of
 observations is large enough, the model based on linear regressions
 provides better results than the average. This shows us that it is easy to 
 achieve better results than those proposed by the economic models.
-<!-- well, wait, the average model is also not an econ model. econ models (r) are consistently outclassed by regression -->
 
 Our results suggest that a static model based on a risk aversion
 parameter is not suitable to describe individual behavior. Indeed, we
@@ -1184,4 +1177,3 @@ disposal lead us to say that confronted with the same situation several
 times, individuals will act in different ways. But this question would
 deserve more work and results than the few elements we have brought
 here.
-<!-- very good overall. Bravo. But: maybe say a bit more here on this thing I've been hinting at all along -- is it so surprising that observations are correlated? Myabe some considerations on this might be in order (but I realize we are 2 days from the deadline; take it as a consideration/question that will possibly be asked by the rapporteurs and/or come up during the defense. -->
