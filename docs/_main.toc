@@ -1,0 +1,29 @@
+\contentsline {chapter}{Abstract}{5}{chapter*.2}%
+\contentsline {section}{English version}{5}{section*.3}%
+\contentsline {section}{Version Française}{6}{section*.4}%
+\contentsline {chapter}{Introduction}{7}{chapter*.5}%
+\contentsline {chapter}{\numberline {1}Intra-personal conflict and self-commitment}{13}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduction}{13}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Experimental Design and Procedure}{16}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Experimental conditions}{16}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Participants}{17}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Control questions}{18}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Procedure}{19}{subsection.1.2.4}%
+\contentsline {section}{\numberline {1.3}Results}{19}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Conclusion}{23}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Descriptive Power of Tempting Model}{25}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{25}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Materials and methods}{27}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Experimental design}{27}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Estimations and Models}{30}{subsection.2.2.2}%
+\contentsline {section}{\numberline {2.3}Results}{32}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Discussion}{38}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Repeated Choice}{41}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Introduction}{41}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Experimental design}{43}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Results}{46}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Conclusion}{54}{section.3.4}%
+\contentsline {chapter}{Conclusion}{57}{chapter*.6}%
+\contentsline {chapter}{\numberline {A}Experimental instruction for chapter 1}{59}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Experimental instruction for chapter 2}{63}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Experimental instruction for chapter 3}{65}{appendix.C}%

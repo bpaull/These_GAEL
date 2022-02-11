@@ -36,7 +36,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Two Different Experimental Approches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences},
+  pdftitle={Two Different Experimental Approaches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences},
   pdfauthor={Paul Bettega},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -109,9 +109,9 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
-\title{Two Different Experimental Approches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences}
+\title{Two Different Experimental Approaches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences}
 \author{Paul Bettega}
-\date{2021-12-22}
+\date{2022-02-11}
 
 \begin{document}
 \maketitle
@@ -981,8 +981,8 @@ average difference between the first 4 rounds and the next 5:
   So for baseline, as expected, there is no significant difference between the
   four first rounds and the subsequent rounds.
 \item
-  \emph{limit not applied}: mean of NA
-  with credible interval at 95\% {[}NA, NA{]}.
+  \emph{limit not applied}: mean of -0.61
+  with credible interval at 95\% {[}-1.04, -0.17{]}.
   The fact that subjects ask for a limit even if it is not enforced, decreases the
   risk taken by the subjects.
   And this is what we identify as the effect of the soft commitment; in effect,
@@ -991,8 +991,8 @@ average difference between the first 4 rounds and the next 5:
   Although this reduction is small, it is significantly different from what is
   observed for the baseline.
 \item
-  \emph{limit applied}: mean of NA
-  with credible interval at 95\% {[}NA, NA{]}.
+  \emph{limit applied}: mean of -1.03
+  with credible interval at 95\% {[}-1.74, -0.32{]}.
   When the limit is applied to the subject who requested it, the average risk
   reduction for subjects is greater than for those to whom the limit was not
   applied.
@@ -1002,8 +1002,8 @@ average difference between the first 4 rounds and the next 5:
   and this is what we identify as the effect of hard commitment; subjects reduced
   their risk-taking after asking for a limit that they could not violate.
 \item
-  \emph{limit applied ex-post}: mean of NA
-  with credible interval at 95\% {[}NA, NA{]}).
+  \emph{limit applied ex-post}: mean of -2.16
+  with credible interval at 95\% {[}-2.58, -1.73{]}).
   The most significant reduction in risk-taking is observed when the limit is
   applied ex-post to subjects who asked for the limit without receiving it.
 \end{enumerate}
@@ -1171,6 +1171,8 @@ U(A) = max_{x \in A}(u(x) + v(x)) - max_{y \in A}(v(y))
 \]
 Where \(A\) and \(B\) are menus and \(u(.)\) and \(v(.)\) Von-Neumann Morgenstren
 utility functions.
+With \(u(.)\) representing the utility for the elements taken independently
+(singletons) and \(v(.)\) the temptation utility of the elements.
 What we will do in our analysis is to estimate for each menu the value
 associated for the function \(u(.)\) and for the function \(v(.)\) and to compare
 the theoretical value of the resulting menu to the one indicated by the subject.
@@ -1272,7 +1274,7 @@ comparisons and the resolution of the 6 lotteries they chose (1 in the learning
 and 5 in the main phase).
 
 Our subjects were thus paid an average of 6.97\$ for
-an average time of 41 seconds spent on our experiment.
+an average time of 41 minutes spent on our experiment.
 So an average wage per hour of
 10.3\$
 
@@ -1330,12 +1332,12 @@ therefore 1953 different 2-by-2 comparisons, we restricted the comparisons made
 by the subjects to the ones that seemed the most interesting for us\footnote{In retrospect, knowing the results of the experiment and given the problems found on value
   imputation with a utility function it would have been better to restrict the
   number of items to 4 and thus be able to explore more thoroughly the space of 2-by-2 comparisons.}.
-The 35 comparisons that we have retained for each subject are the following:
-
 These comparisons were chosen to allow reliable estimates of preferences with many
 observations of comparison of size 1 menus with each other and with size 2
 menus;
 but also to cover a wide range of items and menu sizes.
+The 35 comparisons are chosen randomly and independently for each subject
+according to the following rules:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -1666,7 +1668,12 @@ is a linear combination of the other variables given the menu size constraint.
 The estimates of each of the model parameters for each subject are shown in the
 figure \ref{fig:reg-estim-plot3}.
 
+\begin{figure}
+\centering
 \includegraphics{_main_files/figure-latex/reg-estim-plot3-1.pdf}
+\caption{\label{fig:reg-estim-plot3}Distribution of the coefficent by items for all subjects}
+\end{figure}
+
 We can see on the graph that the effect in the different variables of the model
 are of the same order of magnitude and close to 0.
 The estimated values are close to the ones estimated for the economic models
@@ -1958,7 +1965,11 @@ question of risk preferences has already been treated in experimental
 economics, we have tools to measure the parameters of risk behavior. In
 our experiment, we will use a variant of the method used in
 \citet{lejuez2002evaluation} and \citet{crosetto2013bomb} to elicit the risk
-preferences of our subjects. We also have results on similar questions
+preferences of our subjects.
+In which the subject chooses a number between \(0\) and \(64\) that defines the
+payoff and probability of winning the lottery he receives (This is equivalent
+to the task used in Chapter 1 but without the balloon).
+We also have results on similar questions
 in the context of risk preferences. For example, \citet{hey1994investigating}
 conducted an experiment to test different developments of the expected
 utility model. Even if the situations in the experiment were not the
@@ -2874,7 +2885,7 @@ economics.
 
 
 \hypertarget{expe-instruc2}{%
-\chapter{Experimental instruction for chapter 2}\label{expe-instruc2}}
+\chapter{Experimental instruction for chapter 1}\label{expe-instruc2}}
 
 \includegraphics[width=0.9\linewidth]{annexe_file/pump_decision}
 
@@ -2887,7 +2898,7 @@ economics.
 \includegraphics[width=0.9\linewidth]{annexe_file/temptation_decision}
 
 \hypertarget{expe-instruc3}{%
-\chapter{Experimental instruction for chapter 3}\label{expe-instruc3}}
+\chapter{Experimental instruction for chapter 2}\label{expe-instruc3}}
 
 Instruction of the experiment are display as follow:
 
@@ -2898,7 +2909,7 @@ Instruction of the experiment are display as follow:
 \includegraphics[width=0.9\linewidth]{annexe_file/consigne_c3_3}
 
 \hypertarget{expe-instruc4}{%
-\chapter{Experimental instruction for chapter 4}\label{expe-instruc4}}
+\chapter{Experimental instruction for chapter 3}\label{expe-instruc4}}
 
 Instruction of the experiment are display as follow:
 

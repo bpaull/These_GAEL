@@ -254,7 +254,11 @@ question of risk preferences has already been treated in experimental
 economics, we have tools to measure the parameters of risk behavior. In
 our experiment, we will use a variant of the method used in
 @lejuez2002evaluation and @crosetto2013bomb to elicit the risk
-preferences of our subjects. We also have results on similar questions
+preferences of our subjects. 
+In which the subject chooses a number between $0$ and $64$ that defines the 
+payoff and probability of winning the lottery he receives (This is equivalent 
+to the task used in Chapter 1 but without the balloon).
+We also have results on similar questions
 in the context of risk preferences. For example, @hey1994investigating
 conducted an experiment to test different developments of the expected
 utility model. Even if the situations in the experiment were not the

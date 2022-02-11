@@ -1,5 +1,5 @@
 --- 
-title: "Two Different Experimental Approches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences"
+title: "Two Different Experimental Approaches For Testing Temptation And A Test Of Stability Of Individual Risk Preferences"
 author: "Paul Bettega"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site

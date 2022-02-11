@@ -824,8 +824,8 @@ We can see that refusing a limit tend to increase the risk taken by subjects.
 with credible interval at 95% `r p_ci("baseline", 0.475)`.
 So for baseline, as expected, there is no significant difference between the 
 four first rounds and the subsequent rounds.
-3. *limit not applied*: mean of `r round(nearest_n("limit not apply", 0.5), 2)` 
-with credible interval at 95% `r p_ci("limit not apply", 0.475)`.
+3. *limit not applied*: mean of `r round(nearest_n("limit not applied", 0.5), 2)` 
+with credible interval at 95% `r p_ci("limit not applied", 0.475)`.
 The fact that subjects ask for a limit even if it is not enforced, decreases the 
 risk taken by the subjects.
 And this is what we identify as the effect of the soft commitment; in effect, 
@@ -833,8 +833,8 @@ the subjects have reduced their risk-taking after having asked for a limit that
 they could freely violate.
 Although this reduction is small, it is significantly different from what is 
 observed for the baseline.
-4. *limit applied*: mean of `r round(nearest_n("limit apply", 0.5), 2)` 
-with credible interval at 95% `r p_ci("limit apply", 0.475)`.
+4. *limit applied*: mean of `r round(nearest_n("limit applied", 0.5), 2)` 
+with credible interval at 95% `r p_ci("limit applied", 0.475)`.
 When the limit is applied to the subject who requested it, the average risk 
 reduction for subjects is greater than for those to whom the limit was not 
 applied. 
@@ -843,8 +843,8 @@ will result in a greater reduction in the limit is only
 `r round(100 * ct["La", "Ln"], 2)`%. 
 and this is what we identify as the effect of hard commitment; subjects reduced 
 their risk-taking after asking for a limit that they could not violate.
-5. *limit applied ex-post*: mean of `r round(nearest_n("limit apply ex-post", 0.5), 2)` 
-with credible interval at 95% `r p_ci("limit apply ex-post", 0.475)`).
+5. *limit applied ex-post*: mean of `r round(nearest_n("limit applied ex-post", 0.5), 2)` 
+with credible interval at 95% `r p_ci("limit applied ex-post", 0.475)`).
 The most significant reduction in risk-taking is observed when the limit is 
 applied ex-post to subjects who asked for the limit without receiving it.
 

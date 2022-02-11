@@ -1,6 +1,6 @@
 # (APPENDIX) Appendix {-} 
 
-# Experimental instruction for chapter 2 {#expe-instruc2}
+# Experimental instruction for chapter 1 {#expe-instruc2}
 
 ```{r, echo=FALSE, out.width='90%'}
 knitr::include_graphics("annexe_file/pump_decision.png")
@@ -24,7 +24,7 @@ knitr::include_graphics("annexe_file/temptation_decision.png")
 ```
 
 
-# Experimental instruction for chapter 3 {#expe-instruc3}
+# Experimental instruction for chapter 2 {#expe-instruc3}
 
 Instruction of the experiment are display as follow:
 
@@ -40,7 +40,7 @@ knitr::include_graphics("annexe_file/consigne_c3_2.png")
 knitr::include_graphics("annexe_file/consigne_c3_3.png")
 ```
 
-# Experimental instruction for chapter 4 {#expe-instruc4}
+# Experimental instruction for chapter 3 {#expe-instruc4}
 
 Instruction of the experiment are display as follow:
 

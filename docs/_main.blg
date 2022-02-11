@@ -1,0 +1,114 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: _main.aux
+The style file: plainnat.bst
+I couldn't open database file bibliography.bib
+---line 265 of file _main.aux
+ : \bibdata{bibliography.bib
+ :                          }
+I'm skipping whatever remains of this command
+I found no database files---while reading file _main.aux
+Warning--I didn't find a database entry for "gul2001temptation"
+Warning--I didn't find a database entry for "noor2010uphill"
+Warning--I didn't find a database entry for "noor2015menu"
+Warning--I didn't find a database entry for "kreps1979representation"
+Warning--I didn't find a database entry for "bryan2010commitment"
+Warning--I didn't find a database entry for "ashraf2006tying"
+Warning--I didn't find a database entry for "dellavigna2004contract"
+Warning--I didn't find a database entry for "dellavigna2006paying"
+Warning--I didn't find a database entry for "lipman2013temptation"
+Warning--I didn't find a database entry for "mischel1989delay"
+Warning--I didn't find a database entry for "kuhn2014self"
+Warning--I didn't find a database entry for "toussaert2018eliciting"
+Warning--I didn't find a database entry for "houser2018temptation"
+Warning--I didn't find a database entry for "fudenberg2006dual"
+Warning--I didn't find a database entry for "lejuez2002evaluation"
+Warning--I didn't find a database entry for "crosetto2013bomb"
+Warning--I didn't find a database entry for "ert2017revisiting"
+Warning--I didn't find a database entry for "wilcox2007predicting"
+Warning--I didn't find a database entry for "taleb2005fooled"
+Warning--I didn't find a database entry for "popper2005logic"
+Warning--I didn't find a database entry for "popper2014conjectures"
+Warning--I didn't find a database entry for "gul2006random"
+Warning--I didn't find a database entry for "ratcliff2008diffusion"
+Warning--I didn't find a database entry for "cerreia2019deliberately"
+Warning--I didn't find a database entry for "laibson1998self"
+Warning--I didn't find a database entry for "heckman2006effects"
+Warning--I didn't find a database entry for "alan2015patience"
+Warning--I didn't find a database entry for "milkman2021film"
+Warning--I didn't find a database entry for "rankin1993get"
+Warning--I didn't find a database entry for "read1999mixing"
+Warning--I didn't find a database entry for "elster2000ulysses"
+Warning--I didn't find a database entry for "milkman2014holding"
+Warning--I didn't find a database entry for "trope2000counteractive"
+Warning--I didn't find a database entry for "ariely2002procrastination"
+Warning--I didn't find a database entry for "kast2014saving"
+Warning--I didn't find a database entry for "benabou2004willpower"
+Warning--I didn't find a database entry for "charness2016"
+Warning--I didn't find a database entry for "casari2009pre"
+Warning--I didn't find a database entry for "chen2016"
+Warning--I didn't find a database entry for "salvatier2016probabilistic"
+Warning--I didn't find a database entry for "bhanot2017cheap"
+Warning--I didn't find a database entry for "harrison2004field"
+Warning--I didn't find a database entry for "chow2011demand"
+Warning--I didn't find a database entry for "gine2010put"
+Warning--I didn't find a database entry for "uhl2011self"
+Warning--I didn't find a database entry for "burger2011field"
+Warning--I didn't find a database entry for "gul2004self"
+Warning--I didn't find a database entry for "dekel2001representing"
+Warning--I didn't find a database entry for "dekel2007representing"
+Warning--I didn't find a database entry for "dekel2009temptation"
+Warning--I didn't find a database entry for "becker1964measuring"
+Warning--I didn't find a database entry for "friedman2014risky"
+Warning--I didn't find a database entry for "luce2012individual"
+Warning--I didn't find a database entry for "hey1994investigating"
+Warning--I didn't find a database entry for "harrison2014experimental"
+Warning--I didn't find a database entry for "sjaastad2021ulyssean"
+Warning--I didn't find a database entry for "steiner2021representative"
+Warning--I didn't find a database entry for "de2020burst"
+Warning--I didn't find a database entry for "wakker2008explaining"
+Warning--I didn't find a database entry for "gul2014random"
+Warning--I didn't find a database entry for "crosetto2016theoretical"
+Warning--I didn't find a database entry for "aliprantis2006hitchhiker"
+You've used 0 entries,
+            2773 wiz_defined-function locations,
+            654 strings with 5923 characters,
+and the built_in function-call counts, 33 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 2
+:= -- 10
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 0
+newline$ -- 8
+num.names$ -- 0
+pop$ -- 0
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 7
+(There were 2 error messages)

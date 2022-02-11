@@ -210,6 +210,8 @@ U(A) = max_{x \in A}(u(x) + v(x)) - max_{y \in A}(v(y))
 $$
 Where $A$ and $B$ are menus and $u(.)$ and $v(.)$ Von-Neumann Morgenstren 
 utility functions.
+With $u(.)$ representing the utility for the elements taken independently 
+(singletons) and $v(.)$ the temptation utility of the elements. 
 What we will do in our analysis is to estimate for each menu the value 
 associated for the function $u(.)$ and for the function $v(.)$ and to compare 
 the theoretical value of the resulting menu to the one indicated by the subject. 
@@ -296,7 +298,7 @@ comparisons and the resolution of the 6 lotteries they chose (1 in the learning
 and 5 in the main phase).
  
 Our subjects were thus paid an average of  `r round(mean(payed_bonus), 2)`$ for 
-an average time of `r round(mean(amt_time/60))` seconds spent on our experiment.
+an average time of `r round(mean(amt_time/60))` minutes spent on our experiment.
 So an average wage per hour of 
 `r round(mean(payed_bonus)/mean(amt_time/3600), 2)`$
 
@@ -352,17 +354,12 @@ slider from the place where it was initially placed.
 As with 6 different items it is possible to build 63 different menus and 
 therefore 1953 different 2-by-2 comparisons, we restricted the comparisons made 
 by the subjects to the ones that seemed the most interesting for us[^322]. 
-The 35 comparisons that we have retained for each subject are the following:
-
-[^322]: In retrospect, knowing the results of the experiment and given the problems found on value 
-imputation with a utility function it would have been better to restrict the 
-number of items to 4 and thus be able to explore more thoroughly the space of 2-by-2 comparisons. 
-
-
 These comparisons were chosen to allow reliable estimates of preferences with many 
 observations of comparison of size 1 menus with each other and with size 2 
 menus; 
 but also to cover a wide range of items and menu sizes.
+The 35 comparisons are chosen randomly and independently for each subject 
+according to the following rules:
 
 1. 10 comparisons between menus of size 1. 
 The menus of size 1 are chosen randomly but in such a way that each menu appears 
@@ -385,6 +382,11 @@ done, 5 comparisons among the 35 are drawn at random and a menu for each of
 the chosen comparisons is selected using the described procedure. 
 The subjects then have to choose in each of these menus one and only one lottery.
 This lottery is played and the outcome added to the subjects' payoffs.
+
+
+[^322]: In retrospect, knowing the results of the experiment and given the problems found on value 
+imputation with a utility function it would have been better to restrict the 
+number of items to 4 and thus be able to explore more thoroughly the space of 2-by-2 comparisons. 
 
 
 ### Estimations and Models
@@ -691,14 +693,19 @@ is a linear combination of the other variables given the menu size constraint.
 The estimates of each of the model parameters for each subject are shown in the 
 figure \@ref(fig:reg-estim-plot3).
 
-```{r reg-estim-plot3, fig.cap="Distribution of the coefficent by items for all subjects"}
+```{r}
 reg_coef <- lapply(ecD_reg_indMod, `[[`, "coefficients")
 reg_coef <- matrix(unlist(reg_coef), nrow = 13, 
                    dimnames = list(names(reg_coef[[1]]), names(reg_coef)))
+#Distribution of the coefficent by items for all subjects
+# reg-estim-plot3
+```
 
-reg_coef %>% 
-  t() %>% 
-  as_tibble() %>% 
+
+```{r reg-estim-plot3, fig.cap="Distribution of the coefficent by items for all subjects"}
+reg_coef %>%
+  t() %>%
+  as_tibble() %>%
   pivot_longer(everything(), names_to = c("side", "item"), names_sep = "_") %>%
   ggplot(aes(x = item, y = value, color = side)) +
   geom_boxplot() +
@@ -708,6 +715,7 @@ reg_coef %>%
   scale_x_discrete(limits = c("2", "4", "6", "8", "16", "32", NA),
                    labels = c("2", "4", "6", "8", "16", "32", "Intercept"))
 ```
+
 We can see on the graph that the effect in the different variables of the model 
 are of the same order of magnitude and close to 0. 
 The estimated values are close to the ones estimated for the economic models 
